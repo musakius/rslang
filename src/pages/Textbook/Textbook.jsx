@@ -3,16 +3,21 @@ import Dictionary from './Components/Dictionary/Dictionary';
 import Links from './Components/Links/Links';
 import Pagination from './Components/Pagination/Pagination';
 import Sections from './Components/Sections/Sections';
-import Settings from './Components/Settings/Settings';
 
 const Textbook = () => {
     return (
-        <div>
-            <Sections/>
-            <Dictionary/>
-            <Settings/>
-            <Links/>
-            <Pagination/>
+        <div className='container-fluid'>
+            <div class="row">
+                <div class="col-md-2">
+                    <Sections/>
+                </div>
+                <div class="col-md-10">           
+                    <Dictionary/>
+                    <Links/>
+                    <Pagination/>
+                </div>
+            </div>
+
         </div>
     );
 }
