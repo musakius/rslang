@@ -1,13 +1,8 @@
 import React, {useState, useCallback, useMemo} from 'react';
 import Exit from '../Exit';
 import Rules from '../Rules';
-import Timer from '../Timer/Timer';
-
-import useAPI from '../../../../common/utils';
-import {userIdSelector} from '../../../../auth/redux/selectors';
-
+import Timer from '../Timer';
 import classes from './Game.module.scss';
-import {incCombo} from '../../redux'; //TODO
 
 const audioPath = 'https://raw.githubusercontent.com/' + 'alekchaik/rslang-data/master/';
 
@@ -43,17 +38,13 @@ function Game({
   learnedWords,
   marksCombo
 }) {
-  const userID = useSelector(userIdSelector);
+  /* const userID = useSelector(userIdSelector); */
 
   const [count, setCount] = useState(0);
 
   const userWordsURL = useMemo(
-    () =>
-      learnedWords
-        ? `users/${userID}/aggregatedWords?wordsPerPage=150&filter={"userWord.optional.deleted":false}`
-        : `words?page=0&group=${level}
-      &wordsPerExampleSentenceLTE=1000&wordsPerPage=150`,
-    [level, userID, learnedWords]
+    () => `words?page=0&group=${level}&wordsPerExampleSentenceLTE=1000&wordsPerPage=150`,
+    [level, learnedWords]
   );
 
   const action = useCallback(
@@ -73,7 +64,7 @@ function Game({
     [learnedWords]
   );
 
-  useAPI(userWordsURL, fetchOptions, action);
+  /* useAPI(userWordsURL, fetchOptions, action); */
 
   const changeScore = useCallback(
     (bool) => {
@@ -105,7 +96,7 @@ function Game({
       activeMarks = [...marks];
       if (bool && marksCombo < 3) {
         activeMarks[marksCombo] = 'hit';
-        incCombo();
+        setMarksCombo(marksCombo + 1);
       } else if (bool && marksCombo >= 3) {
         activeMarks = ['empty', 'empty', 'empty'];
         setMarksCombo(0);
@@ -148,7 +139,7 @@ function Game({
       changeScore(word.correctAnswer);
       setResults([word]); //2
     },
-    [dispatch, changeMark, changeScore, soundStatus, audioRight, audioWrong]
+    [changeMark, changeScore, soundStatus, audioRight, audioWrong]
   );
 
   /* const onExit = useCallback(() => {
@@ -157,93 +148,101 @@ function Game({
 
   if (startGame) {
     return (
-      <div className="Main">
-        <Rules rules="Если указан верный перевод слова - нажимайте 'Верно'" />
-        <Exit /* onExit={onExit} */ noWhite={false} />
-        <div className="UpperContainer">
-          <div className="TaimerContainer">
-            <Timer initialTime={60} timeOutHandler={() => setOverGame(true)} />
-          </div>
-
-          <div className="ScoreContainer">
-            <p className="Score">{score}</p>
-          </div>
-          <div className="Toolbar">
-            <label className="Notification_label">
-              <input
-                onChange={() => {
-                  setSoundStatus(!soundStatus);
-                }}
-                className="Notification_input"
-                type="checkbox"
-                value="1"
-                name="k"
-              />
-              <span />
-            </label>
-          </div>
-        </div>
-        <div className="BlockWordContainer">
-          <div className="BlockWord">
-            <div className="Marks">
-              {marks.map((type, index) => (
-                <img key={index} src={`/assets/images/sprint/${type}_mark.svg`} alt="mark" />
-              ))}
+      <div className={classes['container-game']}>
+        <div className={classes.main}>
+          <Rules rules="Если указан верный перевод слова - нажимайте 'Верно'" />
+          <Exit /* onExit={onExit} */ noWhite={false} />
+          <div className={classes['upper-container']}>
+            <div className={classes['timer-container']}>
+              <Timer initialTime={60} timeOutHandler={() => setOverGame(true)} />
             </div>
 
-            <div className="Targets">
-              <img src="/assets/images/sprint/hit_target.svg" alt="hint" />
-              {targets.map((type, index) => (
-                <img key={index} src={`/assets/images/sprint/${type}_target.svg`} />
-              ))}
+            <div className={classes['score-container']}>
+              <p className="score">{score}</p>
             </div>
-
-            <div className="Words">
-              <p className="EnWord">{words[count].word}</p>
-              <p className="RuWord">{words[count].falsyTranslate}</p>
+            <div className="toolbar">
+              <label className={classes['notification-label']}>
+                <input
+                  onChange={() => {
+                    setSoundStatus(!soundStatus);
+                  }}
+                  className={classes['notification-input']}
+                  type="checkbox"
+                  value="1"
+                  name="k"
+                />
+                <span />
+              </label>
             </div>
+          </div>
+          <div className={classes['block-word-container']}>
+            <div className={classes['block-word']}>
+              <div className={classes.marks}>
+                {marks.map((type, index) => (
+                  <img key={index} src={`/assets/images/sprint/${type}_mark.svg`} alt="mark" />
+                ))}
+              </div>
 
-            <div className="Buttons">
+              <div className={classes.targets}>
+                <img src="/assets/images/sprint/hit_target.svg" alt="hint" />
+                {targets.map((type, index) => (
+                  <img key={index} src={`/assets/images/sprint/${type}_target.svg`} />
+                ))}
+              </div>
+
+              {words.length ? (
+                <div className={classes.words}>
+                  <p className={classes['en-word']}>{words[count].word}</p>
+                  <p className={classes['ru-word']}>{words[count].wordTranslate}</p>
+                </div>
+              ) : null}
+
+              <div className={classes.buttons}>
+                <button
+                  className={`${classes['btn']} ${classes['false']}`}
+                  onClick={() => {
+                    setCount(count + 1);
+                    onAnswer(words[count], false);
+                    if (count === words.length - 1) setOverGame(true);
+                  }}
+                >
+                  Не верно
+                </button>
+                <button
+                  className={`${classes['btn']} ${classes['true']}`}
+                  onClick={() => {
+                    setCount(count + 1);
+                    onAnswer(words[count], true);
+                    if (count === words.length - 1) setOverGame(true);
+                  }}
+                >
+                  Верно
+                </button>
+              </div>
+
+              <div className={classes.arrows}>
+                <img
+                  className={classes.left}
+                  src="/assets/images/sprint/left_arrow.svg"
+                  alt="arrow left"
+                />
+                <img
+                  className={classes.right}
+                  src="/assets/images/sprint/right_arrow.svg"
+                  alt="arrow right"
+                />
+              </div>
+
               <button
-                className="Btn False"
+                className={classes.pronounce}
                 onClick={() => {
-                  setCount(count + 1);
-                  onAnswer(words[count], false);
-                  if (count === words.length - 1) setOverGame(true);
+                  pronounce(count);
                 }}
+                type="button"
               >
-                Не верно
-              </button>
-              <button
-                className="Btn True"
-                onClick={() => {
-                  setCount(count + 1);
-                  onAnswer(words[count], true);
-                  if (count === words.length - 1) setOverGame(true);
-                }}
-              >
-                Верно
+                <img className={classes['pronounce-img']} src="/assets/images/sprint/sound.svg" />
               </button>
             </div>
-
-            <div className="Arrows">
-              <img className="Left" src="/assets/images/sprint/left_arrow.svg" alt="arrow left" />
-              <img
-                className="Right"
-                src="/assets/images/sprint/right_arrow.svg"
-                alt="arrow right"
-              />
-            </div>
-
-            <button
-              className="pronounce"
-              onClick={() => {
-                pronounce(count);
-              }}
-              type="button"
-            >
-              <img className="pronounce_img" src="/assets/images/sprint/sound.svg" />
-            </button>
           </div>
         </div>
       </div>

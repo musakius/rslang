@@ -1,6 +1,4 @@
-import Style from 'styled-components';
-
-export default Style.div`
+.container-exit {
   z-index: 1000;
   background: rgba(0, 0, 0, 0.7);
   position: fixed;
@@ -25,13 +23,13 @@ export default Style.div`
     font-size: 20px;
     line-height: 40px;
     box-shadow: 0px 7px 64px rgba(0, 0, 0, 0.03);
-  
-  @media (max-width: 768px) {
-    width: 80%;
-    min-width: 300px;
-    margin-left: 0;
-    margin-top: 20px;
-   }
+
+    @media (max-width: 768px) {
+      width: 80%;
+      min-width: 300px;
+      margin-left: 0;
+      margin-top: 20px;
+    }
   }
 
   .top {
@@ -44,7 +42,7 @@ export default Style.div`
 
   .content {
     min-height: 300px;
-    font-family: 'Exo',sans-serif;
+    font-family: 'Exo', sans-serif;
     font-style: normal;
     font-weight: normal;
     font-size: 20px;
@@ -52,7 +50,7 @@ export default Style.div`
     text-align: center;
     width: 50%;
     margin: 0 auto;
-    
+
     @media (max-width: 768px) {
       width: 90%;
       margin: 0 auto;
@@ -63,34 +61,35 @@ export default Style.div`
     width: 70px;
     margin: 30px;
   }
-  
+
   .bottom {
     width: 100%;
     height: 125px;
     background-color: #fff;
-    color: #6979F8;
+    color: #6979f8;
     text-align: center;
     margin: auto;
     border-radius: 0 0 12px 12px;
     font-size: 24px;
     display: flex;
-    
+
     @media (max-width: 520px) {
       height: 100px;
     }
   }
-  
+
   .btn-wrapper {
     display: flex;
     align-items: center;
     margin: 0 auto;
   }
-  
+
   .exit-bg {
-    background: #FDAFBB;
+    background: #fdafbb;
   }
-  
-  .cancel, .exit {
+
+  .cancel,
+  .exit {
     font-family: 'Exo', sans-serif;
     width: 175px;
     height: 48px;
@@ -103,40 +102,40 @@ export default Style.div`
     margin: 10px;
     text-align: center;
     outline: none;
-        
+
     @media (max-width: 520px) {
       width: 100px;
     }
   }
   .cancel {
     background-color: #fff;
-    border: 1px solid #6979F8;
-    color: #6979F8;
-    
+    border: 1px solid #6979f8;
+    color: #6979f8;
+
     &:hover,
     &:focus,
-    &:active{
-      border: 1px solid #5865CE;
+    &:active {
+      border: 1px solid #5865ce;
       background-color: #fff;
-      color: #5865CE;
+      color: #5865ce;
       cursor: pointer;
       outline: none;
     }
   }
-  
+
   .exit {
-    border: 1px solid #6979F8;
-    background-color: #6979F8;
+    border: 1px solid #6979f8;
+    background-color: #6979f8;
     color: #fff;
-    
+
     &:hover,
     &:focus,
     &:active {
-      border: 1px solid #5865CE;
-      background-color: #5865CE;
+      border: 1px solid #5865ce;
+      background-color: #5865ce;
       color: #fff;
       cursor: pointer;
       outline: none;
     }
   }
-`;
+}

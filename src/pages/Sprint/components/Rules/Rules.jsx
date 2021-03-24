@@ -1,26 +1,26 @@
 import React, {useState, useCallback} from 'react';
-import StyleRules from './style.ModalRules';
+import classes from './Rules.module.scss';
 
 const ModalRules = ({setModalRules, rulesText}) => (
-  <StyleRules>
-    <div className="pop-up">
-      <div className="top warning">
-        <div className="icon">
+  <section classes={classes['container-rules']}>
+    <div className={classes['pop-up']}>
+      <div className={`${classes.top} ${classes.warning}`}>
+        <div className={classes.icon}>
           <img src="/assets/images/common/quest.svg" alt="question in round" />
         </div>
-        <section className="content">
+        <section className={classes.content}>
           <p>{rulesText}</p>
         </section>
       </div>
-      <div className="bottom">
-        <section className="btn-wrapper">
-          <button className="exit" type="button" onClick={setModalRules}>
+      <div className={classes.bottom}>
+        <section className={classes['btn-wrapper']}>
+          <button className={classes.exit} type="button" onClick={setModalRules}>
             Понятно
           </button>
         </section>
       </div>
     </div>
-  </StyleRules>
+  </section>
 );
 
 const Rules = ({rules}) => {
@@ -35,7 +35,7 @@ const Rules = ({rules}) => {
       {isRules ? <ModalRules setModalRules={() => setIsRules(true)} rulesText={rules} /> : false}
       <img
         style={{cursor: 'pointer'}}
-        className="question"
+        className={classes.question}
         src="/assets/images/common/rules-icon.svg"
         alt="question with info about game"
       />

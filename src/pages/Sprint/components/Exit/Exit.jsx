@@ -1,32 +1,32 @@
 import React, {useState, useCallback} from 'react';
 import {Link} from 'react-router-dom';
-import StyleExit from './style.ModalExit';
+import classes from './Exit.module.scss';
 
 const ModalExit = ({setModalExit, setReduxStatus}) => (
-  <StyleExit>
-    <div className="pop-up">
-      <div className="top exit-bg">
-        <div className="icon">
+  <section className={classes['container-exit']}>
+    <div className={classes['pop-up']}>
+      <div className={`${classes.top} ${classes['exit-bg']}`}>
+        <div className={classes.icon}>
           <img src="/assets/images/common/excl.svg" alt="question in round" />
         </div>
-        <section className="content">
+        <section className={classes.content}>
           <p>Если вы выйдете во время игры, то прогресс не сохранится</p>
         </section>
       </div>
-      <div className="bottom">
-        <section className="btn-wrapper">
-          <button type="button" onClick={setModalExit} className="cancel">
+      <div className={classes.bottom}>
+        <section className={classes['btn-wrapper']}>
+          <button type="button" onClick={setModalExit} className={classes.cancel}>
             Отменить
           </button>
           <Link to="../games">
-            <button type="button" onClick={setReduxStatus} className="exit">
+            <button type="button" onClick={setReduxStatus} className={classes.exit}>
               Выйти
             </button>
           </Link>
         </section>
       </div>
     </div>
-  </StyleExit>
+  </section>
 );
 
 const iconCross = (white) =>
@@ -42,7 +42,12 @@ const Exit = ({onExit = () => {}, noWhite}) => {
   return (
     <div onClick={() => onExitClickHandler(isExit)}>
       {isExit ? <ModalExit setModalExit={() => setIsExit(false)} setReduxStatus={onExit} /> : false}
-      <img className="cross" style={{cursor: 'pointer'}} src={iconCross(noWhite)} alt="cross" />
+      <img
+        className={classes.cross}
+        style={{cursor: 'pointer'}}
+        src={iconCross(noWhite)}
+        alt="cross"
+      />
     </div>
   );
 };

@@ -1,0 +1,332 @@
+.container-game {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #003906;
+  background-position: 50% 100%;
+  background-size: contain;
+  overflow: hidden;
+
+  img.question,
+  img.cross {
+    position: absolute;
+    top: 20px;
+
+    @media (max-width: 768px) {
+      top: 10px;
+    }
+  }
+
+  img.question {
+    right: 70px;
+
+    @media (max-width: 768px) {
+      top: 10px;
+    }
+  }
+
+  img.cross {
+    right: 20px;
+
+    @media (max-width: 768px) {
+      top: 10px;
+    }
+  }
+
+  .upper-container {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    @media (max-width: 768px) {
+      width: 98%;
+      max-width: 595px;
+    }
+
+    .timer-container {
+      display: flex;
+      height: 100px;
+      width: 100px;
+      position: relative;
+      left: 228px;
+      top: 80px;
+      margin-top: 3px;
+
+      @media (max-width: 1274px) {
+        left: 228px;
+        top: 12px;
+      }
+
+      @media (max-width: 768px) {
+        margin-left: 0px;
+        position: static;
+      }
+    }
+
+    .score-container {
+      display: flex;
+      align-items: center;
+      height: 100px;
+      width: 100px;
+      margin-left: 178px;
+
+      @media (max-width: 768px) {
+        margin-left: 0px;
+      }
+
+      .score {
+        font-family: 'Exo', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 45px;
+        line-height: 40px;
+        text-align: center;
+        color: #fff;
+      }
+    }
+
+    .toolbar {
+      display: flex;
+      height: 100px;
+      width: 100px;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      @media (max-width: 768px) {
+        align-items: flex-end;
+      }
+
+      .close {
+        display: flex;
+
+        @media (max-width: 768px) {
+          display: none;
+        }
+      }
+
+      .notification-label {
+        width: 35px;
+        height: 35px;
+        display: block;
+        position: absolute;
+        margin: 0;
+        top: 20px;
+        right: 130px;
+
+        @media (max-width: 768px) {
+          top: 10px;
+        }
+
+        .notification-input {
+          display: none;
+        }
+
+        .notification-input[type='checkbox'] + span {
+          position: absolute;
+          left: 0;
+          top: 0;
+          width: 100%;
+          height: 100%;
+          /* background: url('/assets/images/sprint/bell_on.svg') no-repeat; */
+          cursor: pointer;
+        }
+
+        /* .notification-input[type='checkbox']:checked + span {
+          background: url('/assets/images/sprint/bell_off.svg') no-repeat;
+        } */
+      }
+
+      img {
+        height: 35px;
+        width: 35px;
+      }
+    }
+  }
+
+  .main {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .block-word-container {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .block-word {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+    width: 98%;
+    height: 75%;
+    max-width: 595px;
+    max-height: 972px;
+    background: rgba(10, 217, 198, 0.15);
+    mix-blend-mode: normal;
+    border-radius: 6px;
+    margin-left: 100px;
+    position: relative;
+
+    @media (max-width: 768px) {
+      margin-left: 0px;
+    }
+
+    .marks {
+      height: 100px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        height: 35px;
+        width: 35px;
+      }
+
+      img:not(:first-child) {
+        margin-left: 20px;
+      }
+    }
+
+    .targets {
+      height: 100px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        height: 73px;
+        width: 73px;
+
+        @media (max-width: 768px) {
+          height: 55px;
+          width: 55px;
+        }
+      }
+
+      img:not(:first-child) {
+        margin-left: 17px;
+      }
+    }
+
+    .words {
+      height: 110px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+
+      .en-word {
+        font-family: 'Exo', sans-serif;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 40px;
+        line-height: 22px;
+        color: #ffffff;
+      }
+
+      .ru-word {
+        font-family: 'Exo', sans-serif;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 30px;
+        line-height: 22px;
+        color: #ffffff;
+        margin-top: 9px;
+      }
+    }
+
+    .buttons {
+      height: 100px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @media (max-width: 768px) {
+        flex-direction: column;
+      }
+
+      .btn {
+        background: #0ad1bd;
+        border: #0ad1bd;
+        width: 178px;
+        height: 48px;
+        margin: 26px 0 7px 0;
+
+        &:hover,
+        &:focus,
+        &:active {
+          background: #08a999;
+          border: #08a999;
+        }
+      }
+
+      .true {
+        background-color: #0ad1bd;
+        margin-left: 45px;
+
+        @media (max-width: 768px) {
+          margin-left: 0px;
+        }
+      }
+
+      .false {
+        background-color: #e10050;
+
+        &:hover,
+        &:focus,
+        &:active {
+          background-color: #c10045;
+        }
+      }
+    }
+
+    .arrows {
+      height: 30px;
+      width: 100%;
+      display: none;
+      justify-content: center;
+      align-items: center;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
+
+      .right {
+        margin-left: 186px;
+      }
+    }
+
+    .pronounce {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      height: 30px;
+      background: transparent;
+      border: transparent;
+      outline: none;
+      cursor: pointer;
+
+      &:hover,
+      &:focus,
+      &:active {
+        outline: none;
+      }
+    }
+  }
+}

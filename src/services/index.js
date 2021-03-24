@@ -10,8 +10,8 @@ class Service {
     return await response.json();
   };
 
-  getWordsAll = async () => {
-    return await this._getResource('words/');
+  getWordsAll = async (group = 0, page = 0) => {
+    return await this._getResource(`words?group=${group}&page=${page}`);
   };
 
   // Post
