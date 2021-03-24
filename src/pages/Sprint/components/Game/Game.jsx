@@ -1,8 +1,8 @@
 import React, {useState, useCallback, useMemo} from 'react';
 import Exit from '../Exit';
-import Rules from '../../../../common/components/Modals/Rules';
-
+import Rules from '../Rules';
 import Timer from '../Timer/Timer';
+
 import useAPI from '../../../../common/utils';
 import {userIdSelector} from '../../../../auth/redux/selectors';
 
