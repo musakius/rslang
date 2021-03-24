@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useMemo} from 'react';
-import Exit from '../../../../common/components/Modals/Exit';
+import Exit from '../Exit';
 import Rules from '../../../../common/components/Modals/Rules';
 
 import Timer from '../Timer/Timer';
