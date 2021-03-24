@@ -5,7 +5,7 @@ import StartScreen from './components/StartScreen';
 
 function Sprint() {
   const [initGame, setInitGame] = useState(false);
-  const [startGame, setStartGame] = useState(true);
+  const [startGame, setStartGame] = useState(false);
   const [overGame, setOverGame] = useState(false);
   const [soundStatus, setSoundStatus] = useState(false);
   const [learnedWords, setLearnedWords] = useState(false);
@@ -27,8 +27,8 @@ function Sprint() {
       .catch((error) => console.log(error));
   }, [api]);
 
-  return (
-    <>
+  if (initGame) {
+    return (
       <Game
         setOverGame={setOverGame}
         setResults={setResults}
@@ -51,15 +51,17 @@ function Sprint() {
         learnedWords={learnedWords}
         marksCombo={marksCombo}
       ></Game>
+    );
+  }
 
-      <StartScreen
-        setInitGame={setInitGame}
-        setLevel={setLevel}
-        setLearnedWords={setLearnedWords}
-        level={level}
-        learnedWords={learnedWords}
-      ></StartScreen>
-    </>
+  return (
+    <StartScreen
+      setInitGame={setInitGame}
+      setLevel={setLevel}
+      setLearnedWords={setLearnedWords}
+      level={level}
+      learnedWords={learnedWords}
+    ></StartScreen>
   );
 }
 

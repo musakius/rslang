@@ -2,7 +2,7 @@ import React, {useState, useCallback} from 'react';
 import {Link} from 'react-router-dom';
 import classes from './Exit.module.scss';
 
-const ModalExit = ({setModalExit, setReduxStatus}) => (
+const ModalExit = ({setModalExit}) => (
   <section className={classes['container-exit']}>
     <div className={classes['pop-up']}>
       <div className={`${classes.top} ${classes['exit-bg']}`}>
@@ -19,7 +19,7 @@ const ModalExit = ({setModalExit, setReduxStatus}) => (
             Отменить
           </button>
           <Link to="../games">
-            <button type="button" onClick={setReduxStatus} className={classes.exit}>
+            <button type="button" className={classes.exit}>
               Выйти
             </button>
           </Link>
@@ -29,10 +29,7 @@ const ModalExit = ({setModalExit, setReduxStatus}) => (
   </section>
 );
 
-const iconCross = (white) =>
-  !white ? '/assets/images/common/x_white.svg' : '/assets/images/common/x.svg';
-
-const Exit = ({onExit = () => {}, noWhite}) => {
+const Exit = () => {
   const [isExit, setIsExit] = useState(false);
 
   const onExitClickHandler = useCallback((exit) => {
@@ -41,11 +38,11 @@ const Exit = ({onExit = () => {}, noWhite}) => {
 
   return (
     <div onClick={() => onExitClickHandler(isExit)}>
-      {isExit ? <ModalExit setModalExit={() => setIsExit(false)} setReduxStatus={onExit} /> : false}
+      {isExit ? <ModalExit setModalExit={() => setIsExit(false)} /> : false}
       <img
         className={classes.cross}
         style={{cursor: 'pointer'}}
-        src={iconCross(noWhite)}
+        src="/assets/images/common/x.svg"
         alt="cross"
       />
     </div>

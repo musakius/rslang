@@ -142,19 +142,15 @@ function Game({
     [changeMark, changeScore, soundStatus, audioRight, audioWrong]
   );
 
-  /* const onExit = useCallback(() => {
-    dispatch(setDefault());
-  }, [dispatch]); */
-
   if (startGame) {
     return (
       <div className={classes['container-game']}>
         <div className={classes.main}>
           <Rules rules="Если указан верный перевод слова - нажимайте 'Верно'" />
-          <Exit /* onExit={onExit} */ noWhite={false} />
+          <Exit />
           <div className={classes['upper-container']}>
             <div className={classes['timer-container']}>
-              <Timer initialTime={60} timeOutHandler={() => setOverGame(true)} />
+              <Timer initialTime={60} timeOutHandler={setOverGame} />
             </div>
 
             <div className={classes['score-container']}>
@@ -248,7 +244,7 @@ function Game({
       </div>
     );
   }
-  return <Timer initialTime={5} timeOutHandler={() => setStartGame(true)} />;
+  return <Timer initialTime={5} timeOutHandler={setStartGame} />;
 }
 
 export default Game;

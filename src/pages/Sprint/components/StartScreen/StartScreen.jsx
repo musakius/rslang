@@ -2,7 +2,7 @@ import React, {useCallback} from 'react';
 import {Link} from 'react-router-dom';
 import classes from './StartScreen.module.scss';
 
-import SwitcherLevel from '../../../../common/components/LevelSwitcher';
+import SwitcherLevel from '../SwitcherLevel';
 
 const StartScreen = ({setInitGame, setLevel, setLearnedWords, level, learnedWords}) => {
   const changeLevel = useCallback(
@@ -34,7 +34,7 @@ const StartScreen = ({setInitGame, setLevel, setLearnedWords, level, learnedWord
                 id="mode"
                 type="checkbox"
                 onChange={() => {
-                  dispatch(setLearnedWords(!learnedWords));
+                  setLearnedWords(!learnedWords);
                 }}
               />
               <span className="Checkmark" />
@@ -55,7 +55,7 @@ const StartScreen = ({setInitGame, setLevel, setLearnedWords, level, learnedWord
       </div>
       <img
         className="decoration"
-        src="/assets/images/sprint/sprint_startscreen.svg"
+        src="/assets/images/sprint/sprint_StartScreen.svg"
         alt="running man"
       />
     </section>
