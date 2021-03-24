@@ -6,6 +6,7 @@ import List from "./List";
 
 const Sections = () => {
   const { url } = useRouteMatch();
+  console.log("url", url);
 
   return (
     <div>
@@ -13,12 +14,12 @@ const Sections = () => {
       <ul className='list-group'>
         {items.map((item) => (
           <List
-            item={`Раздел ${item.page}`}
+            item={`Раздел ${item.item}`}
             style={
               "list-group-item d-flex justify-content-between align-items-center"
             }
-            path={`${url}/${item.page}`}
-            key={item.page}
+            path={`${url}/group/${item.group}`}
+            key={item.group}
           />
         ))}
       </ul>
