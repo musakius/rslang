@@ -7,7 +7,7 @@ const ModalExit = ({setModalExit}) => (
     <div className={classes['pop-up']}>
       <div className={`${classes.top} ${classes['exit-bg']}`}>
         <div className={classes.icon}>
-          <img src="/assets/images/common/excl.svg" alt="question in round" />
+          {/* <img src="/assets/images/common/excl.svg" alt="question in round" /> */}
         </div>
         <section className={classes.content}>
           <p>Если вы выйдете во время игры, то прогресс не сохранится</p>
@@ -39,12 +39,13 @@ const Exit = () => {
   return (
     <div onClick={() => onExitClickHandler(isExit)}>
       {isExit ? <ModalExit setModalExit={() => setIsExit(false)} /> : false}
-      <img
+      {/* <img
         className={classes.cross}
         style={{cursor: 'pointer'}}
         src="/assets/images/common/x.svg"
         alt="cross"
-      />
+      /> */}
+      <i class="fas fa-times"></i>
     </div>
   );
 };

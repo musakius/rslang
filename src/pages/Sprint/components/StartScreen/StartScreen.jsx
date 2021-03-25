@@ -1,63 +1,46 @@
-import React, {useCallback} from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 import classes from './StartScreen.module.scss';
 
 import SwitcherLevel from '../SwitcherLevel';
 
 const StartScreen = ({setInitGame, setLevel, setLearnedWords, level, learnedWords}) => {
-  const changeLevel = useCallback(
-    (levelProps) => {
-      if (level !== levelProps) {
-        setLevel(levelProps);
-      }
-    },
-    [level]
-  );
-
-  /* const onExit = useCallback(() => {
-    dispatch(setDefault());
-  }, [dispatch]); */
-
   return (
     <section className={classes['container-start-screen']}>
       <Link to="../games">
-        <img className="cross" src="/assets/images/sprint/cross.svg" alt="close" />
+        <i className={`${classes.cross} fas fa-arrow-left`}></i>
       </Link>
-      <div className="center_alignment">
-        <div className="wrapper-switcher">
-          <SwitcherLevel changeLevel={changeLevel} />
-          <div className="mode_wrapper">
-            <p className="mode_description">Только из словаря:</p>
-            <label htmlFor="mode" className="CheckboxContainer">
+      <div className={classes['center-alignment']}>
+        <h1 className={classes['title']}>
+          <i className="fas fa-running"></i>
+          Спринт
+          <i className="fas fa-running"></i>
+        </h1>
+        <p className={classes['game-description']}>Игра учит быстро переводить слова.</p>
+        <div className={classes['wrapper-switcher']}>
+          <SwitcherLevel setLevel={setLevel} level={level} />
+          <div className={classes['mode-wrapper']}>
+            <p className={classes['mode-description']}>Только из словаря:</p>
+            <label htmlFor="mode" className={classes['checkbox-container']}>
               <input
                 name="mode"
                 id="mode"
                 type="checkbox"
+                className={classes.checkbox}
                 onChange={() => {
                   setLearnedWords(!learnedWords);
                 }}
               />
-              <span className="Checkmark" />
+              <span className={classes['check-mark']} />
             </label>
           </div>
         </div>
-        <h1 className="title_h2">Спринт</h1>
-
-        <div className="game_description">
-          Учит быстро переводить с английского на русский. Для этой тренировки используются слова из
-          вашего словаря и случайные слова.
-        </div>
-        <form>
-          <button className="start_btn" onClick={() => setInitGame(true)}>
-            Start
+        <form className="mt-3">
+          <button type="button" className="btn btn-info btn-lg" onClick={() => setInitGame(true)}>
+            Начать игру
           </button>
         </form>
       </div>
-      <img
-        className="decoration"
-        src="/assets/images/sprint/sprint_StartScreen.svg"
-        alt="running man"
-      />
     </section>
   );
 };

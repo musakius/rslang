@@ -1,23 +1,14 @@
-import React, {useState, useCallback, useMemo} from 'react';
+import React, {useState, useMemo} from 'react';
 import Exit from '../Exit';
-import Rules from '../Rules';
 import Timer from '../Timer';
 import classes from './Game.module.scss';
-
-const audioPath = 'https://raw.githubusercontent.com/' + 'alekchaik/rslang-data/master/';
-
-const fetchOptions = {
-  method: 'GET'
-};
 
 let targetsCombo = 0;
 let activeMarks = ['empty', 'empty', 'empty'];
 let activeTargets = ['empty', 'empty', 'empty'];
 
-const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
-
 function Game({
-  setOverGame,
+  setGameOver,
   setResults,
   setMarks,
   setWords,
@@ -29,6 +20,7 @@ function Game({
   setMarksCombo,
   words,
   startGame,
+  results,
   level,
   score,
   marks,
@@ -47,116 +39,85 @@ function Game({
     [level, learnedWords]
   );
 
-  const action = useCallback(
-    (data) => {
-      const path = learnedWords ? data[0].paginatedResults : data;
-      path.forEach((el) => {
-        el.falsyTranslate = el.wordTranslate;
-      });
-      path.forEach((el) => {
-        el.falsyTranslate = getRandomInt(2)
-          ? path[getRandomInt(path.length - 1)].falsyTranslate
-          : el.falsyTranslate;
-        el.correctFlag = el.falsyTranslate === el.wordTranslate;
-      });
-      setWords(path);
-    },
-    [learnedWords]
-  );
-
   /* useAPI(userWordsURL, fetchOptions, action); */
 
-  const changeScore = useCallback(
-    (bool) => {
-      if (bool) setScore(score + rate * 10);
-    },
-    [rate, score]
-  );
+  const changeScore = (bool) => {
+    if (bool) setScore(score + rate * 10);
+  };
 
-  const changeTargets = useCallback(
-    (bool) => {
-      activeTargets = targets;
-      if (bool && targetsCombo < 3) {
-        activeTargets[targetsCombo] = 'hit';
-        targetsCombo += 1;
-        setRate(rate + 1);
-      }
-      if (!bool) {
-        targetsCombo = 0;
-        activeTargets = ['empty', 'empty', 'empty'];
-        setRate(1);
-      }
-      setTargets([...activeTargets]);
-    },
-    [targets, rate]
-  );
+  const changeTargets = (bool) => {
+    activeTargets = targets;
+    if (bool && targetsCombo < 3) {
+      activeTargets[targetsCombo] = 'hit';
+      targetsCombo += 1;
+      setRate(rate * 2);
+    }
+    if (!bool) {
+      targetsCombo = 0;
+      activeTargets = ['empty', 'empty', 'empty'];
+      setRate(1);
+    }
+    setTargets([...activeTargets]);
+  };
 
-  const changeMark = useCallback(
-    (bool) => {
-      activeMarks = [...marks];
-      if (bool && marksCombo < 3) {
-        activeMarks[marksCombo] = 'hit';
-        setMarksCombo(marksCombo + 1);
-      } else if (bool && marksCombo >= 3) {
-        activeMarks = ['empty', 'empty', 'empty'];
-        setMarksCombo(0);
-        changeTargets(true);
-      } else {
-        setMarksCombo(0);
-        activeMarks = ['empty', 'empty', 'empty'];
-        changeTargets(false);
-      }
-      setMarks([...activeMarks]);
-    },
-    [marks, changeTargets, marksCombo]
-  );
+  const changeMark = (bool) => {
+    activeMarks = [...marks];
+    if (bool && marksCombo < 3) {
+      activeMarks[marksCombo] = 'hit';
+      setMarksCombo(marksCombo + 1);
+    } else if (bool && marksCombo >= 3) {
+      activeMarks = ['empty', 'empty', 'empty'];
+      setMarksCombo(0);
+      changeTargets(true);
+    } else {
+      setMarksCombo(0);
+      activeMarks = ['empty', 'empty', 'empty'];
+      changeTargets(false);
+    }
+    setMarks([...activeMarks]);
+  };
 
-  const audioRight = useCallback(() => {
-    const RightAudio = new Audio('/assets/audio/right.mp3');
-    RightAudio.play();
-  }, []);
+  const audioRight = () => {
+    const audio = new Audio('/assets/audio/right.mp3');
+    audio.play();
+  };
 
-  const audioWrong = useCallback(() => {
-    const WrongAudio = new Audio('/assets/audio/wrong.mp3');
-    WrongAudio.play();
-  }, []);
+  const audioWrong = () => {
+    const audio = new Audio('/assets/audio/wrong.mp3');
+    audio.play();
+  };
 
-  const pronounce = useCallback(
-    (n) => {
-      const pronounce = new Audio(`${audioPath}${words[n].audio}`);
-      pronounce.play();
-    },
-    [words]
-  );
+  const audioWord = (n) => {
+    const audio = new Audio(`https://apprslang.herokuapp.com/${words[n].audio}`);
+    audio.play();
+  };
 
-  const onAnswer = useCallback(
-    (word, answer) => {
-      word.correctAnswer = word.correctFlag === answer;
-      if (soundStatus) {
-        word.correctAnswer ? audioRight() : audioWrong();
-      }
-      changeMark(word.correctAnswer);
-      changeScore(word.correctAnswer);
-      setResults([word]); //2
-    },
-    [changeMark, changeScore, soundStatus, audioRight, audioWrong]
-  );
+  const onAnswer = (word, answer) => {
+    console.log(word);
+    console.log(answer);
+    word.correctAnswer = word.correctFlag === answer;
+    if (soundStatus) {
+      word.correctAnswer ? audioRight() : audioWrong();
+    }
+    changeMark(word.correctAnswer);
+    changeScore(word.correctAnswer);
+    setResults([...results, word]);
+  };
 
   if (startGame) {
     return (
       <div className={classes['container-game']}>
         <div className={classes.main}>
-          <Rules rules="Если указан верный перевод слова - нажимайте 'Верно'" />
           <Exit />
           <div className={classes['upper-container']}>
             <div className={classes['timer-container']}>
-              <Timer initialTime={60} timeOutHandler={setOverGame} />
+              <Timer initialTime={60} timeOutHandler={setGameOver} />
             </div>
 
             <div className={classes['score-container']}>
-              <p className="score">{score}</p>
+              <p className={classes.score}>{score}</p>
             </div>
-            <div className="toolbar">
+            <div className={classes.toolbar}>
               <label className={classes['notification-label']}>
                 <input
                   onChange={() => {
@@ -175,21 +136,27 @@ function Game({
             <div className={classes['block-word']}>
               <div className={classes.marks}>
                 {marks.map((type, index) => (
-                  <img key={index} src={`/assets/images/sprint/${type}_mark.svg`} alt="mark" />
+                  <i
+                    key={index}
+                    className={`fa${type === 'empty' ? 'r fa' : 's fa-check'}-circle text-success`}
+                  />
                 ))}
               </div>
-
+              <p className={classes['count-target']}>+{rate * 10} очков за слово</p>
               <div className={classes.targets}>
-                <img src="/assets/images/sprint/hit_target.svg" alt="hint" />
+                <i className="fas fa-star text-warning"></i>
                 {targets.map((type, index) => (
-                  <img key={index} src={`/assets/images/sprint/${type}_target.svg`} />
+                  <i
+                    key={index}
+                    className={`f${type === 'empty' ? 'ar text-muted' : 'as text-warning'} fa-star`}
+                  />
                 ))}
               </div>
 
               {words.length ? (
                 <div className={classes.words}>
                   <p className={classes['en-word']}>{words[count].word}</p>
-                  <p className={classes['ru-word']}>{words[count].wordTranslate}</p>
+                  <p className={classes['ru-word']}>{words[count].falsyTranslate}</p>
                 </div>
               ) : null}
 
@@ -199,7 +166,7 @@ function Game({
                   onClick={() => {
                     setCount(count + 1);
                     onAnswer(words[count], false);
-                    if (count === words.length - 1) setOverGame(true);
+                    if (count === words.length - 1) setGameOver(true);
                   }}
                 >
                   Не верно
@@ -209,7 +176,7 @@ function Game({
                   onClick={() => {
                     setCount(count + 1);
                     onAnswer(words[count], true);
-                    if (count === words.length - 1) setOverGame(true);
+                    if (count === words.length - 1) setGameOver(true);
                   }}
                 >
                   Верно
@@ -217,26 +184,28 @@ function Game({
               </div>
 
               <div className={classes.arrows}>
-                <img
+                <i className="fas fa-arrow-circle-left"></i>
+                {/* <img
                   className={classes.left}
                   src="/assets/images/sprint/left_arrow.svg"
                   alt="arrow left"
-                />
-                <img
+                /> */}
+                <i className="fas fa-arrow-circle-right"></i>
+                {/* <img
                   className={classes.right}
                   src="/assets/images/sprint/right_arrow.svg"
                   alt="arrow right"
-                />
+                /> */}
               </div>
 
               <button
                 className={classes.pronounce}
                 onClick={() => {
-                  pronounce(count);
+                  audioWord(count);
                 }}
                 type="button"
               >
-                <img className={classes['pronounce-img']} src="/assets/images/sprint/sound.svg" />
+                <i className="fas fa-volume-up"></i>
               </button>
             </div>
           </div>
@@ -244,7 +213,7 @@ function Game({
       </div>
     );
   }
-  return <Timer initialTime={5} timeOutHandler={setStartGame} />;
+  return <Timer initialTime={3} timeOutHandler={setStartGame} />;
 }
 
 export default Game;

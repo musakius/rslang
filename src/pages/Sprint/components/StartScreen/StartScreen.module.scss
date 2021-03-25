@@ -1,5 +1,4 @@
 .container-start-screen {
-  background-color: #f6f6f6;
   font-family: 'Exo', sans-serif;
   position: relative;
   height: 100vh;
@@ -8,14 +7,13 @@
     height: calc(100vh - 50px);
   }
 
-  img.cross {
-    position: absolute;
+  i.cross {
+    position: fixed;
     z-index: 2;
-    top: 9px;
-    right: 17px;
-    transform: scale(0.5);
-    width: 50px;
-    height: 50px;
+    top: 30px;
+    left: 30px;
+    font-size: 30px;
+    color: #fff;
 
     &:hover {
       cursor: pointer;
@@ -30,30 +28,26 @@
     }
   }
 
-  h1.title_h2 {
-    font-style: normal;
-    font-weight: normal;
+  h1.title {
     font-size: 50px;
     line-height: 22px;
     text-align: center;
-    color: #6979f8;
+    i {
+      margin: 0 15px;
+    }
 
     @media (max-width: 767px) {
       padding-top: 50px;
     }
   }
 
-  .game_description {
-    font-style: normal;
-    font-weight: normal;
+  .game-description {
     font-size: 20px;
     line-height: 40px;
     text-align: center;
-    color: #000000;
-    padding: 50px 0 30px;
+    padding: 40px 0;
     width: 60%;
     margin: 0 auto;
-    font-family: 'Exo', sans-serif;
 
     @media (max-width: 768px) {
       width: 90%;
@@ -61,7 +55,7 @@
     }
   }
 
-  .center_alignment {
+  .center-alignment {
     width: 100%;
     height: 100%;
     position: fixed;
@@ -81,43 +75,19 @@
     }
   }
 
-  .start_btn {
-    background: #0ad1bd;
-    border: #0ad1bd;
-    color: white;
-    width: 175px;
-    height: 48px;
-    margin: 0 auto;
-    font-weight: bold;
-    font-size: 17px;
-    outline: none;
-
-    &:hover,
-    &:focus,
-    &:active {
-      background: #08a999;
-      outline: none;
-    }
-  }
-
   .wrapper-switcher {
-    position: absolute;
-    top: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
 
-    .mode_wrapper {
+    .mode-wrapper {
       display: flex;
+      margin: 20px 0;
 
-      .mode_description {
-        font-style: normal;
-        font-weight: normal;
+      .mode-description {
         font-size: 20px;
         line-height: 40px;
         text-align: center;
-        color: #000000;
-        font-family: 'Exo', sans-serif;
         margin: 0;
       }
 
@@ -129,23 +99,28 @@
         width: 0;
       }
 
-      .Checkmark {
+      .checkbox {
+        display: none;
+      }
+
+      .check-mark {
         display: block;
         height: 25px;
         width: 25px;
         margin: 10px 20px;
         border-radius: 5px;
-        background-color: #e5e7fa;
-        border: 1px solid #ecebed;
+        background-color: #5bc0de;
+        border: 1px solid #5bc0de;
         position: relative;
+        cursor: pointer;
       }
 
-      input:checked ~ .Checkmark:before {
+      input:checked ~ .check-mark:before {
         content: '✓';
         position: absolute;
-        top: -5%;
+        top: 0%;
         left: 18%;
-        color: #6979f8;
+        color: #ffffff;
         font-weight: 700;
         font-size: 1rem;
       }

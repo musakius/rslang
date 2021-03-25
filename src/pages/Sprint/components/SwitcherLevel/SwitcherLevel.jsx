@@ -1,43 +1,35 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React from 'react';
 import classes from './SwitcherLevel.module.scss';
 
 const countLevel = 6;
 let levels = new Array(countLevel);
 levels = levels.fill(' ').map((el, index) => index + 1);
 
-const SwitcherLevel = ({changeLevel, currentLevel}) => {
-  const [level, setLevel] = useState(1);
-
-  useEffect(() => {
-    if (currentLevel && currentLevel !== level) {
-      setLevel(currentLevel);
-    }
-  }, [level, currentLevel]);
-
-  const handlerOnClick = useCallback(
-    (level, index) => {
-      setLevel(level);
-      changeLevel(index);
-    },
-    [changeLevel]
-  );
-
+const SwitcherLevel = ({setLevel, level}) => {
   return (
     <section className={classes['container-level-switcher']}>
       <div className={classes.content}>
-        <p className={classes['count-level']}>Уровень</p>
-        <ul className={classes['list-levels']}>
-          {levels.map((level, index) => (
-            <li
-              key={level}
-              onClick={() => handlerOnClick(level, index)}
-              className={`${classes.level} ${level === level ? 'active' : ''}`}
-              role="menuitem"
-            >
-              <p>{level}</p>
-            </li>
-          ))}
-        </ul>
+        <div className={`${classes.content} form-group`}>
+          <label htmlFor="level-select" className={classes['title']}>
+            Уровень
+          </label>
+          <select
+            className="form-control"
+            id="level-select"
+            value={level}
+            onChange={(e) => setLevel(e.target.value)}
+          >
+            {levels.map((elem, index) => (
+              <option
+                key={elem}
+                value={elem}
+                className={`${classes.item} ${+level === index + 1 ? classes.active : ''}`}
+              >
+                {elem}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     </section>
   );
