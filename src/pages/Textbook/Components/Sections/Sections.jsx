@@ -14,7 +14,10 @@ const Sections = () => {
     <div className='container-fluid'>
       <Settings />
       <div className='card border-info mb-3'>
-        <div className='card-header'>Меню</div>
+        <div className='card-header'>
+          <i class='fas fa-bars'></i>
+          &nbsp;Меню
+        </div>
         <div className='card-body'>
           <ul className='list-group'>
             {items.map((item) => (
