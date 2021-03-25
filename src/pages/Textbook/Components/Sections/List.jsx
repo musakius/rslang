@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const List = ({item, style, path}) => {
     return (        
         <li className={style}>
-            <Link to={path}>{item}</Link>
+            <Link className='text-white' to={path}>{item}</Link>
         </li>       
     );
 }

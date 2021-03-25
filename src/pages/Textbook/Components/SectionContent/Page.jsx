@@ -4,7 +4,7 @@ import Pagination from "../Pagination/";
 
 const Page = ({wordsSet}) => {
   return (
-  <div>
+  <div className='container'>
       {
           wordsSet.map((word) => <WordCard key={word.id} wordObj={word} />)
       }
