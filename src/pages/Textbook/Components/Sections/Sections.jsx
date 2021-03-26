@@ -15,7 +15,7 @@ const Sections = () => {
       <Settings />
       <div className='card border-info mb-3'>
         <div className='card-header'>
-          <i class='fas fa-bars'></i>
+          <i className='fas fa-bars'></i>
           &nbsp;Меню
         </div>
         <div className='card-body'>
