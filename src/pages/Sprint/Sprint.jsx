@@ -12,40 +12,33 @@ function Sprint() {
   const [initGame, setInitGame] = useState(false);
   const [startGame, setStartGame] = useState(false);
   const [gameOver, setGameOver] = useState(false);
-  const [soundStatus, setSoundStatus] = useState(true);
   const [learnedWords, setLearnedWords] = useState(false);
-  const [score, setScore] = useState(0);
   const [words, setWords] = useState([]);
   const [results, setResults] = useState([]);
   const [level, setLevel] = useState(1);
-  const [marksCombo, setMarksCombo] = useState(0);
-  const [marks, setMarks] = useState(['empty', 'empty', 'empty']);
-  const [targets, setTargets] = useState(['empty', 'empty', 'empty']);
-  const [rate, setRate] = useState(1);
-
-  console.log(level);
 
   const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
     api
-      .getWordsAll(level)
+      .getWordsAll(level - 1)
       .then((data) => action(data))
-      .catch((error) => console.log(error));
-  }, [api]);
+      .catch((error) => console.error(error));
+    return () => setWords([]);
+  }, [api, level]);
 
   const action = (data) => {
-    const path = learnedWords ? data[0].paginatedResults : data;
-    path.forEach((el) => {
+    /* const path = learnedWords ? data[0].paginatedResults : data; */
+    data.forEach((el) => {
       el.falsyTranslate = el.wordTranslate;
     });
-    path.forEach((el) => {
+    data.forEach((el) => {
       el.falsyTranslate = getRandomInt(2)
-        ? path[getRandomInt(path.length - 1)].falsyTranslate
+        ? data[getRandomInt(data.length - 1)].falsyTranslate
         : el.falsyTranslate;
       el.correctFlag = el.falsyTranslate === el.wordTranslate;
     });
-    setWords(path);
+    setWords(data);
   };
 
   return (
@@ -55,25 +48,11 @@ function Sprint() {
         <Game
           setGameOver={setGameOver}
           setResults={setResults}
-          setMarks={setMarks}
           setWords={setWords}
           setStartGame={setStartGame}
-          setTargets={setTargets}
-          setRate={setRate}
-          setScore={setScore}
-          setSoundStatus={setSoundStatus}
-          setMarksCombo={setMarksCombo}
           words={words}
           startGame={startGame}
           results={results}
-          level={level}
-          score={score}
-          marks={marks}
-          targets={targets}
-          rate={rate}
-          soundStatus={soundStatus}
-          learnedWords={learnedWords}
-          marksCombo={marksCombo}
         ></Game>
       ) : null}
       {!gameOver && !initGame ? (

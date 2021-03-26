@@ -1,29 +1,27 @@
-import React, {useState, useCallback} from 'react';
+import React, {useState} from 'react';
 import {Link} from 'react-router-dom';
 import classes from './Exit.module.scss';
 
-const ModalExit = ({setModalExit}) => (
+const ModalExit = ({setIsExit}) => (
   <section className={classes['container-exit']}>
-    <div className={classes['pop-up']}>
-      <div className={`${classes.top} ${classes['exit-bg']}`}>
-        <div className={classes.icon}>
-          {/* <img src="/assets/images/common/excl.svg" alt="question in round" /> */}
+    <div className="modal-dialog">
+      <div className={`${classes.content} modal-content`}>
+        <div className="modal-header">
+          <button type="button" className="close" onClick={() => setIsExit(false)}>
+            <span>&times;</span>
+          </button>
         </div>
-        <section className={classes.content}>
-          <p>Если вы выйдете во время игры, то прогресс не сохранится</p>
-        </section>
-      </div>
-      <div className={classes.bottom}>
-        <section className={classes['btn-wrapper']}>
-          <button type="button" onClick={setModalExit} className={classes.cancel}>
+        <div className={`${classes.body} modal-body`}>
+          <p>Если вы выйдете сейчас, то процесс не сохраниться!</p>
+        </div>
+        <div className="modal-footer">
+          <Link to="../games" type="button" className="btn btn-primary">
+            Выйти
+          </Link>
+          <button type="button" className="btn btn-secondary" onClick={() => setIsExit(false)}>
             Отменить
           </button>
-          <Link to="../games">
-            <button type="button" className={classes.exit}>
-              Выйти
-            </button>
-          </Link>
-        </section>
+        </div>
       </div>
     </div>
   </section>
@@ -32,21 +30,18 @@ const ModalExit = ({setModalExit}) => (
 const Exit = () => {
   const [isExit, setIsExit] = useState(false);
 
-  const onExitClickHandler = useCallback((exit) => {
-    setIsExit(!exit);
-  }, []);
-
   return (
-    <div onClick={() => onExitClickHandler(isExit)}>
-      {isExit ? <ModalExit setModalExit={() => setIsExit(false)} /> : false}
-      {/* <img
-        className={classes.cross}
-        style={{cursor: 'pointer'}}
-        src="/assets/images/common/x.svg"
-        alt="cross"
-      /> */}
-      <i class="fas fa-times"></i>
-    </div>
+    <>
+      <button
+        type="button"
+        className="btn btn-outline-secondary"
+        style={{color: '#fff'}}
+        onClick={() => setIsExit(true)}
+      >
+        <i className="fas fa-times"></i>
+      </button>
+      {isExit ? <ModalExit setIsExit={setIsExit} /> : false}
+    </>
   );
 };
 

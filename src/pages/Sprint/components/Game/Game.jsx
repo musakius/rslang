@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState} from 'react';
 import Exit from '../Exit';
 import Timer from '../Timer';
 import classes from './Game.module.scss';
@@ -7,39 +7,14 @@ let targetsCombo = 0;
 let activeMarks = ['empty', 'empty', 'empty'];
 let activeTargets = ['empty', 'empty', 'empty'];
 
-function Game({
-  setGameOver,
-  setResults,
-  setMarks,
-  setWords,
-  setStartGame,
-  setTargets,
-  setRate,
-  setScore,
-  setSoundStatus,
-  setMarksCombo,
-  words,
-  startGame,
-  results,
-  level,
-  score,
-  marks,
-  targets,
-  rate,
-  soundStatus,
-  learnedWords,
-  marksCombo
-}) {
-  /* const userID = useSelector(userIdSelector); */
-
+function Game({setGameOver, setResults, setStartGame, words, startGame, results}) {
   const [count, setCount] = useState(0);
-
-  const userWordsURL = useMemo(
-    () => `words?page=0&group=${level}&wordsPerExampleSentenceLTE=1000&wordsPerPage=150`,
-    [level, learnedWords]
-  );
-
-  /* useAPI(userWordsURL, fetchOptions, action); */
+  const [marksCombo, setMarksCombo] = useState(0);
+  const [marks, setMarks] = useState(['empty', 'empty', 'empty']);
+  const [targets, setTargets] = useState(['empty', 'empty', 'empty']);
+  const [score, setScore] = useState(0);
+  const [rate, setRate] = useState(1);
+  /* const [soundStatus, setSoundStatus] = useState(true); */
 
   const changeScore = (bool) => {
     if (bool) setScore(score + rate * 10);
@@ -93,44 +68,28 @@ function Game({
   };
 
   const onAnswer = (word, answer) => {
-    console.log(word);
-    console.log(answer);
     word.correctAnswer = word.correctFlag === answer;
-    if (soundStatus) {
-      word.correctAnswer ? audioRight() : audioWrong();
-    }
+    word.correctAnswer ? audioRight() : audioWrong();
+
+    setCount(count + 1);
     changeMark(word.correctAnswer);
     changeScore(word.correctAnswer);
     setResults([...results, word]);
+    if (count === words.length - 1) setGameOver(true);
   };
 
   if (startGame) {
     return (
       <div className={classes['container-game']}>
         <div className={classes.main}>
-          <Exit />
           <div className={classes['upper-container']}>
             <div className={classes['timer-container']}>
               <Timer initialTime={60} timeOutHandler={setGameOver} />
             </div>
-
-            <div className={classes['score-container']}>
-              <p className={classes.score}>{score}</p>
-            </div>
-            <div className={classes.toolbar}>
-              <label className={classes['notification-label']}>
-                <input
-                  onChange={() => {
-                    setSoundStatus(!soundStatus);
-                  }}
-                  className={classes['notification-input']}
-                  type="checkbox"
-                  value="1"
-                  name="k"
-                />
-                <span />
-              </label>
-            </div>
+            <Exit />
+          </div>
+          <div className={classes['score-container']}>
+            <p className={classes.score}>{score}</p>
           </div>
           <div className={classes['block-word-container']}>
             <div className={classes['block-word']}>
@@ -162,40 +121,34 @@ function Game({
 
               <div className={classes.buttons}>
                 <button
-                  className={`${classes['btn']} ${classes['false']}`}
-                  onClick={() => {
-                    setCount(count + 1);
-                    onAnswer(words[count], false);
-                    if (count === words.length - 1) setGameOver(true);
-                  }}
+                  className={`${classes.btn} btn btn-danger btn-lg`}
+                  onClick={() => onAnswer(words[count], false)}
                 >
                   Не верно
                 </button>
                 <button
-                  className={`${classes['btn']} ${classes['true']}`}
-                  onClick={() => {
-                    setCount(count + 1);
-                    onAnswer(words[count], true);
-                    if (count === words.length - 1) setGameOver(true);
-                  }}
+                  className={`${classes.btn} btn btn-success btn-lg`}
+                  onClick={() => onAnswer(words[count], true)}
                 >
                   Верно
                 </button>
               </div>
 
               <div className={classes.arrows}>
-                <i className="fas fa-arrow-circle-left"></i>
-                {/* <img
-                  className={classes.left}
-                  src="/assets/images/sprint/left_arrow.svg"
-                  alt="arrow left"
-                /> */}
-                <i className="fas fa-arrow-circle-right"></i>
-                {/* <img
-                  className={classes.right}
-                  src="/assets/images/sprint/right_arrow.svg"
-                  alt="arrow right"
-                /> */}
+                <button
+                  type="button"
+                  className="btn btn-outline-danger"
+                  onClick={() => onAnswer(words[count], false)}
+                >
+                  <i className="fas fa-arrow-circle-left"></i>
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-outline-success"
+                  onClick={() => onAnswer(words[count], true)}
+                >
+                  <i className="fas fa-arrow-circle-right"></i>
+                </button>
               </div>
 
               <button

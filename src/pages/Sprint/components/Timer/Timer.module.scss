@@ -1,8 +1,7 @@
 .container-timer {
-  height: 106px;
-  width: 106px;
-  background: rgba(255, 255, 255, 0.13);
-  border: 0.56px solid #fff;
+  height: 90px;
+  width: 90px;
+  border: 0.56px solid #4e5d6c;
   border-radius: 100px;
   display: flex;
   flex-direction: column;
@@ -14,8 +13,8 @@
     font-family: 'Exo', sans-serif;
     font-style: normal;
     font-weight: normal;
-    font-size: 40px;
-    line-height: 40px;
+    font-size: 30px;
+    line-height: 30px;
     text-align: center;
     color: #fff;
   }
