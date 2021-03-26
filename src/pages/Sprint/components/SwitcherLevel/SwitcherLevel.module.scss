@@ -1,0 +1,24 @@
+.container-level-switcher {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: max-content;
+    border-radius: 8px;
+  }
+
+  .title {
+    margin: 0px 10px 0px 0px;
+    font: normal 'Exo', sans-serif;
+    font-size: 20px;
+    line-height: 13px;
+  }
+
+  .active {
+    background: #5bc0de;
+  }
+}
