@@ -1,11 +1,22 @@
 import React from 'react';
+import Pagination from "react-js-pagination";
 
-const Pagination = () => {
+
+const PaginationComponent = ({page, handlePageChange}) => {
+
+
     return (
-        <div>
-            Pagination
-        </div>
+        <div >
+            <Pagination
+            className="pagination pagination-lg"
+              activePage={page}
+              itemsCountPerPage={1}
+              totalItemsCount={30}
+              pageRangeDisplayed={5}
+              onChange={(e) => handlePageChange(e)}
+            />
+          </div>
     );
 }
 
-export default Pagination;
+export default PaginationComponent;

@@ -8,10 +8,17 @@ const SectionContent = () => {
   const { group } = useParams();
   const [wordsSet, setWordsSet] = useState([]);
   const [error, setError] = useState(null);
+  
+  let currentPage = localStorage.getItem("textbookPage") || 0;
+  const [page, setPage] = useState(currentPage);
 
-  const partUrl = `words?group=${group}`;
 
-  const api = useMemo(() => new Service(), [group]);
+  let partUrl = `words?group=${group}`;
+  if(page) {
+    partUrl += `&page=${+page-1}`;
+  }
+
+  const api = useMemo(() => new Service(), [group, page]);
 
   useEffect(() => {
     api
@@ -26,13 +33,20 @@ const SectionContent = () => {
 
   console.log("wordsSet", wordsSet);
 
+
+  const handlePageChange = (pageNum) => {
+    console.log(`active page is ${pageNum}`);
+    localStorage.setItem("textbookPage", pageNum);
+    setPage(pageNum);
+  };
+
   if (error) {
     return <Error error={error} />;
   }
 
   return (
     <div>
-      <Page wordsSet={wordsSet} />
+      <Page wordsSet={wordsSet} handlePageChange={handlePageChange} page={page} />
     </div>
   );
 };
