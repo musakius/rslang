@@ -2,9 +2,11 @@ import React, {useState, useMemo} from 'react'
 import {Link} from 'react-router-dom'
 import './Register.css'
 import Service from "../../services";
+import {Redirect} from "react-router";
 
 const Register = () => {
 
+    const [validate, setValidate] = useState(false)
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -18,9 +20,25 @@ const Register = () => {
             name, email, password
         }
 
-        console.log(name, email, password);
-        console.log("register")
+        api
+            .postCreateUser('users', data)
+            .then((data) => {
 
+                if (localStorage.getItem('user') === null) {
+
+                    if (data !== undefined) {
+                        localStorage.setItem('user', JSON.stringify(data))
+                        setValidate(true)
+                    }
+                } else {
+                    console.log("Вы уже в системе")
+                }
+
+            })
+            .catch(err => {
+                console.log("Auth service err", err)
+                throw err
+            })
     }
 
     return (
@@ -53,6 +71,12 @@ const Register = () => {
                             className='form-control form-group'/>
 
                         <button class="btn btn-primary">Регистрация</button>
+
+                        {validate ? (
+                            <Redirect to={"/"}/>
+                        ) : (
+                            <Redirect to={"/register"}/>
+                        )}
 
                     </form>
 
