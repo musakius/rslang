@@ -1,18 +1,31 @@
+import { act } from "react-dom/test-utils";
 import { combineReducers } from "redux";
-import { CHANGE_THEME, TEST_METHOD } from "../types/types";
+import {
+  CHANGE_THEME,
+  SHOW_BUTTONS,
+  SHOW_TRANSLATE,
+  TEST_METHOD,
+} from "../types/types";
 
 const initialState = {
-  testData: {}
+  testData: {},
 };
 
 const initialThemeState = {
-  value: 'info'
+  value: "info",
+};
+
+const initialSettingsState = {
+  settings: {
+    showButtons: true,
+    showTranslate: true,
+  },
 };
 
 const testReducer = (state = initialState, action) => {
   switch (action.type) {
     case TEST_METHOD:
-      return {...state, testData: action.payload};
+      return { ...state, testData: action.payload };
     default:
       return state;
   }
@@ -21,14 +34,27 @@ const testReducer = (state = initialState, action) => {
 const themeReducer = (state = initialThemeState, action) => {
   switch (action.type) {
     case CHANGE_THEME:
-      return {...state, value: action.payload}
-    default: return state;
+      return { ...state, value: action.payload };
+    default:
+      return state;
   }
-}
+};
+
+const settingsReducer = (state = initialSettingsState, action) => {
+  switch (action.type) {
+    case SHOW_BUTTONS:
+      return { ...state, showButtons: action.payload };
+    case SHOW_TRANSLATE:
+      return { ...state, showTranslate: action.payload };
+    default:
+      return state;
+  }
+};
 
 const reducer = combineReducers({
   testReducer,
-  theme: themeReducer
-})
+  theme: themeReducer,
+  settings: settingsReducer,
+});
 
 export default reducer;

@@ -1,6 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { showButtons, showTranslate } from "../../../../redux/actions";
 
 const Settings = () => {
+  const settingBtn = useSelector((state) => state.settings.showButtons);
+  const settingTranslate = useSelector((state) => state.settings.showTranslate);
+  const [showBtn, setShowBtn] = useState(settingBtn);
+  const [showTrnslt, setShowTrnslt] = useState(settingTranslate);
+  const dispatch = useDispatch();
+
+
+  const handleTranslateChange = () => {
+    setShowTrnslt(!showTrnslt);
+    dispatch(showTranslate(!showTrnslt));
+  }
+  const handleBtnChange = () => {
+    setShowBtn(!showBtn);
+    dispatch(showButtons(!showBtn));
+  }
   return (
     <div className='card border-info mb-3'>
       <div className='card-header'>
@@ -14,8 +31,8 @@ const Settings = () => {
               <input
                 className='form-check-input'
                 type='checkbox'
-                value=''
-                checked=''
+                checked={showTrnslt}
+                onChange={() => handleTranslateChange()}
               />
               Отображать перевод
             </label>
@@ -25,8 +42,8 @@ const Settings = () => {
               <input
                 className='form-check-input'
                 type='checkbox'
-                value=''
-                checked=''
+                checked={showBtn}
+                onChange={() => handleBtnChange()}
               />
               Отображать кнопки
             </label>
