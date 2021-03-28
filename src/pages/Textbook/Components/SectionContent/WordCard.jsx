@@ -27,7 +27,7 @@ const WordCard = ({ wordObj, currentTheme, isShowBtns, isShowTrnslt }) => {
 
   return (
     <div className={classes.wordCard}>
-      <div className='card text-white bg-light mb-3'>
+      <div className='card text-white bg-light mr-5 ml-5 mb-5'>
         {showHeader ? (
           <div className='card-header d-flex justify-content-between'>
             <button type='button' className='btn btn-outline-secondary'>

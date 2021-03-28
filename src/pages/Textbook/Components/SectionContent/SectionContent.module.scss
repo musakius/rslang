@@ -1,23 +1,17 @@
 .figure {
-    margin: 0;
+  margin: 0;
 }
 
 .wordCard {
-    width: 100%;
-    margin: 0;
-    padding: 0%;
-    
-    .card{
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-between;
-        .image {
-            background-repeat: no-repeat;
-            background-size: contain;
-            width: 200px;
-            height: 200px;
-        }
+  width: 100%;
+  .card {
+    display: flex;
+    align-items: center;
+    .image {
+      background-repeat: no-repeat;
+      background-size: contain;
+      width: 200px;
+      height: 200px;
     }
+  }
 }
-
