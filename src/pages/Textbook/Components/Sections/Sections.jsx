@@ -12,8 +12,14 @@ const Sections = ({ changeTheme }) => {
   console.log("url", url);
 
   const handleChange = (e) => {
-    const target = e.target.id;
-    const theme = items.filter((item) => item.group === +target)[0].style;
+    let target = "";
+    if (e.target.tagName !== "A") {
+      return;
+    } else {
+      target = e.target;
+    }
+    const id = e.target.id;
+    const theme = items.filter((item) => item.group === +id)[0].style;
     changeTheme(theme);
   };
 
