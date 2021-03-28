@@ -1,8 +1,8 @@
 export const items = [
-  { 'item': 1, 'group': 0 },
-  { 'item': 2, 'group': 1 },
-  { 'item': 3, 'group': 2 },
-  { 'item': 4, 'group': 3 },
-  { 'item': 5, 'group': 4 },
-  { 'item': 6, 'group': 5 },
+  { 'group': 0, 'item': 'Очень просто', 'style': 'success' },
+  { 'group': 1, 'item': 'Просто', 'style': 'info' },
+  { 'group': 2, 'item': 'Средней сложности', 'style': 'warning' },
+  { 'group': 3, 'item': 'Выше среднего', 'style': 'primary' },
+  { 'group': 4, 'item': 'Сложно', 'style': 'danger' },
+  { 'group': 5, 'item': 'Очень сложно', 'style': 'secondary' },
 ];
