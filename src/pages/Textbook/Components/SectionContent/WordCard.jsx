@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { connect, useSelector } from "react-redux";
+import Audio from "../Audio/";
 import classes from "./SectionContent.module.scss";
 
 const WordCard = ({ wordObj, currentTheme, isShowBtns, isShowTrnslt }) => {
@@ -72,14 +73,11 @@ const WordCard = ({ wordObj, currentTheme, isShowBtns, isShowTrnslt }) => {
         <div
           className={`card-footer d-flex justify-content-between bg-${currentTheme}`}
         >
-          <figure className={classes.figure}>
-            <audio controls>
-              <source src={audioMeaningURL} type='audio/mpeg' />
-              <source src={audioURL} type='audio/mpeg' />
-              Your browser does not support the
-              <code>audio</code> element.
-            </audio>
-          </figure>
+          <Audio
+            audioURL={audioURL}
+            audioMeaningURL={audioMeaningURL}
+            audioExampleURL={audioExampleURL}
+          />
         </div>
       </div>
     </div>
