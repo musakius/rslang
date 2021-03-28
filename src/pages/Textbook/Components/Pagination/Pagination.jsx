@@ -8,8 +8,8 @@ const PaginationComponent = ({page, handlePageChange}) => {
     return (
         <div >
             <Pagination
-            className="pagination pagination-lg"
-              activePage={page}
+            className="text-white"
+              activePage={+page}
               itemsCountPerPage={1}
               totalItemsCount={30}
               pageRangeDisplayed={5}

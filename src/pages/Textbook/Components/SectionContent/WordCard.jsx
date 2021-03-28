@@ -1,7 +1,8 @@
 import React from "react";
+import { connect } from "react-redux";
 import classes from "./SectionContent.module.scss";
 
-const WordCard = ({ wordObj }) => {
+const WordCard = ({ wordObj, currentTheme }) => {
   const imgURL = `https://apprslang.herokuapp.com/${wordObj.image}`;
   const audioURL = `https://apprslang.herokuapp.com/${wordObj.audio}`;
   const audioMeaningURL = `https://apprslang.herokuapp.com/${wordObj.audioMeaning}`;
@@ -35,11 +36,13 @@ const WordCard = ({ wordObj }) => {
           </div>
           <div className='card-body'>
             <h5 className='card-text'>{wordObj.textExample}</h5>
-            <p className='card-text text-dark'>{wordObj.textExampleTranslate}</p>
+            <p className='card-text text-dark'>
+              {wordObj.textExampleTranslate}
+            </p>
           </div>
         </div>
 
-        <div className='card-footer d-flex justify-content-between'>
+        <div className={`card-footer d-flex justify-content-between bg-${currentTheme}`}>
           <figure className={classes.figure}>
             <audio controls>
               <source src={audioMeaningURL} type='audio/mpeg' />
@@ -54,4 +57,10 @@ const WordCard = ({ wordObj }) => {
   );
 };
 
-export default WordCard;
+const mapStateToProps = (state) => {
+  return {
+    currentTheme: state.theme.value,
+  };
+};
+
+export default connect(mapStateToProps, null)(WordCard);

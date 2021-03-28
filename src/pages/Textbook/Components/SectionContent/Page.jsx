@@ -12,7 +12,7 @@ const Page = ({ wordsSet, handlePageChange, page }) => {
 
   return (
     <div className=' container carousel-wrapper'>
-      <Carousel showThumbs={false}>
+      <Carousel showThumbs={false} useKeyboardArrows infiniteLoop>
         {wordsSet.map((word) => (
           <WordCard key={word.id} wordObj={word} />
         ))}

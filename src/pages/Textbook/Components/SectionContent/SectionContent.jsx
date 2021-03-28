@@ -1,21 +1,25 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import Service from "../../../../services";
-import Error from "../../Error/Error";
+import Error from "../../Error/";
+import Spinner from "../Spinner/";
 import Page from "./Page";
 
 const SectionContent = () => {
   const { group } = useParams();
+  if (group) {
+    localStorage.setItem("textbookGroup", group);
+  }
   const [wordsSet, setWordsSet] = useState([]);
   const [error, setError] = useState(null);
-  
+  const [isLoaded, setIsLoaded] = useState(false);
+
   let currentPage = localStorage.getItem("textbookPage") || 0;
   const [page, setPage] = useState(currentPage);
 
-
   let partUrl = `words?group=${group}`;
-  if(page) {
-    partUrl += `&page=${+page-1}`;
+  if (page) {
+    partUrl += `&page=${+page - 1}`;
   }
 
   const api = useMemo(() => new Service(), [group, page]);
@@ -23,16 +27,19 @@ const SectionContent = () => {
   useEffect(() => {
     api
       ._getResource(partUrl)
-      .then((result) => setWordsSet(result))
+      .then((result) => {
+        setWordsSet(result);
+        setIsLoaded(true);
+      })
       .catch((error) => setError(error.message));
     return () => {
       setError(null);
+      setIsLoaded(false);
       setWordsSet([]);
     };
   }, [api]);
 
   console.log("wordsSet", wordsSet);
-
 
   const handlePageChange = (pageNum) => {
     console.log(`active page is ${pageNum}`);
@@ -43,10 +50,19 @@ const SectionContent = () => {
   if (error) {
     return <Error error={error} />;
   }
+  if (!isLoaded) {
+    return <Spinner />;
+  }
 
   return (
     <div>
-      <Page wordsSet={wordsSet} handlePageChange={handlePageChange} page={page} />
+      {wordsSet ? (
+        <Page
+          wordsSet={wordsSet}
+          handlePageChange={handlePageChange}
+          page={page}
+        />
+      ) : null}
     </div>
   );
 };
