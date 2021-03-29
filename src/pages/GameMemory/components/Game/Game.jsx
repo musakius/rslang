@@ -15,122 +15,109 @@ function Game({
   startGame,
   results
 }) {
-  /* const activeLevel = useSelector(levelSelector); */
-
-  const [dictionary, setDictionary] = useState([]);
-  /* const [russianWords, setRussianWords] = useState();
-    const [englishWords, setEnglishWords] = useState(); */
-  const [russianWord, setRussianWord] = useState(null);
-  const [englishWord, setEnglishWord] = useState(null);
+  const [idRussianWord, setIdRussianWord] = useState(null);
+  const [idEnglishWord, setIdEnglishWord] = useState(null);
   const [isRight, setIsRight] = useState(null);
-  const [livesCount, setLivesCount] = useState(5);
-  const [countCorrectAnswers, setCountCorrectAnswers] = useState(0);
-  const [page, setPage] = useState(0);
-  const [startTime, setStartTime] = useState(60);
   const [correctAnswers, setCorrectAnswers] = useState([]);
-  const [statistics, setStatistics] = useState({correct: [], incorrect: []});
-  const [isShouldRestart, setIsShouldRestart] = useState(false);
   const [isExit, setIsExit] = useState(false);
 
-  useEffect(() => {
-    console.log(englishWords);
-  }, [englishWords]);
-
-  const correct = (cardId, words) => {
+  const correct = (firstWordId, currentWords) => {
     const cAnswers = correctAnswers;
-    cAnswers.push(cardId);
+    cAnswers.push(firstWordId);
     setCorrectAnswers(cAnswers);
     setIsRight(true);
-    setCountCorrectAnswers(countCorrectAnswers + 1);
-    setIsShouldRestart(false);
 
-    const oldStatistics = statistics;
-    const newWord = words.filter((item) => item.id === cardId);
-
-    if (statistics.incorrect.indexOf(newWord[0].word) === -1) {
-      oldStatistics.correct.push(newWord[0]);
-      setStatistics(oldStatistics);
+    if (results.every((item) => item.id !== firstWordId)) {
+      const newWord = words.find((item) => item.id === firstWordId);
+      newWord.correctAnswer = true;
+      setResults([...results, newWord]);
     }
+    console.log(results);
+    if (results.length === words.length - 1) setGameOver(true);
   };
 
-  const incorrect = (cardId, words) => {
+  const incorrect = (firstWordId, currentWords, lastWordId) => {
     setIsRight(false);
-    setLivesCount(livesCount - 1);
 
-    const oldStatistics = statistics;
-    const newWord = words.filter((item) => item.id === cardId);
-    oldStatistics.incorrect.push(newWord[0]);
-    setStatistics(oldStatistics);
+    if (results.every((item) => item.id !== lastWordId)) {
+      const newWord = words.find((item) => item.id === lastWordId);
+      newWord.correctAnswer = false;
+      setResults([...results, newWord]);
+    }
+
+    if (results.length === words.length - 1) setGameOver(true);
   };
 
   const checkResult = (levelProps) => {
     setTimeout(() => {
       setIsRight(null);
-      setRussianWord(null);
-      setEnglishWord(null);
+      setIdRussianWord(null);
+      setIdEnglishWord(null);
     }, 500);
   };
 
-  const cardHandler = (cardId, word, setWord) => {
-    console.log(word);
-    console.log(`id - ${cardId}, en - ${englishWord}, ru - ${russianWord}`);
-    if (correctAnswers.indexOf(cardId) === -1) {
-      setWord(cardId);
+  const cardHandler = (firstWordId, lastWordId, setWordId) => {
+    if (correctAnswers.indexOf(firstWordId) === -1) {
+      setWordId(firstWordId);
 
-      if (word) {
-        cardId === word ? correct(cardId, englishWords) : incorrect(cardId, englishWords);
+      if (lastWordId) {
+        if (firstWordId === lastWordId) {
+          correct(firstWordId, englishWords);
+        } else {
+          incorrect(firstWordId, englishWords, lastWordId);
+        }
         checkResult();
       }
     }
   };
 
-  return (
-    <div className={classes.GameWrapper}>
-      <div className={classes.info}>
-        <p>Поверните устройство горизонтально</p>
-      </div>
-      <div className={classes.cross}>
-        <Exit onClick={() => setIsExit(false)} />
-      </div>
-      <div className={classes.Lives}>
-        <Timer initialTime={60} timeOutHandler={setGameOver} />
-      </div>
-      <div className={classes.CardBlock}>
-        <div className={classes.cardEng}>
-          {words.length
-            ? englishWords.map(({word, id}, index) => (
-                <Card
-                  key={id}
-                  onCardClick={() => cardHandler(id, russianWord, setEnglishWord)}
-                  isActive={englishWord === id}
-                  isRight={isRight}
-                  isCorrect={correctAnswers.indexOf(id) !== -1}
-                >
-                  {word}
-                </Card>
-              ))
-            : false}
+  if (startGame) {
+    return (
+      <div className={classes.GameWrapper}>
+        <div className={classes.cross}>
+          <Exit onClick={() => setIsExit(false)} />
         </div>
+        <div className={classes.Lives}>
+          <Timer initialTime={60} timeOutHandler={setGameOver} />
+        </div>
+        <div className={classes.CardBlock}>
+          <div className={classes.cardEng}>
+            {words.length
+              ? englishWords.map(({word, id}, index) => (
+                  <Card
+                    key={id}
+                    onCardClick={() => cardHandler(id, idRussianWord, setIdEnglishWord)}
+                    isActive={idEnglishWord === id}
+                    isRight={isRight}
+                    isCorrect={correctAnswers.indexOf(id) !== -1}
+                  >
+                    {word}
+                  </Card>
+                ))
+              : false}
+          </div>
 
-        <div className={classes.cardRus}>
-          {words.length
-            ? russianWords.map(({wordTranslate, id}, index) => (
-                <Card
-                  key={index}
-                  onCardClick={() => cardHandler(id, englishWord, setRussianWord)}
-                  isActive={russianWord === id}
-                  isRight={isRight}
-                  isCorrect={correctAnswers.indexOf(id) !== -1}
-                  disabled="true"
-                >
-                  {wordTranslate}
-                </Card>
-              ))
-            : false}
+          <div className={classes.cardRus}>
+            {words.length
+              ? russianWords.map(({wordTranslate, id}, index) => (
+                  <Card
+                    key={index}
+                    onCardClick={() => cardHandler(id, idEnglishWord, setIdRussianWord)}
+                    isActive={idRussianWord === id}
+                    isRight={isRight}
+                    isCorrect={correctAnswers.indexOf(id) !== -1}
+                    disabled="true"
+                  >
+                    {wordTranslate}
+                  </Card>
+                ))
+              : false}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
+  return <Timer initialTime={3} timeOutHandler={setStartGame} />;
 }
 
 export default Game;
