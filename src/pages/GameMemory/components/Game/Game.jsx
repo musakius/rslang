@@ -1,5 +1,6 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState} from 'react';
 import Card from '../Card';
+import Lives from '../Lives';
 import Timer from '../../../GameSprint/components/Timer';
 import Exit from '../../../GameSprint/components/Exit';
 
@@ -19,6 +20,7 @@ function Game({
   const [idEnglishWord, setIdEnglishWord] = useState(null);
   const [isRight, setIsRight] = useState(null);
   const [correctAnswers, setCorrectAnswers] = useState([]);
+  const [livesCount, setLivesCount] = useState(3);
   const [isExit, setIsExit] = useState(false);
 
   const correct = (firstWordId, currentWords) => {
@@ -38,6 +40,7 @@ function Game({
 
   const incorrect = (firstWordId, currentWords, lastWordId) => {
     setIsRight(false);
+    setLivesCount(livesCount - 1);
 
     if (results.every((item) => item.id !== lastWordId)) {
       const newWord = words.find((item) => item.id === lastWordId);
@@ -78,6 +81,7 @@ function Game({
           <Exit onClick={() => setIsExit(false)} />
         </div>
         <div className={classes.Lives}>
+          <Lives livesCount={livesCount} setGameOver={setGameOver} />
           <Timer initialTime={60} timeOutHandler={setGameOver} />
         </div>
         <div className={classes.CardBlock}>
