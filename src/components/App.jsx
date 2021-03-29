@@ -7,6 +7,7 @@ import Stat from '../pages/Statistics';
 import Textbook from '../pages/Textbook';
 import Header from './Header';
 import Sprint from '../pages/Sprint';
+import Dictionary from '../pages/Textbook/Components/Dictionary/Dictionary';
 
 const App = () => {
   return (
@@ -15,6 +16,7 @@ const App = () => {
       <Switch>
         <Route path="/" exact render={() => <Main />} />
         <Route path="/textbook" render={() => <Textbook />} />
+        <Route path="/dictionary" render={() => <Dictionary />} />
         <Route path="/games" exact render={() => <Games />} />
         <Route path="/games/sprint" render={() => <Sprint />} />
         <Route path="/stat" render={() => <Stat />} />
