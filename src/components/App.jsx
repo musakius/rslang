@@ -9,6 +9,7 @@ import Header from './Header';
 import Sprint from '../pages/Sprint';
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import Dictionary from '../pages/Textbook/Components/Dictionary/Dictionary';
 
 const App = () => {
     return (
@@ -19,6 +20,7 @@ const App = () => {
                 <Route path="/login" exact render={() => <Login/>}/>
                 <Route path="/register" exact render={() => <Register/>}/>
                 <Route path="/textbook" render={() => <Textbook/>}/>
+                  <Route path="/dictionary" render={() => <Dictionary />} />
                 <Route path="/games" exact render={() => <Games/>}/>
                 <Route path="/games/sprint" render={() => <Sprint/>}/>
                 <Route path="/stat" render={() => <Stat/>}/>

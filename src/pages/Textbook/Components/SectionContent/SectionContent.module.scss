@@ -1,0 +1,17 @@
+.figure {
+  margin: 0;
+}
+
+.wordCard {
+  width: 100%;
+  .card {
+    display: flex;
+    align-items: center;
+    .image {
+      background-repeat: no-repeat;
+      background-size: contain;
+      width: 200px;
+      height: 200px;
+    }
+  }
+}
