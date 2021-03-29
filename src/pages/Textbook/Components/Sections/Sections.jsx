@@ -9,7 +9,6 @@ import { changeTheme } from "../../../../redux/actions";
 
 const Sections = ({ changeTheme }) => {
   const { url } = useRouteMatch();
-  console.log("url", url);
 
   const handleChange = (e) => {
     let target = "";

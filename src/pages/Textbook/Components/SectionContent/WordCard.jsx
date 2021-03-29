@@ -14,7 +14,6 @@ const WordCard = ({ wordObj, currentTheme, isShowBtns, isShowTrnslt }) => {
   const audioMeaningURL = `https://apprslang.herokuapp.com/${wordObj.audioMeaning}`;
   const audioExampleURL = `https://apprslang.herokuapp.com/${wordObj.audioExample}`;
 
-  console.log("settingBtn", settingBtn);
 
   useEffect(() => {
     setShowHeader(settingBtn);

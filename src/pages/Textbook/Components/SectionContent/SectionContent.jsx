@@ -39,10 +39,7 @@ const SectionContent = () => {
     };
   }, [api]);
 
-  console.log("wordsSet", wordsSet);
-
   const handlePageChange = (pageNum) => {
-    console.log(`active page is ${pageNum}`);
     localStorage.setItem("textbookPage", pageNum);
     setPage(pageNum);
   };
