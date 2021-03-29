@@ -6,6 +6,7 @@ const Games = () => {
     <>
       <div>GAMES</div>
       <Link to="games/sprint">Sprint</Link>
+      <Link to="games/memory">Memory</Link>
     </>
   );
 };

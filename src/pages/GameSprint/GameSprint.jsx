@@ -4,11 +4,11 @@ import Game from './components/Game';
 import StartScreen from './components/StartScreen';
 import Statistics from './components/Statistics';
 
-import classes from './Sprint.module.scss';
+import classes from './GameSprint.module.scss';
 
 const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
 
-function Sprint() {
+function GameSprint() {
   const [initGame, setInitGame] = useState(false);
   const [startGame, setStartGame] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -57,6 +57,8 @@ function Sprint() {
       ) : null}
       {!gameOver && !initGame ? (
         <StartScreen
+          name="Спринт"
+          description='Игра учит быстро переводить слова.'
           setInitGame={setInitGame}
           setLevel={setLevel}
           setLearnedWords={setLearnedWords}
@@ -68,4 +70,4 @@ function Sprint() {
   );
 }
 
-export default Sprint;
+export default GameSprint;
