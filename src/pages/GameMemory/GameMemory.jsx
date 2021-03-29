@@ -14,8 +14,11 @@ function GameMemory() {
   const [gameOver, setGameOver] = useState(false);
   const [learnedWords, setLearnedWords] = useState(false);
   const [words, setWords] = useState([]);
+  const [englishWords, setEnglishWords] = useState([]);
+  const [russianWords, setRussianWords] = useState([]);
   const [results, setResults] = useState([]);
   const [level, setLevel] = useState(1);
+  const [newWords, setNewWords] = useState(true);
 
   const api = useMemo(() => new Service(), []);
 
@@ -24,22 +27,29 @@ function GameMemory() {
       .getWordsAll(level - 1)
       .then((data) => action(data))
       .catch((error) => console.error(error));
-    return () => setWords([]);
+    return () => {
+      setWords([]);
+      setNewWords(false);
+    };
   }, [api, level]);
 
   const action = (data) => {
-    /* const path = learnedWords ? data[0].paginatedResults : data; */
-    data.forEach((el) => {
-      el.falsyTranslate = el.wordTranslate;
-    });
-    data.forEach((el) => {
-      el.falsyTranslate = getRandomInt(2)
-        ? data[getRandomInt(data.length - 1)].falsyTranslate
-        : el.falsyTranslate;
-      el.correctFlag = el.falsyTranslate === el.wordTranslate;
-    });
+    if (newWords && data) {
+      shuffle(data);
+      data.length = 10;
+      /* setDictionary(data); */
+      setEnglishWords(shuffle(data));
+      setRussianWords(shuffle(data));
+    }
     setWords(data);
   };
+
+  function shuffle(array) {
+    array.sort(() => Math.random() - 0.5);
+
+    const shuffledArray = JSON.stringify(array);
+    return JSON.parse(shuffledArray);
+  }
 
   return (
     <div className={classes['container-memory']}>
@@ -50,6 +60,8 @@ function GameMemory() {
           setResults={setResults}
           setWords={setWords}
           setStartGame={setStartGame}
+          englishWords={englishWords}
+          russianWords={russianWords}
           words={words}
           startGame={startGame}
           results={results}

@@ -1,20 +1,27 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import Card from '../Card/Card';
+import Card from '../Card';
 import Timer from '../../../GameSprint/components/Timer';
-/* import style from './Game.module.css'; */
 import Exit from '../../../GameSprint/components/Exit';
 
-/* import {setStatusGame} from '../../redux/index'; */
+import classes from './Game.module.scss';
 
-function Game({setGameOver, setResults, setStartGame, words, startGame, results}) {
-  const dispatch = useDispatch();
-  const activeLevel = useSelector(levelSelector);
+function Game({
+  setGameOver,
+  setResults,
+  setStartGame,
+  russianWords,
+  englishWords,
+  words,
+  startGame,
+  results
+}) {
+  /* const activeLevel = useSelector(levelSelector); */
 
   const [dictionary, setDictionary] = useState([]);
-  const [russianWords, setRussianWords] = useState();
-  const [englishWords, setEnglishWords] = useState();
-  const [russianWord, setRussianWord] = useState();
-  const [englishWord, setEnglishWord] = useState();
+  /* const [russianWords, setRussianWords] = useState();
+    const [englishWords, setEnglishWords] = useState(); */
+  const [russianWord, setRussianWord] = useState(null);
+  const [englishWord, setEnglishWord] = useState(null);
   const [isRight, setIsRight] = useState(null);
   const [livesCount, setLivesCount] = useState(5);
   const [countCorrectAnswers, setCountCorrectAnswers] = useState(0);
@@ -22,36 +29,12 @@ function Game({setGameOver, setResults, setStartGame, words, startGame, results}
   const [startTime, setStartTime] = useState(60);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [statistics, setStatistics] = useState({correct: [], incorrect: []});
-
-  const changeActiveLevel = useCallback(
-    (levelProps) => {
-      if (activeLevel !== levelProps) {
-        dispatch(setLevel(levelProps));
-        setDictionary([]);
-        setStartTime(60 - (activeLevel + 1) * 2);
-        setPage(0);
-      }
-    },
-    [dispatch, activeLevel]
-  );
+  const [isShouldRestart, setIsShouldRestart] = useState(false);
+  const [isExit, setIsExit] = useState(false);
 
   useEffect(() => {
-    if (countCorrectAnswers % 10 === 0) {
-      setDictionary([]);
-
-      if (page === 29) {
-        changeActiveLevel(activeLevel + 1);
-        if (activeLevel === 6) {
-          changeActiveLevel(1);
-        }
-      } else {
-        setPage(page + 1);
-      }
-
-      setIsShouldRestart(true);
-      setInitialTime(startTime);
-    }
-  }, [countCorrectAnswers, startTime]);
+    console.log(englishWords);
+  }, [englishWords]);
 
   const correct = (cardId, words) => {
     const cAnswers = correctAnswers;
@@ -88,38 +71,32 @@ function Game({setGameOver, setResults, setStartGame, words, startGame, results}
     }, 500);
   };
 
-  /*   const onExit = useCallback(() => {
-    dispatch(setStatusGame(false));
-    setIsExit(false);
-  }, [dispatch]); */
+  const cardHandler = (cardId, word, setWord) => {
+    console.log(word);
+    console.log(`id - ${cardId}, en - ${englishWord}, ru - ${russianWord}`);
+    if (correctAnswers.indexOf(cardId) === -1) {
+      setWord(cardId);
 
-  const cardHandler = useCallback(
-    (cardId, word, setWord) => {
-      if (correctAnswers.indexOf(cardId) === -1) {
-        setWord(cardId);
-
-        if (word) {
-          cardId === word ? correct(cardId, englishWords) : incorrect(cardId, englishWords);
-          checkResult();
-        }
+      if (word) {
+        cardId === word ? correct(cardId, englishWords) : incorrect(cardId, englishWords);
+        checkResult();
       }
-    },
-    [correct, incorrect, correctAnswers, checkResult, englishWords]
-  );
+    }
+  };
 
   return (
-    <div className={style.GameWrapper}>
-      <div className={style.info}>
+    <div className={classes.GameWrapper}>
+      <div className={classes.info}>
         <p>Поверните устройство горизонтально</p>
       </div>
-      <div className={style.cross}>
+      <div className={classes.cross}>
         <Exit onClick={() => setIsExit(false)} />
       </div>
-      <div className={style.Lives}>
+      <div className={classes.Lives}>
         <Timer initialTime={60} timeOutHandler={setGameOver} />
       </div>
-      <div className={style.CardBlock}>
-        <div className={style.cardEng}>
+      <div className={classes.CardBlock}>
+        <div className={classes.cardEng}>
           {words.length
             ? englishWords.map(({word, id}, index) => (
                 <Card
@@ -135,7 +112,7 @@ function Game({setGameOver, setResults, setStartGame, words, startGame, results}
             : false}
         </div>
 
-        <div className={style.cardRus}>
+        <div className={classes.cardRus}>
           {words.length
             ? russianWords.map(({wordTranslate, id}, index) => (
                 <Card
