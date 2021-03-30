@@ -70,6 +70,7 @@ function GameMemory() {
       {!gameOver && !initGame ? (
         <StartScreen
           name="Мемори"
+          iconName="fas fa-th"
           description="Цель игры – найти как можно больше парных карточек."
           setInitGame={setInitGame}
           setLevel={setLevel}

@@ -58,7 +58,8 @@ function GameSprint() {
       {!gameOver && !initGame ? (
         <StartScreen
           name="Спринт"
-          description='Игра учит быстро переводить слова.'
+          iconName="fas fa-running"
+          description="Игра учит быстро переводить слова."
           setInitGame={setInitGame}
           setLevel={setLevel}
           setLearnedWords={setLearnedWords}

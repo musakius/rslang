@@ -7,8 +7,7 @@ function Card({onCardClick, isActive, isRight, children, isCorrect}) {
     <div className={classes['container-card']}>
       <div
         onClick={onCardClick}
-        className={`
-        ${classes.card} 
+        className={`${classes.card}  
         ${isActive ? classes.active : ''} 
         ${isActive && isRight ? classes.right : ''} 
         ${isActive && isRight === false ? classes.error : ''} 

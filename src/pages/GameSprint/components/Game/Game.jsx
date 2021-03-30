@@ -1,11 +1,17 @@
 import React, {useState} from 'react';
 import Exit from '../Exit';
 import Timer from '../Timer';
+import Pronounce from '../Pronounce';
 import classes from './Game.module.scss';
 
 let targetsCombo = 0;
 let activeMarks = ['empty', 'empty', 'empty'];
 let activeTargets = ['empty', 'empty', 'empty'];
+
+const audioPlay = (name) => {
+  const audio = new Audio(`/assets/audio/${name}.mp3`);
+  audio.play();
+};
 
 function Game({setGameOver, setResults, setStartGame, words, startGame, results}) {
   const [count, setCount] = useState(0);
@@ -52,24 +58,9 @@ function Game({setGameOver, setResults, setStartGame, words, startGame, results}
     setMarks([...activeMarks]);
   };
 
-  const audioRight = () => {
-    const audio = new Audio('/assets/audio/right.mp3');
-    audio.play();
-  };
-
-  const audioWrong = () => {
-    const audio = new Audio('/assets/audio/wrong.mp3');
-    audio.play();
-  };
-
-  const audioWord = (n) => {
-    const audio = new Audio(`https://apprslang.herokuapp.com/${words[n].audio}`);
-    audio.play();
-  };
-
   const onAnswer = (word, answer) => {
     word.correctAnswer = word.correctFlag === answer;
-    word.correctAnswer ? audioRight() : audioWrong();
+    word.correctAnswer ? audioPlay('right') : audioPlay('wrong');
 
     setCount(count + 1);
     changeMark(word.correctAnswer);
@@ -150,16 +141,9 @@ function Game({setGameOver, setResults, setStartGame, words, startGame, results}
                   <i className="fas fa-arrow-circle-right"></i>
                 </button>
               </div>
-
-              <button
-                className={classes.pronounce}
-                onClick={() => {
-                  audioWord(count);
-                }}
-                type="button"
-              >
-                <i className="fas fa-volume-up"></i>
-              </button>
+              <div className={classes.pronounce}>
+                <Pronounce audio={words[count].audio} />
+              </div>
             </div>
           </div>
         </div>

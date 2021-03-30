@@ -207,14 +207,18 @@
       top: 20px;
       right: 20px;
       height: 30px;
+      width: 30px;
       background: transparent;
       border: transparent;
       outline: none;
       cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       i {
         color: #fff;
-        font-size: 28px;
+        font-size: 26px;
       }
 
       &:hover,

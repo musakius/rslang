@@ -12,7 +12,7 @@ function Lives({livesCount, setGameOver}) {
     const lives = [];
 
     for (let i = 0; i < livesCount; i += 1) {
-      lives.push(<i className="fas fa-heart" key={i}></i>);
+      lives.push(<i className={`${classes.heart} fas fa-heart text-danger`} key={i}></i>);
     }
 
     return lives;

@@ -21,42 +21,37 @@ function Game({
   const [isRight, setIsRight] = useState(null);
   const [correctAnswers, setCorrectAnswers] = useState([]);
   const [livesCount, setLivesCount] = useState(3);
-  const [isExit, setIsExit] = useState(false);
 
-  const correct = (firstWordId, currentWords) => {
-    const cAnswers = correctAnswers;
-    cAnswers.push(firstWordId);
-    setCorrectAnswers(cAnswers);
-    setIsRight(true);
-
-    if (results.every((item) => item.id !== firstWordId)) {
-      const newWord = words.find((item) => item.id === firstWordId);
-      newWord.correctAnswer = true;
-      setResults([...results, newWord]);
-    }
-    console.log(results);
-    if (results.length === words.length - 1) setGameOver(true);
-  };
-
-  const incorrect = (firstWordId, currentWords, lastWordId) => {
-    setIsRight(false);
-    setLivesCount(livesCount - 1);
-
-    if (results.every((item) => item.id !== lastWordId)) {
-      const newWord = words.find((item) => item.id === lastWordId);
-      newWord.correctAnswer = false;
-      setResults([...results, newWord]);
-    }
-
-    if (results.length === words.length - 1) setGameOver(true);
-  };
-
-  const checkResult = (levelProps) => {
+  const checkResult = () => {
     setTimeout(() => {
       setIsRight(null);
       setIdRussianWord(null);
       setIdEnglishWord(null);
     }, 500);
+  };
+
+  const checkAnswer = (firstWordId, lastWordId, answer) => {
+    const currentId = answer ? firstWordId : lastWordId;
+    setIsRight(answer);
+
+    if (answer) {
+      const newCorrectAnswers = correctAnswers;
+      newCorrectAnswers.push(currentId);
+      setCorrectAnswers(newCorrectAnswers);
+    } else {
+      setLivesCount(livesCount - 1);
+    }
+
+    if (results.every((item) => item.id !== currentId)) {
+      const newWord = words.find((item) => item.id === currentId);
+      newWord.correctAnswer = answer;
+      setResults([...results, newWord]);
+    }
+    if (results.length === words.length - 1) {
+      setTimeout(() => {
+        setGameOver(true);
+      }, 500);
+    }
   };
 
   const cardHandler = (firstWordId, lastWordId, setWordId) => {
@@ -65,9 +60,9 @@ function Game({
 
       if (lastWordId) {
         if (firstWordId === lastWordId) {
-          correct(firstWordId, englishWords);
+          checkAnswer(firstWordId, lastWordId, true);
         } else {
-          incorrect(firstWordId, englishWords, lastWordId);
+          checkAnswer(firstWordId, lastWordId, false);
         }
         checkResult();
       }
@@ -78,7 +73,7 @@ function Game({
     return (
       <div className={classes.GameWrapper}>
         <div className={classes.cross}>
-          <Exit onClick={() => setIsExit(false)} />
+          <Exit />
         </div>
         <div className={classes.Lives}>
           <Lives livesCount={livesCount} setGameOver={setGameOver} />
@@ -87,7 +82,7 @@ function Game({
         <div className={classes.CardBlock}>
           <div className={classes.cardEng}>
             {words.length
-              ? englishWords.map(({word, id}, index) => (
+              ? englishWords.map(({word, id}) => (
                   <Card
                     key={id}
                     onCardClick={() => cardHandler(id, idRussianWord, setIdEnglishWord)}

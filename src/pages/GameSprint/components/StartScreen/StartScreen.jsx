@@ -6,6 +6,7 @@ import SwitcherLevel from '../SwitcherLevel';
 
 const StartScreen = ({
   name,
+  iconName,
   description,
   setInitGame,
   setLevel,
@@ -20,9 +21,9 @@ const StartScreen = ({
       </Link>
       <div className={classes['center-alignment']}>
         <h1 className={classes['title']}>
-          <i className="fas fa-running"></i>
+          <i className={iconName}></i>
           {name}
-          <i className="fas fa-running"></i>
+          <i className={iconName}></i>
         </h1>
         <p className={classes['game-description']}>{description}</p>
         <div className={classes['wrapper-switcher']}>
