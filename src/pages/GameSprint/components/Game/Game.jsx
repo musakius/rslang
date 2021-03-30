@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Exit from '../Exit';
 import Timer from '../Timer';
+import Spinner from '../../../../components/Spinner';
 import Pronounce from '../Pronounce';
 import classes from './Game.module.scss';
 
@@ -13,7 +14,7 @@ const audioPlay = (name) => {
   audio.play();
 };
 
-function Game({setGameOver, setResults, setStartGame, words, startGame, results}) {
+function Game({setGameOver, setResults, setStartGame, words, startGame, results, load}) {
   const [count, setCount] = useState(0);
   const [marksCombo, setMarksCombo] = useState(0);
   const [marks, setMarks] = useState(['empty', 'empty', 'empty']);
@@ -150,7 +151,7 @@ function Game({setGameOver, setResults, setStartGame, words, startGame, results}
       </div>
     );
   }
-  return <Timer initialTime={3} timeOutHandler={setStartGame} />;
+  return load ? <Spinner size="90px" /> : <Timer initialTime={3} timeOutHandler={setStartGame} />;
 }
 
 export default Game;

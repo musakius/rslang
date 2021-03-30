@@ -16,14 +16,17 @@ function GameSprint() {
   const [words, setWords] = useState([]);
   const [results, setResults] = useState([]);
   const [level, setLevel] = useState(1);
+  const [load, setLoad] = useState(false);
 
   const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
+    setLoad(true);
     api
       .getWordsAll(level - 1)
       .then((data) => action(data))
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => setLoad(false));
     return () => setWords([]);
   }, [api, level]);
 
@@ -53,6 +56,7 @@ function GameSprint() {
           words={words}
           startGame={startGame}
           results={results}
+          load={load}
         ></Game>
       ) : null}
       {!gameOver && !initGame ? (

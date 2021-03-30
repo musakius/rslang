@@ -3,6 +3,7 @@ import Card from '../Card';
 import Lives from '../Lives';
 import Timer from '../../../GameSprint/components/Timer';
 import Exit from '../../../GameSprint/components/Exit';
+import Spinner from '../../../../components/Spinner';
 
 import classes from './Game.module.scss';
 
@@ -14,7 +15,8 @@ function Game({
   englishWords,
   words,
   startGame,
-  results
+  results,
+  load
 }) {
   const [idRussianWord, setIdRussianWord] = useState(null);
   const [idEnglishWord, setIdEnglishWord] = useState(null);
@@ -116,7 +118,7 @@ function Game({
       </div>
     );
   }
-  return <Timer initialTime={3} timeOutHandler={setStartGame} />;
+  return load ? <Spinner size="90px" /> : <Timer initialTime={3} timeOutHandler={setStartGame} />;
 }
 
 export default Game;
