@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import Service from '../../services';
 import Game from './components/Game';
-import StartScreen from './components/StartScreen';
-import Statistics from './components/Statistics';
+import StartScreen from '../../components/gameComponents/StartScreen/';
+import Statistics from '../../components/gameComponents/Statistics';
 
 import classes from './GameSprint.module.scss';
 

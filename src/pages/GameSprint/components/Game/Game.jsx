@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
-import Exit from '../Exit';
-import Timer from '../Timer';
+import Exit from '../../../../components/gameComponents/Exit';
+import Timer from '../../../../components/gameComponents/Timer';
 import Spinner from '../../../../components/Spinner';
-import Pronounce from '../Pronounce';
+import Pronounce from '../../../../components/gameComponents/Pronounce';
 import classes from './Game.module.scss';
 
 let targetsCombo = 0;
@@ -22,6 +22,14 @@ function Game({setGameOver, setResults, setStartGame, words, startGame, results,
   const [score, setScore] = useState(0);
   const [rate, setRate] = useState(1);
   /* const [soundStatus, setSoundStatus] = useState(true); */
+
+  /* useEffect(() => {
+    document.onkeydown = keyControl;
+    document.addEventListener('keypress', keyControl);
+    return () => {
+      document.removeEventListener('keypress', keyControl);
+    };
+  }, [emptyCell]); */
 
   const changeScore = (bool) => {
     if (bool) setScore(score + rate * 10);

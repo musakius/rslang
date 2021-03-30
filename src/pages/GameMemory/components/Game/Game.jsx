@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import Card from '../Card';
 import Lives from '../Lives';
-import Timer from '../../../GameSprint/components/Timer';
-import Exit from '../../../GameSprint/components/Exit';
+import Timer from '../../../../components/gameComponents/Timer';
+import Exit from '../../../../components/gameComponents/Exit';
 import Spinner from '../../../../components/Spinner';
 
 import classes from './Game.module.scss';

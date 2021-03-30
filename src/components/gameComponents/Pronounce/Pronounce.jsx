@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import Spinner from '../../../../components/Spinner';
+import Spinner from '../../Spinner';
 
 /* import classes from './Pronounce.module.scss'; */
 

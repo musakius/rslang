@@ -1,12 +1,10 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import Service from '../../services';
 import Game from './components/Game';
-import StartScreen from '../GameSprint/components/StartScreen';
-import Statistics from '../GameSprint/components/Statistics';
+import StartScreen from '../../components/gameComponents/StartScreen';
+import Statistics from '../../components/gameComponents/Statistics';
 
 import classes from './GameMemory.module.scss';
-
-const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
 
 function GameMemory() {
   const [initGame, setInitGame] = useState(false);
@@ -38,20 +36,19 @@ function GameMemory() {
 
   const action = (data) => {
     if (newWords && data) {
-      shuffle(data);
+      mixed(data);
       data.length = 10;
-      /* setDictionary(data); */
-      setEnglishWords(shuffle(data));
-      setRussianWords(shuffle(data));
+      setEnglishWords(mixed(data));
+      setRussianWords(mixed(data));
     }
     setWords(data);
   };
 
-  function shuffle(array) {
+  function mixed(array) {
     array.sort(() => Math.random() - 0.5);
 
-    const shuffledArray = JSON.stringify(array);
-    return JSON.parse(shuffledArray);
+    const mixedArray = JSON.stringify(array);
+    return JSON.parse(mixedArray);
   }
 
   return (
