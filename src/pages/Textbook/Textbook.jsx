@@ -1,5 +1,5 @@
 import React from "react";
-import { useRouteMatch, Route, Switch } from "react-router-dom";
+import { useRouteMatch, Route, Switch, Redirect } from "react-router-dom";
 import Button from "./Components/Button/Button";
 import SectionContent from "./Components/SectionContent";
 import Sections from "./Components/Sections/Sections";
@@ -18,14 +18,11 @@ const Textbook = () => {
               <Route path={`${url}/group/:group`}>
                 <SectionContent />
               </Route>
+              <Redirect to='/textbook/group/0' />
             </Switch>
           </div>
           <div className='col-md-2'>
-            <Button
-              path={`/dictionary`}
-              text='Словарь'
-              style='fas fa-book'
-            />
+            <Button path={`/dictionary`} text='Словарь' style='fas fa-book' />
           </div>
         </div>
       </div>

@@ -3,7 +3,7 @@ import { connect, useSelector } from "react-redux";
 import Audio from "../Audio/";
 import classes from "./SectionContent.module.scss";
 
-const WordCard = ({ wordObj, currentTheme, isShowBtns, isShowTrnslt }) => {
+const WordCard = ({ wordObj, currentTheme }) => {
   const settingBtn = useSelector((state) => state.settings.showButtons);
   const settingTranslate = useSelector((state) => state.settings.showTranslate);
   const [showHeader, setShowHeader] = useState(settingBtn);
