@@ -14,7 +14,6 @@ const WordCard = ({ wordObj, currentTheme, isShowBtns, isShowTrnslt }) => {
   const audioMeaningURL = `https://apprslang.herokuapp.com/${wordObj.audioMeaning}`;
   const audioExampleURL = `https://apprslang.herokuapp.com/${wordObj.audioExample}`;
 
-
   useEffect(() => {
     setShowHeader(settingBtn);
     return () => {};
@@ -60,7 +59,11 @@ const WordCard = ({ wordObj, currentTheme, isShowBtns, isShowTrnslt }) => {
             </div>
           </div>
           <div className='card-body'>
-            <h5 className='card-text'>{wordObj.textExample}</h5>
+            <h5 className='card-text'>
+              <div
+                dangerouslySetInnerHTML={{ __html: wordObj.textExample }}
+              ></div>
+            </h5>
             {showTranslate && (
               <p className='card-text text-dark'>
                 {wordObj.textExampleTranslate}
