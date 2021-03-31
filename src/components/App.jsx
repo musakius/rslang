@@ -1,29 +1,31 @@
-import React from 'react';
-import {Route, Switch} from 'react-router-dom';
-import Games from '../pages/Games';
-import Main from '../pages/Main';
-import Page404 from '../pages/Page404';
-import Stat from '../pages/Statistics';
-import Textbook from '../pages/Textbook';
-import Header from './Header';
-import GameSprint from '../pages/GameSprint';
-import GameMemory from '../pages/GameMemory';
+import React, { useEffect, useState } from "react";
+import { useRoutes } from "./routes";
+import { connect } from "react-redux";
+import Header from "./Header";
 
-const App = () => {
+const App = ({ user }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    if (user && user.token) {
+      setIsAuthenticated(true);
+    }
+    return () => {};
+  }, [user]);
+
+  const routes = useRoutes(isAuthenticated);
   return (
     <>
       <Header />
-      <Switch>
-        <Route path="/" exact render={() => <Main />} />
-        <Route path="/textbook" render={() => <Textbook />} />
-        <Route path="/games" exact render={() => <Games />} />
-        <Route path="/games/sprint" render={() => <GameSprint />} />
-        <Route path="/games/memory" render={() => <GameMemory />} />
-        <Route path="/stat" render={() => <Stat />} />
-        <Route render={() => <Page404 />} />
-      </Switch>
+      {routes}
     </>
   );
 };
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    user: state.user.user[0],
+  };
+};
+
+export default connect(mapStateToProps, null)(App);
