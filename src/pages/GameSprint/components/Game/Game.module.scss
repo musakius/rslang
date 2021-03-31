@@ -47,11 +47,13 @@
     }
 
     .score-container {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100px;
       width: 100%;
+      max-width: 460px;
       margin-top: 70px;
 
       @media (max-width: 768px) {
@@ -184,10 +186,11 @@
     }
 
     .arrows {
+      position: absolute;
+      bottom: -90px;
       height: 30px;
       width: 100%;
       display: flex;
-      display: none;
       justify-content: space-around;
       align-items: center;
       margin: 20px 0px;
@@ -200,6 +203,14 @@
       .right {
         margin-left: 186px;
       }
+
+      @media (max-width: 967px) {
+        display: none;
+      }
+
+      @media (max-height: 599px) {
+        display: none;
+      }
     }
 
     .pronounce {
@@ -207,14 +218,18 @@
       top: 20px;
       right: 20px;
       height: 30px;
+      width: 30px;
       background: transparent;
       border: transparent;
       outline: none;
       cursor: pointer;
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
       i {
         color: #fff;
-        font-size: 28px;
+        font-size: 26px;
       }
 
       &:hover,

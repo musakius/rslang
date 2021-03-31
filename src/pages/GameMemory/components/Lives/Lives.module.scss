@@ -1,0 +1,10 @@
+.lives {
+  width: 180px;
+  display: flex;
+  justify-content: center;
+  padding: 11px;
+  .heart {
+    font-size: 25px;
+    margin: 5px;
+  }
+}

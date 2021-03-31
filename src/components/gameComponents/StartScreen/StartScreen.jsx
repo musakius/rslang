@@ -4,7 +4,16 @@ import classes from './StartScreen.module.scss';
 
 import SwitcherLevel from '../SwitcherLevel';
 
-const StartScreen = ({setInitGame, setLevel, setLearnedWords, level, learnedWords}) => {
+const StartScreen = ({
+  name,
+  iconName,
+  description,
+  setInitGame,
+  setLevel,
+  setLearnedWords,
+  level,
+  learnedWords
+}) => {
   return (
     <section className={classes['container-start-screen']}>
       <Link to="../games">
@@ -12,11 +21,11 @@ const StartScreen = ({setInitGame, setLevel, setLearnedWords, level, learnedWord
       </Link>
       <div className={classes['center-alignment']}>
         <h1 className={classes['title']}>
-          <i className="fas fa-running"></i>
-          Спринт
-          <i className="fas fa-running"></i>
+          <i className={iconName}></i>
+          {name}
+          <i className={iconName}></i>
         </h1>
-        <p className={classes['game-description']}>Игра учит быстро переводить слова.</p>
+        <p className={classes['game-description']}>{description}</p>
         <div className={classes['wrapper-switcher']}>
           <SwitcherLevel setLevel={setLevel} level={level} />
           <div className={classes['mode-wrapper']}>

@@ -1,14 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import Pronounce from '../Pronounce';
 import {Link} from 'react-router-dom';
 
 import classes from './Statistics.module.scss';
 
-const audioWord = (url) => {
-  const audio = new Audio(`https://apprslang.herokuapp.com/${url}`);
-  audio.play();
-};
+const Statistics = ({results, setSoundStatus, soundStatus}) => {
+  useEffect(() => {
+    setSoundStatus(true);
+  }, []);
 
-const Statistics = ({results}) => {
   const countWords = (bool) => {
     return results.reduce(
       (count, {correctAnswer}) => (correctAnswer === bool ? count + 1 : count),
@@ -36,17 +36,17 @@ const Statistics = ({results}) => {
       <table className={`${classes['results-words']} table`}>
         <thead>
           <tr className="table-dark">
-            <th scope="col">Pronounce</th>
-            <th scope="col">Word</th>
-            <th scope="col">Transcription</th>
-            <th scope="col">Translation</th>
+            <th scope="col">Произношение</th>
+            <th scope="col">Слово</th>
+            <th scope="col">Транскрипция</th>
+            <th scope="col">Перевод</th>
           </tr>
         </thead>
         <tbody>
           {results.map(({word, transcription, wordTranslate, audio, correctAnswer}) => (
             <tr key={word} className={`${correctAnswer ? 'table-success' : 'table-danger'}`}>
               <td>
-                <i className="fas fa-volume-up" onClick={() => audioWord(audio)}></i>
+                <Pronounce audio={audio} soundStatus={soundStatus} />
               </td>
               <td>
                 <p>{`${word}`}</p>

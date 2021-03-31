@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import Service from '../../services';
 import Game from './components/Game';
-import StartScreen from './components/StartScreen';
-import Statistics from './components/Statistics';
+import StartScreen from '../../components/gameComponents/StartScreen/';
+import Statistics from '../../components/gameComponents/Statistics';
 
-import classes from './Sprint.module.scss';
+import classes from './GameSprint.module.scss';
 
 const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
 
-function Sprint() {
+function GameSprint() {
   const [initGame, setInitGame] = useState(false);
   const [startGame, setStartGame] = useState(false);
   const [gameOver, setGameOver] = useState(false);
@@ -16,14 +16,18 @@ function Sprint() {
   const [words, setWords] = useState([]);
   const [results, setResults] = useState([]);
   const [level, setLevel] = useState(1);
+  const [load, setLoad] = useState(false);
+  const [soundStatus, setSoundStatus] = useState(true);
 
   const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
+    setLoad(true);
     api
       .getWordsAll(level - 1)
       .then((data) => action(data))
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => setLoad(false));
     return () => setWords([]);
   }, [api, level]);
 
@@ -43,20 +47,28 @@ function Sprint() {
 
   return (
     <div className={classes['container-sprint']}>
-      {gameOver ? <Statistics results={results} /> : null}
+      {gameOver ? (
+        <Statistics results={results} setSoundStatus={setSoundStatus} soundStatus={soundStatus} />
+      ) : null}
       {initGame && !gameOver ? (
         <Game
           setGameOver={setGameOver}
           setResults={setResults}
           setWords={setWords}
           setStartGame={setStartGame}
+          setSoundStatus={setSoundStatus}
           words={words}
           startGame={startGame}
           results={results}
+          load={load}
+          soundStatus={soundStatus}
         ></Game>
       ) : null}
       {!gameOver && !initGame ? (
         <StartScreen
+          name="Спринт"
+          iconName="fas fa-running"
+          description="Игра учит быстро переводить слова."
           setInitGame={setInitGame}
           setLevel={setLevel}
           setLearnedWords={setLearnedWords}
@@ -68,4 +80,4 @@ function Sprint() {
   );
 }
 
-export default Sprint;
+export default GameSprint;
