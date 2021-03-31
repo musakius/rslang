@@ -8,6 +8,7 @@ import Textbook from '../pages/Textbook';
 import Header from './Header';
 import Sprint from '../pages/Sprint';
 import Dictionary from '../pages/Textbook/Components/Dictionary/Dictionary';
+import Savanna from '../pages/Games/Savanna/Savanna';
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/dictionary" render={() => <Dictionary />} />
         <Route path="/games" exact render={() => <Games />} />
         <Route path="/games/sprint" render={() => <Sprint />} />
+        <Route path="/games/savanna" render={() => <Savanna />} />
         <Route path="/stat" render={() => <Stat />} />
         <Route render={() => <Page404 />} />
       </Switch>
