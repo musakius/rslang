@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Pronounce from '../Pronounce';
 import {Link} from 'react-router-dom';
 
 import classes from './Statistics.module.scss';
 
-const Statistics = ({results}) => {
+const Statistics = ({results, setSoundStatus, soundStatus}) => {
+  useEffect(() => {
+    setSoundStatus(true);
+  }, []);
+
   const countWords = (bool) => {
     return results.reduce(
       (count, {correctAnswer}) => (correctAnswer === bool ? count + 1 : count),
@@ -42,7 +46,7 @@ const Statistics = ({results}) => {
           {results.map(({word, transcription, wordTranslate, audio, correctAnswer}) => (
             <tr key={word} className={`${correctAnswer ? 'table-success' : 'table-danger'}`}>
               <td>
-                <Pronounce audio={audio} />
+                <Pronounce audio={audio} soundStatus={soundStatus} />
               </td>
               <td>
                 <p>{`${word}`}</p>

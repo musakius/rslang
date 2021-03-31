@@ -1,4 +1,4 @@
-.GameWrapper {
+.container-game {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -14,6 +14,37 @@
   z-index: 2;
   top: 20px;
   right: 30px;
+}
+
+.upper-container {
+  width: 100%;
+  max-width: 1200px;
+  position: absolute;
+  top: 30px;
+  display: flex;
+  justify-content: space-between;
+
+  @media (max-width: 768px) {
+    width: 98%;
+    max-width: 595px;
+  }
+
+  .timer-container {
+    display: flex;
+    height: 30px;
+    width: 100px;
+    margin-top: 3px;
+
+    @media (max-width: 1274px) {
+      left: 228px;
+      top: 12px;
+    }
+
+    @media (max-width: 768px) {
+      margin-left: 0px;
+      position: static;
+    }
+  }
 }
 
 @media (max-width: 768px) {
@@ -51,19 +82,15 @@
   cursor: pointer;
 }
 
-.Level {
-  height: 30px;
-  margin: 20px;
-}
-
-.Lives {
-  width: 100%;
+.lives {
+  position: relative;
+  width: 960px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
 }
 
-.CardBlock {
+.card-block {
   flex: 6;
   display: flex;
   flex-direction: column;
@@ -78,8 +105,8 @@
   position: relative;
 }
 
-.cardEng,
-.cardRus {
+.card-eng,
+.card-rus {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -92,52 +119,58 @@
   color: #fff;
 }
 
-.cardRus {
+.card-rus {
   margin-top: 20px;
 }
 
 @media (max-width: 1250px) {
-  .GameWrapper {
+  .container-game,
+  .lives {
     width: 850px;
   }
 }
 
 @media (max-width: 1150px) {
-  .GameWrapper {
+  .container-game,
+  .lives {
     width: 750px;
   }
 }
 
 @media (max-width: 1115px) {
-  .GameWrapper {
+  .container-game,
+  .lives {
     width: 650px;
   }
 }
 
 @media (max-width: 930px) {
-  .GameWrapper {
+  .container-game,
+  .lives {
     margin-left: 190px;
   }
 }
 
 @media (max-width: 860px) {
-  .GameWrapper {
+  .container-game,
+  .lives {
     width: 600px;
   }
 }
 
 @media (max-width: 800px) {
-  .GameWrapper {
+  .container-game,
+  .lives {
     width: 500px;
   }
 
-  .CardBlock {
+  .card-block {
     padding: 10px 0;
   }
 }
 
 @media (max-width: 768px) {
-  .GameWrapper {
+  .container-game {
     margin: 0 auto;
   }
   .cross {
@@ -150,24 +183,25 @@
 }
 
 @media (orientation: portrait) and (max-width: 575px) {
-  .GameWrapper {
+  .container-game,
+  .lives {
     /* display: block; */
     width: 100vw;
     height: 100vh;
     background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6));
   }
 
-  .CardBlock {
+  .card-block {
     background-image: none;
     flex: 4;
   }
 
-  .Lives {
+  .lives {
     margin-top: 10px;
     flex-direction: column;
   }
 
-  .cardRus {
+  .card-rus {
     margin-top: 10px;
   }
 

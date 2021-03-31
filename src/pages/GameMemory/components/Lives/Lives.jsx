@@ -18,7 +18,7 @@ function Lives({livesCount, setGameOver}) {
     return lives;
   };
 
-  return <div className={classes.Lives}>{renderLives()}</div>;
+  return <div className={classes.lives}>{renderLives()}</div>;
 }
 
 export default Lives;

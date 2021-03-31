@@ -1,35 +1,58 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import Exit from '../../../../components/gameComponents/Exit';
 import Timer from '../../../../components/gameComponents/Timer';
 import Spinner from '../../../../components/Spinner';
 import Pronounce from '../../../../components/gameComponents/Pronounce';
+import ToggleSound from '../../../../components/gameComponents/ToggleSound';
 import classes from './Game.module.scss';
 
 let targetsCombo = 0;
 let activeMarks = ['empty', 'empty', 'empty'];
 let activeTargets = ['empty', 'empty', 'empty'];
 
-const audioPlay = (name) => {
+const audioPlay = (name, soundStatus) => {
   const audio = new Audio(`/assets/audio/${name}.mp3`);
-  audio.play();
+  if (soundStatus) audio.play();
 };
 
-function Game({setGameOver, setResults, setStartGame, words, startGame, results, load}) {
+function Game({
+  setGameOver,
+  setResults,
+  setStartGame,
+  setSoundStatus,
+  words,
+  startGame,
+  results,
+  load,
+  soundStatus
+}) {
   const [count, setCount] = useState(0);
   const [marksCombo, setMarksCombo] = useState(0);
   const [marks, setMarks] = useState(['empty', 'empty', 'empty']);
   const [targets, setTargets] = useState(['empty', 'empty', 'empty']);
   const [score, setScore] = useState(0);
   const [rate, setRate] = useState(1);
-  /* const [soundStatus, setSoundStatus] = useState(true); */
 
-  /* useEffect(() => {
+  useEffect(() => {
     document.onkeydown = keyControl;
     document.addEventListener('keypress', keyControl);
     return () => {
       document.removeEventListener('keypress', keyControl);
+      setMarks(['empty', 'empty', 'empty']);
+      setTargets(['empty', 'empty', 'empty']);
     };
-  }, [emptyCell]); */
+  }, [count]);
+
+  const keyControl = (e) => {
+    e.preventDefault();
+    e = e || window.event;
+    if (count === words.length - 1) setGameOver(true); //TODO fix error words[20]
+    if (e.keyCode === 37) {
+      onAnswer(words[count], false);
+    } else if (e.keyCode === 39) {
+      onAnswer(words[count], true);
+    }
+  };
 
   const changeScore = (bool) => {
     if (bool) setScore(score + rate * 10);
@@ -69,12 +92,14 @@ function Game({setGameOver, setResults, setStartGame, words, startGame, results,
 
   const onAnswer = (word, answer) => {
     word.correctAnswer = word.correctFlag === answer;
-    word.correctAnswer ? audioPlay('right') : audioPlay('wrong');
+    word.correctAnswer ? audioPlay('right', soundStatus) : audioPlay('wrong', soundStatus);
 
+    results.push(word);
+    setResults(results);
     setCount(count + 1);
     changeMark(word.correctAnswer);
     changeScore(word.correctAnswer);
-    setResults([...results, word]);
+
     if (count === words.length - 1) setGameOver(true);
   };
 
@@ -86,10 +111,12 @@ function Game({setGameOver, setResults, setStartGame, words, startGame, results,
             <div className={classes['timer-container']}>
               <Timer initialTime={60} timeOutHandler={setGameOver} />
             </div>
+
             <Exit />
           </div>
           <div className={classes['score-container']}>
             <p className={classes.score}>{score}</p>
+            <ToggleSound setSoundStatus={setSoundStatus} soundStatus={soundStatus} />
           </div>
           <div className={classes['block-word-container']}>
             <div className={classes['block-word']}>
@@ -135,23 +162,15 @@ function Game({setGameOver, setResults, setStartGame, words, startGame, results,
               </div>
 
               <div className={classes.arrows}>
-                <button
-                  type="button"
-                  className="btn btn-outline-danger"
-                  onClick={() => onAnswer(words[count], false)}
-                >
+                <button type="button" className="btn btn-outline-danger">
                   <i className="fas fa-arrow-circle-left"></i>
                 </button>
-                <button
-                  type="button"
-                  className="btn btn-outline-success"
-                  onClick={() => onAnswer(words[count], true)}
-                >
+                <button type="button" className="btn btn-outline-success">
                   <i className="fas fa-arrow-circle-right"></i>
                 </button>
               </div>
               <div className={classes.pronounce}>
-                <Pronounce audio={words[count].audio} />
+                <Pronounce audio={words[count].audio} soundStatus={soundStatus} />
               </div>
             </div>
           </div>

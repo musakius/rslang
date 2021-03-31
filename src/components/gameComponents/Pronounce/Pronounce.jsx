@@ -3,7 +3,7 @@ import Spinner from '../../Spinner';
 
 /* import classes from './Pronounce.module.scss'; */
 
-const audioWord = (url, setLoad) => {
+const audioWord = (url, setLoad, soundStatus) => {
   const audio = new Audio(`https://apprslang.herokuapp.com/${url}`);
 
   setLoad(true);
@@ -14,18 +14,20 @@ const audioWord = (url, setLoad) => {
     }, 300);
   });
 
-  setTimeout(() => {
-    audio.play();
-  }, 600);
+  if (soundStatus) {
+    setTimeout(() => {
+      audio.play();
+    }, 600);
+  }
 };
 
-const Pronounce = ({audio}) => {
+const Pronounce = ({audio, soundStatus}) => {
   const [load, setLoad] = useState(false);
 
   return load ? (
     <Spinner size="20px" />
   ) : (
-    <i className="fas fa-volume-up" onClick={() => audioWord(audio, setLoad)} />
+    <i className="fas fa-volume-up" onClick={() => audioWord(audio, setLoad, soundStatus)} />
   );
 };
 

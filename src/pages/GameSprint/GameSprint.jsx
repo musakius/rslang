@@ -17,6 +17,7 @@ function GameSprint() {
   const [results, setResults] = useState([]);
   const [level, setLevel] = useState(1);
   const [load, setLoad] = useState(false);
+  const [soundStatus, setSoundStatus] = useState(true);
 
   const api = useMemo(() => new Service(), []);
 
@@ -46,17 +47,21 @@ function GameSprint() {
 
   return (
     <div className={classes['container-sprint']}>
-      {gameOver ? <Statistics results={results} /> : null}
+      {gameOver ? (
+        <Statistics results={results} setSoundStatus={setSoundStatus} soundStatus={soundStatus} />
+      ) : null}
       {initGame && !gameOver ? (
         <Game
           setGameOver={setGameOver}
           setResults={setResults}
           setWords={setWords}
           setStartGame={setStartGame}
+          setSoundStatus={setSoundStatus}
           words={words}
           startGame={startGame}
           results={results}
           load={load}
+          soundStatus={soundStatus}
         ></Game>
       ) : null}
       {!gameOver && !initGame ? (

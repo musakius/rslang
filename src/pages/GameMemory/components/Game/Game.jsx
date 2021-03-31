@@ -3,20 +3,28 @@ import Card from '../Card';
 import Lives from '../Lives';
 import Timer from '../../../../components/gameComponents/Timer';
 import Exit from '../../../../components/gameComponents/Exit';
+import ToggleSound from '../../../../components/gameComponents/ToggleSound';
 import Spinner from '../../../../components/Spinner';
 
 import classes from './Game.module.scss';
+
+const audioPlay = (name, soundStatus) => {
+  const audio = new Audio(`/assets/audio/${name}.mp3`);
+  if (soundStatus) audio.play();
+};
 
 function Game({
   setGameOver,
   setResults,
   setStartGame,
+  setSoundStatus,
   russianWords,
   englishWords,
   words,
   startGame,
   results,
-  load
+  load,
+  soundStatus
 }) {
   const [idRussianWord, setIdRussianWord] = useState(null);
   const [idEnglishWord, setIdEnglishWord] = useState(null);
@@ -63,8 +71,10 @@ function Game({
       if (lastWordId) {
         if (firstWordId === lastWordId) {
           checkAnswer(firstWordId, lastWordId, true);
+          audioPlay('right', soundStatus);
         } else {
           checkAnswer(firstWordId, lastWordId, false);
+          audioPlay('wrong', soundStatus);
         }
         checkResult();
       }
@@ -73,16 +83,19 @@ function Game({
 
   if (startGame) {
     return (
-      <div className={classes.GameWrapper}>
-        <div className={classes.cross}>
+      <div className={classes['container-game']}>
+        <div className={classes['upper-container']}>
+          <div className={classes['timer-container']}>
+            <Timer initialTime={60} timeOutHandler={setGameOver} />
+          </div>
           <Exit />
         </div>
-        <div className={classes.Lives}>
+        <div className={classes.lives}>
           <Lives livesCount={livesCount} setGameOver={setGameOver} />
-          <Timer initialTime={60} timeOutHandler={setGameOver} />
+          <ToggleSound setSoundStatus={setSoundStatus} soundStatus={soundStatus} />
         </div>
-        <div className={classes.CardBlock}>
-          <div className={classes.cardEng}>
+        <div className={classes['card-block']}>
+          <div className={classes['card-eng']}>
             {words.length
               ? englishWords.map(({word, id}) => (
                   <Card
@@ -98,7 +111,7 @@ function Game({
               : false}
           </div>
 
-          <div className={classes.cardRus}>
+          <div className={classes['card-rus']}>
             {words.length
               ? russianWords.map(({wordTranslate, id}, index) => (
                   <Card
