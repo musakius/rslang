@@ -3,7 +3,7 @@ import { connect, useSelector } from "react-redux";
 import Audio from "../Audio/";
 import classes from "./SectionContent.module.scss";
 
-const WordCard = ({ wordObj, currentTheme }) => {
+const WordCard = ({ wordObj, currentTheme, userId }) => {
   const settingBtn = useSelector((state) => state.settings.showButtons);
   const settingTranslate = useSelector((state) => state.settings.showTranslate);
   const [showHeader, setShowHeader] = useState(settingBtn);
@@ -24,16 +24,25 @@ const WordCard = ({ wordObj, currentTheme }) => {
     return () => {};
   }, [settingTranslate]);
 
+  const setDifficultWord = (id) => {
+console.log("id", id);
+console.log("userId", userId)
+  }
+
+  const deleteWord = (id) => {
+    
+  }
+
   return (
     <div className={classes.wordCard}>
       <div className='card text-white bg-light mr-5 ml-5 mb-5'>
         {showHeader ? (
           <div className='card-header d-flex justify-content-between'>
-            <button type='button' className='btn btn-outline-secondary'>
+            <button type='button' className='btn btn-outline-secondary' onClick={() => setDifficultWord(wordObj.id)}>
               <i className='fas fa-brain'></i>
               &nbsp;Сложное слово
             </button>
-            <button type='button' className='btn btn-outline-danger'>
+            <button type='button' className='btn btn-outline-danger' onClick={() => deleteWord(wordObj.id)}>
               <i className='fas fa-trash-alt'></i>
               &nbsp;Удалить
             </button>
@@ -89,6 +98,7 @@ const WordCard = ({ wordObj, currentTheme }) => {
 const mapStateToProps = (state) => {
   return {
     currentTheme: state.theme.value,
+    userId: state.user.user[0].userId
   };
 };
 
