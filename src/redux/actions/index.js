@@ -1,31 +1,44 @@
-import { CHANGE_THEME, SHOW_BUTTONS, SHOW_TRANSLATE, TEST_METHOD } from "../types/types";
+import {
+  CHANGE_THEME,
+  SHOW_BUTTONS,
+  SHOW_TRANSLATE,
+  TEST_METHOD,
+  USER_INFO,
+} from "../types/types";
 
 const testMethod = (value) => {
   return {
     type: TEST_METHOD,
-    payload: value
+    payload: value,
   };
 };
 
 export const changeTheme = (value) => {
   return {
     type: CHANGE_THEME,
-    payload: value
-  }
-}
+    payload: value,
+  };
+};
 
 export const showButtons = (value) => {
   return {
     type: SHOW_BUTTONS,
-    payload: value
-  }
-}
+    payload: value,
+  };
+};
 
 export const showTranslate = (value) => {
   return {
     type: SHOW_TRANSLATE,
-    payload: value
-  }
-}
+    payload: value,
+  };
+};
 
-export {testMethod};
+export const setUserInfo = (value) => {
+  return {
+    type: USER_INFO,
+    payload: value,
+  };
+};
+
+export { testMethod };

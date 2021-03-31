@@ -5,6 +5,7 @@ import {
   SHOW_BUTTONS,
   SHOW_TRANSLATE,
   TEST_METHOD,
+  USER_INFO,
 } from "../types/types";
 
 const initialState = {
@@ -20,6 +21,10 @@ const initialSettingsState = {
     showButtons: true,
     showTranslate: true,
   },
+};
+
+const initialUserState = {
+  user: [],
 };
 
 const testReducer = (state = initialState, action) => {
@@ -51,10 +56,20 @@ const settingsReducer = (state = initialSettingsState, action) => {
   }
 };
 
+const userReducer = (state = initialUserState, action) => {
+  switch (action.type) {
+    case USER_INFO:
+      return { ...state, user: state.user.concat(action.payload) };
+    default:
+      return state;
+  }
+};
+
 const reducer = combineReducers({
   testReducer,
   theme: themeReducer,
   settings: settingsReducer,
+  user: userReducer,
 });
 
 export default reducer;
