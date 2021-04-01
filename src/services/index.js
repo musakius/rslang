@@ -10,10 +10,6 @@ class Service {
         return await response.json();
     };
 
-    getWordsAll = async () => {
-        return await this._getResource('words/');
-    };
-
     // Get Auth
     _getAuthResource = async (url, token) => {
         const response = await fetch(`${base}${url}`, {
