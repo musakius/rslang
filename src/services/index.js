@@ -10,16 +10,35 @@ class Service {
         return await response.json();
     };
 
+    // Get Auth
+    _getAuthResource = async (url, token) => {
+        const response = await fetch(`${base}${url}`, {
+            method: 'GET',
+            withCredentials: true,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+            }
+        });
+        if (!response.ok) {
+            throw new Error(`Could not fetch ${base + url}, received ${response.status}`);
+        }
+        return await response.json();
+    };
+
     getWordsAll = async (group = 0, page = 0) => {
         return await this._getResource(`words?group=${group}&page=${page}`);
     };
 
     // Post
 
-    _postResource = async (url, data = {}) => {
+    _postResource = async (url, data = {}, token) => {
         const response = await fetch(`${base}${url}`, {
             method: 'POST',
+            withCredentials: true,
             headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(data)
