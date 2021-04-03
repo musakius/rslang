@@ -23,15 +23,36 @@ function GameSprint() {
 
   useEffect(() => {
     setLoad(true);
-    api
-      .getWordsAll(level - 1)
-      .then((data) => action(data))
-      .catch((error) => console.error(error))
+
+    const randomPages = getRandomPages(level - 1);
+    console.log(randomPages);
+    let result = [];
+
+    Promise.all(randomPages.map((el) => api.getWordsAll(el.level, el.page)))
+      .then((data) => (result = [...result, ...data]))
+      .then((data) => action(data.flat()))
+      .catch((err) => console.error(err))
       .finally(() => setLoad(false));
     return () => setWords([]);
   }, [api, level]);
 
+  const getRandomPages = (level) => {
+    let pages = [];
+
+    for (let i = 0; i < 10; i++) {
+      const randomPage = getRandomInt(29);
+      if (pages.some((el) => el.page === randomPage)) {
+        i--;
+      } else {
+        pages.push({page: randomPage, level});
+      }
+    }
+
+    return pages;
+  };
+
   const action = (data) => {
+    console.log(data);
     /* const path = learnedWords ? data[0].paginatedResults : data; */
     data.forEach((el) => {
       el.falsyTranslate = el.wordTranslate;
@@ -48,7 +69,12 @@ function GameSprint() {
   return (
     <div className={classes['container-sprint']}>
       {gameOver ? (
-        <Statistics results={results} setSoundStatus={setSoundStatus} soundStatus={soundStatus} />
+        <Statistics
+          results={results}
+          setSoundStatus={setSoundStatus}
+          soundStatus={soundStatus}
+          keyName="sprint"
+        />
       ) : null}
       {initGame && !gameOver ? (
         <Game

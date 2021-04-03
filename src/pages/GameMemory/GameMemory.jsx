@@ -54,7 +54,14 @@ function GameMemory() {
 
   return (
     <div className={classes['container-memory']}>
-      {gameOver ? <Statistics results={results} setSoundStatus={setSoundStatus} /> : null}
+      {gameOver ? (
+        <Statistics
+          results={results}
+          setSoundStatus={setSoundStatus}
+          soundStatus={soundStatus}
+          keyName="memory"
+        />
+      ) : null}
       {initGame && !gameOver ? (
         <Game
           setGameOver={setGameOver}
