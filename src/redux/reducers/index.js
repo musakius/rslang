@@ -1,19 +1,19 @@
-import { act } from "react-dom/test-utils";
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 import {
   CHANGE_THEME,
   SHOW_BUTTONS,
   SHOW_TRANSLATE,
   TEST_METHOD,
   USER_INFO,
-} from "../types/types";
+  USER_PAGE,
+} from '../types/types';
 
 const initialState = {
   testData: {},
 };
 
 const initialThemeState = {
-  value: "info",
+  value: 'info',
 };
 
 const initialSettingsState = {
@@ -25,6 +25,10 @@ const initialSettingsState = {
 
 const initialUserState = {
   user: [],
+};
+
+const inintialPageState = {
+  userPage: '',
 };
 
 const testReducer = (state = initialState, action) => {
@@ -65,11 +69,21 @@ const userReducer = (state = initialUserState, action) => {
   }
 };
 
+const userPageReducer = (state = inintialPageState, action) => {
+  switch (action.type) {
+    case USER_PAGE:
+      return { ...state, userPage: action.payload };
+    default:
+      return state;
+  }
+};
+
 const reducer = combineReducers({
   testReducer,
   theme: themeReducer,
   settings: settingsReducer,
   user: userReducer,
+  userPage: userPageReducer,
 });
 
 export default reducer;

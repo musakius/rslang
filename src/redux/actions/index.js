@@ -4,6 +4,7 @@ import {
   SHOW_TRANSLATE,
   TEST_METHOD,
   USER_INFO,
+  USER_PAGE,
 } from "../types/types";
 
 const testMethod = (value) => {
@@ -37,6 +38,13 @@ export const showTranslate = (value) => {
 export const setUserInfo = (value) => {
   return {
     type: USER_INFO,
+    payload: value,
+  };
+};
+
+export const setUserPage = (value) => {
+  return {
+    type: USER_PAGE,
     payload: value,
   };
 };

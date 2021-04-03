@@ -1,14 +1,26 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect } from 'react-redux';
-import Button from "../Button/Button";
+import Button from '../Button/Button';
 import { dictionaryItems } from '../../config';
-import Error from "../../Error";
-import Spinner from "../Spinner";
-import Page from "../SectionContent/Page";
-import Service from "../../../../services";
-import Tabs from "./Components/Tabs";
+import Error from '../../Error';
+import Spinner from '../Spinner';
+import Page from '../SectionContent/Page';
+import Service from '../../../../services';
+import Tabs from './Components/Tabs';
+import Sections from '../Sections/Sections';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router';
+import SectionContent from '../SectionContent';
+import TabContent from './Components/TabContent';
 
 const Dictionary = ({ userId, token }) => {
+  const { url } = useRouteMatch();
+  const currentGroup = localStorage.getItem('textbookGroup') || 0;
+  useEffect(() => {
+    localStorage.setItem('userPage', "dictionary");
+    return () => {
+      localStorage.removeItem('userPage');
+    };
+  }, []);
   // console.log('userId', userId);
   // console.log('token', token);
 
@@ -42,7 +54,7 @@ const Dictionary = ({ userId, token }) => {
   //     setIsLoaded(false);
   //     setUserWords([]);
   //   };
-  // }, [api]);  
+  // }, [api]);
 
   // if (error) {
   //   return <Error error={error} />;
@@ -64,13 +76,23 @@ const Dictionary = ({ userId, token }) => {
     //     />
     //   ) : null}
     // </div>
-    <div className='container mt-5'>
-      <div className='jumborton'>
-        <div className='row'>
-          <div className='col-md-3'>
-            <Button path={`/textbook`} text='Учебник' style={'fab fa-leanpub'} />
+    <div className="container mt-5">
+      <div className="jumborton">
+        <div className="row">
+          <Tabs />
+          <div className="col-md-3">
+            <Sections mode="dictionary" />
           </div>
-          <Tabs/>
+          <div className="col-md-7">
+            <TabContent/>
+          </div>
+          <div className="col-md-2">
+            <Button
+              path={`/textbook/group/${currentGroup}`}
+              text="Учебник"
+              style={'fab fa-leanpub'}
+            />
+          </div>
         </div>
       </div>
     </div>

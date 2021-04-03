@@ -4,7 +4,11 @@ import { connect } from "react-redux";
 import Header from "./Header";
 
 const App = ({ user }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  let isAuth = false;
+  if(localStorage.getItem("user")) {
+    isAuth = !!JSON.parse(localStorage.getItem("user")).token;
+  }
+  const [isAuthenticated, setIsAuthenticated] = useState(isAuth);
 
   useEffect(() => {
     if (user && user.token) {

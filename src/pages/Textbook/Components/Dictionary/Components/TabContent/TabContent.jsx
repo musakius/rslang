@@ -1,12 +1,17 @@
 import React from 'react';
+import { Route, Switch, useRouteMatch } from 'react-router';
+import SectionContent from '../../../SectionContent';
 
 const TabContent = () => {
+    const { url } = useRouteMatch();
     return (
-        <div className="container">
-            <h3>{"title"}</h3>
-            <p>{"content"}</p>
-        </div>
-    )
-}
+    <Switch>
+      <Route path={`${url}/group/:group`}>
+        <SectionContent />
+      </Route>
+      {/* <Redirect to='/textbook/group/0' /> */}
+    </Switch>
+  );
+};
 
 export default TabContent;
