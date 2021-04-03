@@ -30,7 +30,7 @@ class Service {
   };
 
   getWordsAll = async (group = 0, page = 0) => {
-    return await this._getResource(`words?group=${group}&page=${page}&wordsPerPage=150`);
+    return await this._getResource(`words?group=${group}&page=${page}`);
   };
 
   getAggregatedWordsAll = async (optional = '"userWord.optional.deleted":false') => {

@@ -25,7 +25,6 @@ function GameSprint() {
     setLoad(true);
 
     const randomPages = getRandomPages(level - 1);
-    console.log(randomPages);
     let result = [];
 
     Promise.all(randomPages.map((el) => api.getWordsAll(el.level, el.page)))
@@ -52,7 +51,6 @@ function GameSprint() {
   };
 
   const action = (data) => {
-    console.log(data);
     /* const path = learnedWords ? data[0].paginatedResults : data; */
     data.forEach((el) => {
       el.falsyTranslate = el.wordTranslate;

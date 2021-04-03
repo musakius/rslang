@@ -19,13 +19,15 @@ const Statistics = ({results, setSoundStatus, soundStatus, keyName}) => {
     );
   };
 
-  const getBaseData = () => {
+  const getBaseData = (dateString) => {
     const baseStatistics = {
       learnedWords: 0,
       optional: {}
     };
 
-    baseStatistics.optional[keyName] = {
+    baseStatistics.optional[keyName] = {};
+
+    baseStatistics.optional[keyName][dateString] = {
       countGames: 1,
       result: countWords(true)
     };
@@ -33,15 +35,20 @@ const Statistics = ({results, setSoundStatus, soundStatus, keyName}) => {
     api.putStatisticsUser(baseStatistics);
   };
 
-  const addNewData = (data) => {
-    let statistics = {...data.optional[keyName]};
+  const addNewData = (data, dateString) => {
+    let statistics = {};
+
     if (data.optional[keyName]) {
-      statistics = {
-        countGames: statistics.countGames + 1,
-        result: statistics.result + countWords(true)
+      statistics = {...data.optional[keyName]};
+    }
+
+    if (statistics[dateString]) {
+      statistics[dateString] = {
+        countGames: statistics[dateString].countGames + 1,
+        result: statistics[dateString].result + countWords(true)
       };
     } else {
-      statistics = {
+      statistics[dateString] = {
         countGames: 1,
         result: countWords(true)
       };
@@ -63,11 +70,14 @@ const Statistics = ({results, setSoundStatus, soundStatus, keyName}) => {
   };
 
   (function sendStatistics() {
+    const date = new Date(Date.now());
+    const dateString = date.toLocaleDateString('en-Us');
+
     api
       .getStatisticsUser()
-      .then(({id, ...data}) => addNewData(data))
-      .then((data) => sendData(data))
-      .catch(() => getBaseData());
+      .then(({id, ...data}) => addNewData(data, dateString))
+      .then((data) => sendData(data, dateString))
+      .catch(() => getBaseData(dateString));
   })();
 
   return (
