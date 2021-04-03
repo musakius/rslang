@@ -15,7 +15,7 @@ const Tabs = () => {
         {dictionaryItems.map((item) => (
           <li className="nav-item" key={item.id}>
             <a
-              className={`nav-link ${item.id === active ? 'active' : ''}`}
+              className={`nav-link ${item.id === active ? 'active text-primary font-weight-bold' : ''}`}
               data-toggle="tab"
               href={`#${item.item.trim().replace(' ', '_')}`}
               key={item.id}

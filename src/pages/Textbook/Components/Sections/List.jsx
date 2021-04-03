@@ -5,7 +5,7 @@ const List = ({ item, style, path, value }) => {
   return (
     <li className={style.li}>
       <i class={`far fa-folder mr-2 ${style.i}`}></i>
-      <Link id={value} className='text-white' to={path}>
+      <Link id={value} className='text-white text-decoration-none' to={path}>
         {item}
       </Link>
     </li>

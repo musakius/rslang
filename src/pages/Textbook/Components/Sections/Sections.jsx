@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useRouteMatch } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Settings from '../Settings/Settings';
@@ -9,6 +9,8 @@ import { changeTheme } from '../../../../redux/actions';
 
 const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
   const { url } = useRouteMatch();
+  const savedGroup = localStorage.getItem('textbookGroup') || 0;
+  const [active, setActive] = useState(+savedGroup);
   console.log('mode', mode);
   const handleChange = (e) => {
     let target = '';
@@ -17,10 +19,11 @@ const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
     } else {
       target = e.target;
     }
-    const id = e.target.id;
+    const id = target.id;
     const theme = items.filter((item) => item.group === +id)[0].style;
     changeTheme(theme);
     setGroup(+id);
+    setActive(+id);
   };
 
   return (
@@ -38,8 +41,9 @@ const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
                 item={item.item}
                 value={item.group}
                 style={{
-                  li:
-                    'list-group-item d-flex justify-content-start align-items-baseline',
+                  li: `list-group-item list-group-item-action d-flex justify-content-start align-items-baseline ${
+                    item.group === active ? 'active' : ''
+                  }`,
                   i: `text-${item.style}`,
                 }}
                 path={`${url}/group/${item.group}`}
