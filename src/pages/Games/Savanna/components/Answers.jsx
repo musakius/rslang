@@ -33,7 +33,7 @@ const Answers = (props) => {
         }
       }
 
-      return answers.sort(makeRandomArr);;
+      return answers.sort(makeRandomArr);
     }
   }
   createAnswers();

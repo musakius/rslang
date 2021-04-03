@@ -120,7 +120,7 @@
 @keyframes down {
   0% {transform: translateY(0)}
   50% {background-color: white;}
-  100% {transform: translateY(51vh);
+  100% {transform: translateY(50.12vh);
   background-color: red;}
 }
 
@@ -133,7 +133,6 @@
   margin-top: 50vh;
   
   width: 80%;
-  
 }
 
 .answer {
@@ -156,4 +155,75 @@
 
 .right {
   background-color: green;
+}
+
+.end-game {
+
+}
+
+.end-game__title {
+  margin-bottom: 50px;
+  padding-top: 50px;
+  color: #000000;
+  text-align: center;
+}
+
+.end-game__text {
+  padding: 15px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+
+  width: fit-content;
+
+  color: #000000;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  background-color: #F5FFFA;
+  text-align: center;
+  border-radius: 10px;
+}
+
+.end-game__list {
+  padding: 15px;
+  margin: 0 auto;
+  margin-bottom: 30px;
+
+  width: fit-content;
+
+  color: #000000;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  border-radius: 10px;
+  background-color: #F5FFFA;
+
+  list-style: none;
+}
+
+.end-game__list-title {
+  font-size: 20px;
+}
+
+.end-game__item {
+  text-align: left;
+}
+
+.end-game__new-game-button {
+  display: block;
+
+  margin: 0 auto;
+  padding: 8px;
+
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+  color: black;
+  background-color: #ffffff;
+  border-radius: 5px;
+  border: none;
+  transition: all 0.3s;
+}
+
+.end-game__new-game-button:hover {
+  cursor: pointer;
+  background-color: #FFE4E1;
 }

@@ -55,8 +55,15 @@ const Savanna = () => {
         <div className={classFullScreen}> 
           <Newgamebutton changeGameStart={changeGameStart} gameStart={gameStart}/>
           <button className="full-screen-button" onClick={changeFullScreen}></button>
-          <Statistics lifes={lifes} points={points}/>
-          <Gamefield minusLife={minusLife} lifes={lifes} points={points} plusPoint={plusPoint} />
+          
+          {gameStart
+          ? <>
+            <Statistics lifes={lifes} points={points}/>
+            <Gamefield minusLife={minusLife} lifes={lifes} points={points} plusPoint={plusPoint} />
+            </>
+          : <div></div>
+          }
+          
         </div>     
       </FullScreen>
     </>
