@@ -1,10 +1,12 @@
 import React, {useState, useMemo} from 'react'
+import {connect} from "react-redux"
 import {Link} from 'react-router-dom'
 import './Register.css'
 import Service from "../../services";
 import {Redirect} from "react-router";
+import {setUserInfo} from "../../redux/actions";
 
-const Register = () => {
+const Register = ({setUserInfo}) => {
 
     const [validate, setValidate] = useState(false)
     const [name, setName] = useState("")
@@ -27,8 +29,19 @@ const Register = () => {
                 if (localStorage.getItem('user') === null) {
 
                     if (data !== undefined) {
-                        localStorage.setItem('user', JSON.stringify(data))
-                        setValidate(true)
+
+                        const user = {
+                            email,
+                            password
+                        }
+
+                        api
+                            .login("signin", user)
+                            .then((response) => {
+                                setUserInfo([response])
+                                localStorage.setItem('user', JSON.stringify(data))
+                                setValidate(true)
+                            })
                     }
                 } else {
                     console.log("Вы уже в системе")
@@ -88,4 +101,8 @@ const Register = () => {
     )
 }
 
-export default Register
+const mapDispatchToProps = {
+    setUserInfo,
+}
+
+export default connect(null, mapDispatchToProps)(Register)
