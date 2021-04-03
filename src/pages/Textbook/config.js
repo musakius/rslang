@@ -6,3 +6,9 @@ export const items = [
   { 'group': 4, 'item': 'Сложно', 'style': 'danger' },
   { 'group': 5, 'item': 'Очень сложно', 'style': 'dark' },
 ];
+
+export const dictionaryItems = [
+  { 'id': 0, 'item': 'Изучаемые слова' },
+  { 'id': 1, 'item': 'Сложные слова' },
+  { 'id': 2, 'item': 'Удалённые слова' },
+]
