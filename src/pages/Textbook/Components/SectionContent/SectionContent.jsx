@@ -5,7 +5,7 @@ import Error from "../../../../components/Error";
 import Spinner from "../Spinner/";
 import Page from "./Page";
 
-const SectionContent = () => {
+const SectionContent = ({ setCurrentPage = () => {}}) => {
   const { group } = useParams();
   if (group) {
     localStorage.setItem("textbookGroup", group);
@@ -37,6 +37,7 @@ const SectionContent = () => {
   const handlePageChange = (pageNum) => {
     localStorage.setItem("textbookPage", pageNum);
     setPage(pageNum);
+    setCurrentPage(pageNum);
   };
 
   if (error) {

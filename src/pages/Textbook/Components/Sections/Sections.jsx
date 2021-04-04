@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import Settings from '../Settings/Settings';
 import { items } from '../../config';
 import List from './List';
-import Links from '../Links/Links';
 import { changeTheme } from '../../../../redux/actions';
 
 const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
@@ -14,7 +13,7 @@ const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
   console.log('mode', mode);
   const handleChange = (e) => {
     let target = '';
-    if (e.target.tagName !== 'A') {
+    if (e.target.tagName.toUpperCase() !== 'A') {
       return;
     } else {
       target = e.target;

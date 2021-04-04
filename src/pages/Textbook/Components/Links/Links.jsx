@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { gamesList } from '../../config';
 
-const Links = () => {
+const Links = ({ setInfo }) => {
   return (
     <div className="card border-info mb-3">
       <div className="card-header">
@@ -9,19 +10,18 @@ const Links = () => {
         Мини-игры
       </div>
       <div className="card-body">
-        <ul className='list-group'>
-          <li className='list-group-item list-group-item-action d-flex justify-content-start align-items-baseline'>
-            <Link className="text-white" to="/games/sprint">
-              <i className='fas fa-running mr-2'></i>
-              {'Sprint'}
-            </Link>
-          </li>
-          <li className='list-group-item list-group-item-action d-flex justify-content-start align-items-baseline'>
-            <Link className="text-white" to="/games/memory">
-              <i className='fas fa-th mr-2'></i>
-              {'Memory'}
-            </Link>
-          </li>
+        <ul className="list-group" onClick={(event) => setInfo(event)}>
+          {gamesList.map((game) => (
+            <li
+              key={game.id}
+              className="list-group-item list-group-item-action d-flex justify-content-start align-items-baseline"
+            >
+              <Link key={game.id} className="text-white text-decoration-none" to={`${game.path}`}>
+                <i className={`${game.style}`}></i>
+                {game.item}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </div>

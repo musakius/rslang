@@ -5,11 +5,15 @@ import Description from '../Dictionary/Components/Description';
 import Links from './Components/Links/Links';
 import SectionContent from './Components/SectionContent';
 import Sections from './Components/Sections/Sections';
+import { connect } from 'react-redux';
+import { setGameInfo } from '../../redux/actions';
 
-const Textbook = () => {
+const Textbook = ({ setGameInfo }) => {
   const { url } = useRouteMatch();
   const savedGroup = localStorage.getItem('textbookGroup') || 0;
+  const savedPage = localStorage.getItem('textbookPage') || 0;
   const [group, setGroup] = useState(savedGroup);
+  const [page, setPage] = useState(savedPage);
 
   useEffect(() => {
     localStorage.setItem('userPage', 'textbook');
@@ -17,6 +21,15 @@ const Textbook = () => {
       localStorage.removeItem('userPage');
     };
   }, []);
+
+  const setInfo = (event) => {
+    const tag = event.target.tagName.toUpperCase();
+    console.log('tag', tag);
+    if (tag !== 'A' && tag !== 'I') {
+      return;
+    }
+    setGameInfo(page, group, 'textbook');
+  };
 
   return (
     <div className="container mt-5">
@@ -31,22 +44,22 @@ const Textbook = () => {
           <div className="col-md-6">
             <Switch>
               <Route path={`${url}/group/:group`}>
-                <SectionContent />
+                <SectionContent setCurrentPage={setPage} />
               </Route>
               <Redirect to="/textbook/group/0" />
             </Switch>
           </div>
           <div className="col-md-3">
             <div className="container">
-              <biv className="card-body">
+              <div className="card-body">
                 <Button
                   path={`/dictionary`}
                   text="Словарь"
                   style="fas fa-book"
                 />
-              </biv>
+              </div>
               <div className="card-body">
-                <Links />
+                <Links setInfo={setInfo} />
               </div>
             </div>
           </div>
@@ -56,4 +69,8 @@ const Textbook = () => {
   );
 };
 
-export default Textbook;
+const mapDispatchToProps = {
+  setGameInfo,
+};
+
+export default connect(null, mapDispatchToProps)(Textbook);

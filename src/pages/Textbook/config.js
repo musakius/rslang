@@ -42,3 +42,13 @@ export const dictionaryItems = [
   { id: 1, item: 'Сложные слова', style: 'fas fa-brain mr-2' },
   { id: 2, item: 'Удалённые слова', style: 'fas fa-trash-alt mr-2' },
 ];
+
+export const gamesList = [
+  {
+    id: 0,
+    item: 'Sprint',
+    style: 'fas fa-running mr-2',
+    path: '/games/sprint',
+  },
+  { id: 1, item: 'Memory', style: 'fas fa-th mr-2', path: '/games/memory' },
+];

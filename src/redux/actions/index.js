@@ -4,7 +4,7 @@ import {
   SHOW_TRANSLATE,
   TEST_METHOD,
   USER_INFO,
-  USER_PAGE,
+  GAME_INFO,
 } from "../types/types";
 
 const testMethod = (value) => {
@@ -42,10 +42,12 @@ export const setUserInfo = (value) => {
   };
 };
 
-export const setUserPage = (value) => {
+export const setGameInfo = (pageNum, groupNum, page) => {
   return {
-    type: USER_PAGE,
-    payload: value,
+    type: GAME_INFO,
+    pageNum,
+    groupNum,
+    page,
   };
 };
 

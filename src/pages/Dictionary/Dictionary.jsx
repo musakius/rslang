@@ -27,13 +27,13 @@ const Dictionary = () => {
           </div>
           <div className="col-md-3">
             <div className="container">
-              <biv className="card-body">
+              <div className="card-body">
                 <Button
                   path={`/textbook/group/${currentGroup}`}
                   text="Учебник"
                   style={'fab fa-leanpub'}
                 />
-              </biv>
+              </div>
               <div className="card-body">
                 <Links />
               </div>
