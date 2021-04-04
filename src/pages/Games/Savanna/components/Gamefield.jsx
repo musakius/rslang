@@ -2,6 +2,7 @@ import {React, useState, useEffect} from 'react';
 import Question from './Question';
 import Answers from './Answers';
 import EndGame from './EndGame';
+import ToggleSound from './ToggleSound';
 
 import winSound from '../audio/true.mp3';
 import falseSound from '../audio/false.mp3';
@@ -14,8 +15,9 @@ const Gamefield = (props) => {
   const [errors, setErrors] = useState([]);
   const [winMusic] = useState(new Audio(winSound));
   const [falseMusic] = useState(new Audio(falseSound));
-
-  let url = 'https://apprslang.herokuapp.com/words?page=2&group=0';
+  const [volume, setVolume] = useState(1);
+  
+  let url = `https://apprslang.herokuapp.com/words?page=2&group=${props.complexity}`;
 
   async function getWords(url) {
     let responce = await fetch(url);
@@ -47,6 +49,7 @@ const Gamefield = (props) => {
       console.log('Правильно');
       event.target.classList.add('right');
       winMusic.play();
+      winMusic.volume = volume;
 
       setTimeout(() => {
         props.plusPoint();
@@ -56,6 +59,7 @@ const Gamefield = (props) => {
       console.log('Неправильно');
       event.target.classList.add('error');
       falseMusic.play();
+      falseMusic.volume = volume;
       
       setTimeout(() => {
         setErrors([...errors, variants[round]]);
@@ -64,6 +68,8 @@ const Gamefield = (props) => {
       }, 2000);
     } else {
       event.target.classList.add('error');
+      falseMusic.play();
+      falseMusic.volume = volume;
 
       setTimeout(() => {
         setErrors([...errors, variants[round]]);
@@ -90,6 +96,7 @@ const Gamefield = (props) => {
       question.classList.remove('question--active');
       setErrors([...errors, variants[round]]);
       falseMusic.play();
+      falseMusic.volume = volume;
 
       setTimeout(() => {     
         question.classList.add('question--active'); 
@@ -100,8 +107,14 @@ const Gamefield = (props) => {
       console.log('Игра закончена');
     }  
   }
-
   
+  function changeVolume() {
+    if(volume === 1) {
+      setVolume(0);
+    } else {
+      setVolume(1);
+    }
+  }
 
   return (
     <>
@@ -110,10 +123,9 @@ const Gamefield = (props) => {
         : <>
             <Question timeIsOver={timeIsOver} round={round} variants={variants} />
             <Answers playerChoice={playerChoice} round={round} variants={variants} changeRound={changeRound} />
+            <ToggleSound changeVolume={changeVolume} />
           </>
-      }
-      
-      
+      }     
     </>
   )
 }

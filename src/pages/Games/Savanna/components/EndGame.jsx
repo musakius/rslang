@@ -6,7 +6,7 @@ const EndGame = (props) => {
   return (
     <div className="end-game">
       <h2 className="end-game__title">Игра Закочилась</h2>
-      <p className="end-game__text">Вы набрали {props.points} очков</p>
+      <p className="end-game__text">Правильных ответов: {props.points}.</p>
       <ul className="end-game__list">
         <h4 className="end-game__list-title">Вы не выучили:</h4>
         {props.errors.map((item, index) => <li key={index.toString()} className="end-game__item" >{item.word}</li>)}

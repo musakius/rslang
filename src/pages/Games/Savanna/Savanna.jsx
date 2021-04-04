@@ -5,15 +5,17 @@ import './css/savanna.css';
 import Newgamebutton from './components/Newgamebutton';
 import Statistics from './components/Statistics';
 import Gamefield from './components/Gamefield';
+import Complexity from './components/Complexity';
 
 const Savanna = () => {
   const [classFullScreen, setFullScreen] = useState("game-field");
   const [gameStart, setGameStart] = useState(false);
   const [lifes, setLifes] = useState(5);
   const [points, setPoints] = useState(0);
+  const [complexity, setComplexity] = useState(0);
 
   useEffect(() => {
-    
+    console.log(complexity);
   })
 
   const handle = useFullScreenHandle();
@@ -46,6 +48,10 @@ const Savanna = () => {
     setLifes(lifes - 1);
   }
 
+  function changeComplexity(e) {
+    setComplexity(e.target.value);
+  }
+
 
   return (
     <>
@@ -59,9 +65,9 @@ const Savanna = () => {
           {gameStart
           ? <>
             <Statistics lifes={lifes} points={points}/>
-            <Gamefield minusLife={minusLife} lifes={lifes} points={points} plusPoint={plusPoint} />
+            <Gamefield complexity={complexity} minusLife={minusLife} lifes={lifes} points={points} plusPoint={plusPoint} />
             </>
-          : <div></div>
+          : <Complexity changeComplexity={changeComplexity}/>
           }
           
         </div>     

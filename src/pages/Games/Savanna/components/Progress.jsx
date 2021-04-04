@@ -3,7 +3,7 @@ import React from 'react';
 const Progress = (props) => {
   
   return (
-    <div className="game-progress"> {props.points} / 20</div>
+    <div className="game-progress"> Очки: {props.points} / 20</div>
   )
 }
 
