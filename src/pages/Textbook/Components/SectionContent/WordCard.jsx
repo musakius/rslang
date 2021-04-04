@@ -4,12 +4,17 @@ import Audio from '../Audio/';
 import classes from './SectionContent.module.scss';
 import Service from '../../../../services';
 
-const WordCard = ({ wordObj, currentTheme }) => {
+const WordCard = ({ wordObj, currentTheme, setIsDeleted }) => {
   const settingBtn = useSelector((state) => state.settings.showButtons);
   const settingTranslate = useSelector((state) => state.settings.showTranslate);
   const [showHeader, setShowHeader] = useState(settingBtn);
   const [showTranslate, setShowTranslate] = useState(settingTranslate);
   const [button, setButton] = useState('Удалить');
+  const [btnMode, setBtnMode] = useState('d');
+  const [queryMode, setQueryMode] = useState('');
+  const [userWord, setUserWord] = useState('');
+  const [isDifficult, setIsDifficult] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const [icon, setIcon] = useState('fa-trash-alt');
   const [btnColor, setBtnColor] = useState("btn-outline-danger");
   const mode = localStorage.getItem('userPage') || "";
@@ -22,7 +27,7 @@ const WordCard = ({ wordObj, currentTheme }) => {
   const audioMeaningURL = `${baseUrl}${wordObj.audioMeaning}`;
   const audioExampleURL = `${baseUrl}${wordObj.audioExample}`;
 
-  const post = useMemo(() => new Service(), []);
+  const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
     setShowHeader(settingBtn);
@@ -41,6 +46,7 @@ const WordCard = ({ wordObj, currentTheme }) => {
         setButton("Восстановить");
         setIcon('fa-trash-restore-alt');
         setBtnColor("btn-success");
+        setBtnMode('r');
       } else {
         setShowHeader(false);
       }
@@ -50,9 +56,48 @@ const WordCard = ({ wordObj, currentTheme }) => {
     }
   }, [mode, dictionarySection])
 
-  const setDifficultWord = (id) => {};
+  useEffect(() => {
+    if(disabled){
+      return;
+    }
+    api
+    .getUserWord(wordObj.id)
+    .then((result) => {
+      setUserWord(result);
+      console.log("word", result);
+      checkWord(result);
+    })
+    .catch((error) => console.log(error.message));
+  }, [api, queryMode])
 
-  const deleteWord = (id) => {};
+  const setDifficultWord = (id) => {
+    api.postWord(id, {"difficulty": "high", "optional": {isDifficult: true}});
+  };
+
+  const deleteWord = (id) => {
+    api.postWord(id, {"difficulty": "weak", "optional": {isDeleted: true}});
+  };
+
+  const restoreWord = (id) => {
+    api.postWord(id, {"difficulty": "weak", "optional": {isDeleted: false}});
+  }
+
+  const updateWord = (id, mode) => {
+    const userWord = api.getUserWord(id);
+    console.log('userWord',userWord);
+  }
+
+  const checkWord = (data) => {
+    setDisabled(false);
+    if (data && data.optional.isDeleted === true) {
+      setIsDeleted(data.wordId);
+      return;
+    }
+    if(data && data.optional.isDifficult === true) {
+      setDisabled(true);
+      return;
+    }
+  }
 
   return (
     <div className={classes.wordCard}>
@@ -61,8 +106,8 @@ const WordCard = ({ wordObj, currentTheme }) => {
           <div className="card-header d-flex justify-content-between">
             <button
               type="button"
-              className="btn btn-outline-secondary"
-              onClick={() => setDifficultWord(wordObj.id)}
+              className={`btn btn-outline-secondary`}
+              onClick={() => setQueryMode('u')}
             >
               <i className="fas fa-brain mr-2"></i>
               Сложное слово
@@ -70,7 +115,7 @@ const WordCard = ({ wordObj, currentTheme }) => {
             <button
               type="button"
               className={`btn ${btnColor}`}
-              onClick={() => deleteWord(wordObj.id)}
+              onClick={() => setQueryMode(btnMode)}
             >
               <i className={`fas ${icon} mr-2`}></i>
               {button}

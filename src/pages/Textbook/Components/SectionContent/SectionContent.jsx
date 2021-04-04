@@ -52,6 +52,7 @@ const SectionContent = ({ setCurrentPage = () => {}}) => {
       {wordsSet ? (
         <Page
           wordsSet={wordsSet}
+          setWordsSet={setWordsSet}
           handlePageChange={handlePageChange}
           page={page}
         />

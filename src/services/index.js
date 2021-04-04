@@ -43,6 +43,10 @@ class Service {
     return await this._getResource(`users/${this._getUserId()}/statistics`);
   };
 
+  getUserWord = async (wordId) => {
+    return await this._getResource(`users/${this._getUserId()}/words/${wordId}`);
+  }
+
   // Post
 
   _postResource = async (url, data = {}) => {
