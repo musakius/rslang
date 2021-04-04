@@ -26,8 +26,8 @@ const Dictionary = () => {
             <TabContent />
           </div>
           <div className="col-md-3">
-            <div className="container">
-              <div className="card-body">
+            <div className="container-fluid">
+              <div className="card-body pt-0">
                 <Button
                   path={`/textbook/group/${currentGroup}`}
                   text="Учебник"

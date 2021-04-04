@@ -15,10 +15,12 @@ const WordCard = ({ wordObj, currentTheme }) => {
   const mode = localStorage.getItem('userPage') || "";
   const dictionarySection = localStorage.getItem('dictionarySection') || "";
 
-  const imgURL = `https://apprslang.herokuapp.com/${wordObj.image}`;
-  const audioURL = `https://apprslang.herokuapp.com/${wordObj.audio}`;
-  const audioMeaningURL = `https://apprslang.herokuapp.com/${wordObj.audioMeaning}`;
-  const audioExampleURL = `https://apprslang.herokuapp.com/${wordObj.audioExample}`;
+  const baseUrl = "https://apprslang.herokuapp.com/";
+
+  const imgURL = `${baseUrl}${wordObj.image}`;
+  const audioURL = `${baseUrl}${wordObj.audio}`;
+  const audioMeaningURL = `${baseUrl}${wordObj.audioMeaning}`;
+  const audioExampleURL = `${baseUrl}${wordObj.audioExample}`;
 
   const post = useMemo(() => new Service(), []);
 

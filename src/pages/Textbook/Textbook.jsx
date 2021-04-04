@@ -50,11 +50,11 @@ const Textbook = ({ setGameInfo }) => {
           </div>
           <div className="col-md-3">
             <div className="container">
-              <div className="card-body">
+              <div className="card-body pt-0">
                 <Button
                   path={`/dictionary`}
                   text="Словарь"
-                  style={"fas fa-book"}
+                  style="fas fa-book"
                 />
               </div>
               <div className="card-body">
