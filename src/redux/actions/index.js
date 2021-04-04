@@ -4,6 +4,7 @@ import {
   SHOW_TRANSLATE,
   TEST_METHOD,
   USER_INFO,
+  GAME_INFO,
 } from "../types/types";
 
 const testMethod = (value) => {
@@ -38,6 +39,15 @@ export const setUserInfo = (value) => {
   return {
     type: USER_INFO,
     payload: value,
+  };
+};
+
+export const setGameInfo = (pageNum, groupNum, page) => {
+  return {
+    type: GAME_INFO,
+    pageNum,
+    groupNum,
+    page,
   };
 };
 

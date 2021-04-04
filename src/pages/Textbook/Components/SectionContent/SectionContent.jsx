@@ -1,11 +1,11 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import Service from "../../../../services";
-import Error from "../../Error/";
+import Error from "../../../../components/Error";
 import Spinner from "../Spinner/";
 import Page from "./Page";
 
-const SectionContent = () => {
+const SectionContent = ({ setCurrentPage = () => {}}) => {
   const { group } = useParams();
   if (group) {
     localStorage.setItem("textbookGroup", group);
@@ -14,19 +14,14 @@ const SectionContent = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  let currentPage = localStorage.getItem("textbookPage") || 0;
-  const [page, setPage] = useState(currentPage);
+  let currentPage = localStorage.getItem("textbookPage") || 1;
+  const [page, setPage] = useState(+currentPage);
 
-  let partUrl = `words?group=${group}`;
-  if (page) {
-    partUrl += `&page=${+page - 1}`;
-  }
-
-  const api = useMemo(() => new Service(), [group, page]);
+  const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
     api
-      ._getResource(partUrl)
+      .getWordsAll(group, +page - 1)
       .then((result) => {
         setWordsSet(result);
         setIsLoaded(true);
@@ -37,11 +32,12 @@ const SectionContent = () => {
       setIsLoaded(false);
       setWordsSet([]);
     };
-  }, [api]);
+  }, [api, group, page]);
 
   const handlePageChange = (pageNum) => {
     localStorage.setItem("textbookPage", pageNum);
     setPage(pageNum);
+    setCurrentPage(pageNum);
   };
 
   if (error) {
