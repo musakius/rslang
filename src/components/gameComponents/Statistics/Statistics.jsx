@@ -19,6 +19,13 @@ const Statistics = ({results, setSoundStatus, soundStatus, keyName}) => {
     );
   };
 
+  const rightPercent = () => {
+    const allAnswers = results.length;
+    const rightAnswers = countWords(true);
+
+    return (rightAnswers * 100) / allAnswers;
+  };
+
   const getBaseData = (dateString) => {
     const baseStatistics = {
       learnedWords: 0,
@@ -29,7 +36,10 @@ const Statistics = ({results, setSoundStatus, soundStatus, keyName}) => {
 
     baseStatistics.optional[keyName][dateString] = {
       countGames: 1,
-      result: countWords(true)
+      learnedWords: 0,
+      maxRightAnswers: countWords(true),
+      rightAnswers: countWords(true),
+      wrongAnswers: countWords(false)
     };
 
     api.putStatisticsUser(baseStatistics);
@@ -45,12 +55,18 @@ const Statistics = ({results, setSoundStatus, soundStatus, keyName}) => {
     if (statistics[dateString]) {
       statistics[dateString] = {
         countGames: statistics[dateString].countGames + 1,
-        result: statistics[dateString].result + countWords(true)
+        learnedWords: 0,
+        maxRightAnswers: Math.max(statistics[dateString].maxRightAnswers, countWords(true)),
+        rightAnswers: statistics[dateString].rightAnswers + countWords(true),
+        wrongAnswers: statistics[dateString].wrongAnswers + countWords(false)
       };
     } else {
       statistics[dateString] = {
         countGames: 1,
-        result: countWords(true)
+        learnedWords: 0,
+        maxRightAnswers: countWords(true),
+        rightAnswers: countWords(true),
+        wrongAnswers: countWords(false)
       };
     }
 

@@ -2,10 +2,12 @@ import React from 'react';
 
 import classes from './Card.module.scss';
 
-function Card({onCardClick, isActive, isRight, children, isCorrect}) {
+function Card({onCardClick, isActive, isRight, children, isCorrect, disabledBtn}) {
   return (
     <div className={classes['container-card']}>
-      <div
+      <button
+        type="button"
+        disabled={disabledBtn}
         onClick={onCardClick}
         className={`${classes.card}  
         ${isActive ? classes.active : ''} 
@@ -14,7 +16,7 @@ function Card({onCardClick, isActive, isRight, children, isCorrect}) {
         ${!isActive && isCorrect ? classes.correct : ''}`}
       >
         {children}
-      </div>
+      </button>
     </div>
   );
 }

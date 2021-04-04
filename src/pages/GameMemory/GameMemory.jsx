@@ -6,14 +6,14 @@ import Statistics from '../../components/gameComponents/Statistics';
 
 import classes from './GameMemory.module.scss';
 
+const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
+
 function GameMemory() {
   const [initGame, setInitGame] = useState(false);
   const [startGame, setStartGame] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [learnedWords, setLearnedWords] = useState(false);
   const [words, setWords] = useState([]);
-  const [englishWords, setEnglishWords] = useState([]);
-  const [russianWords, setRussianWords] = useState([]);
   const [results, setResults] = useState([]);
   const [level, setLevel] = useState(1);
   const [newWords, setNewWords] = useState(true);
@@ -24,33 +24,35 @@ function GameMemory() {
 
   useEffect(() => {
     setLoad(true);
-    api
-      .getWordsAll(level - 1)
-      .then((data) => action(data))
-      .catch((error) => console.error(error))
+
+    const randomPages = getRandomPages(level - 1);
+    let result = [];
+
+    Promise.all(randomPages.map((el) => api.getWordsAll(el.level, el.page)))
+      .then((data) => (result = [...result, ...data]))
+      .then((data) => setWords(data.flat()))
+      .catch((err) => console.error(err))
       .finally(() => setLoad(false));
     return () => {
-      setWords([]);
-      setNewWords(false);
+      /* setWords([]);
+      setNewWords(false); */
     };
   }, [api, level]);
 
-  const action = (data) => {
-    if (newWords && data) {
-      mixed(data);
-      data.length = 10;
-      setEnglishWords(mixed(data));
-      setRussianWords(mixed(data));
+  const getRandomPages = (level) => {
+    let pages = [];
+
+    for (let i = 0; i < 10; i++) {
+      const randomPage = getRandomInt(29);
+      if (pages.some((el) => el.page === randomPage)) {
+        i--;
+      } else {
+        pages.push({page: randomPage, level});
+      }
     }
-    setWords(data);
+
+    return pages;
   };
-
-  function mixed(array) {
-    array.sort(() => Math.random() - 0.5);
-
-    const mixedArray = JSON.stringify(array);
-    return JSON.parse(mixedArray);
-  }
 
   return (
     <div className={classes['container-memory']}>
@@ -66,12 +68,11 @@ function GameMemory() {
         <Game
           setGameOver={setGameOver}
           setResults={setResults}
-          setWords={setWords}
           setStartGame={setStartGame}
           setSoundStatus={setSoundStatus}
-          englishWords={englishWords}
-          russianWords={russianWords}
+          setWords={setWords}
           words={words}
+          newWords={newWords}
           startGame={startGame}
           results={results}
           load={load}

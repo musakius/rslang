@@ -38,8 +38,8 @@ function Game({
     document.addEventListener('keypress', keyControl);
     return () => {
       document.removeEventListener('keypress', keyControl);
-      setMarks(['empty', 'empty', 'empty']);
-      setTargets(['empty', 'empty', 'empty']);
+      /* setMarks(['empty', 'empty', 'empty']);
+      setTargets(['empty', 'empty', 'empty']); */
     };
   }, [count]);
 
