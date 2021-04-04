@@ -9,7 +9,7 @@ import GameSprint from '../pages/GameSprint';
 import GameMemory from '../pages/GameMemory';
 import Stat from '../pages/Statistics';
 import Textbook from '../pages/Textbook';
-import Dictionary from '../pages/Textbook/Components/Dictionary/Dictionary';
+import Dictionary from '../pages/Dictionary';
 
 export const useRoutes = (isAuthenticated) => {
   if (isAuthenticated) {

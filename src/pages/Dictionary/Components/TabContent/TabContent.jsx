@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router';
-import SectionContent from '../../../SectionContent';
+import SectionContent from '../../../Textbook/Components/SectionContent';
 
 const TabContent = () => {
     const { url } = useRouteMatch();

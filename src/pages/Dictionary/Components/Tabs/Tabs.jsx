@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { dictionaryItems } from '../../../../config';
+import { dictionaryItems } from '../../../Textbook/config';
 
 const Tabs = () => {
   const savedSection = localStorage.getItem('dictionarySection') || 0;

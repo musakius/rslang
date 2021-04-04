@@ -1,5 +1,5 @@
 import React from 'react';
-import { items } from '../../../../config';
+import { items } from '../../../Textbook/config';
 
 const Description = ({ group }) => {
   const description = items.filter((item) => item.group === +group)[0]

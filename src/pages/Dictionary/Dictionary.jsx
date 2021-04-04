@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
-import Button from '../Button/Button';
+import Button from '../Textbook/Components/Button';
 import Tabs from './Components/Tabs';
-import Sections from '../Sections/Sections';
+import Sections from '../Textbook/Components/Sections';
 import TabContent from './Components/TabContent';
-import Links from '../Links/Links';
+import Links from '../Textbook/Components/Links';
 
 const Dictionary = () => {
   const currentGroup = localStorage.getItem('textbookGroup') || 0;

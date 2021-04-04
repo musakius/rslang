@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import WordCard from "./WordCard";
 import PaginationComponent from "../Pagination/";
 import { Carousel } from "react-responsive-carousel";
-import Error from "../../Error/Error";
+import Error from "../../../../components/Error/Error";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const Page = ({ wordsSet, handlePageChange, page }) => {

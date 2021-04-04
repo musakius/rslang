@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useRouteMatch, Route, Switch, Redirect } from 'react-router-dom';
 import Button from './Components/Button/Button';
-import Description from './Components/Dictionary/Components/Description';
+import Description from '../Dictionary/Components/Description';
 import Links from './Components/Links/Links';
 import SectionContent from './Components/SectionContent';
 import Sections from './Components/Sections/Sections';

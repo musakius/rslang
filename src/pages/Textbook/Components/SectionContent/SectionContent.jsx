@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router-dom";
 import Service from "../../../../services";
-import Error from "../../Error/";
+import Error from "../../../../components/Error";
 import Spinner from "../Spinner/";
 import Page from "./Page";
 
