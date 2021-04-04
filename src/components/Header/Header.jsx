@@ -13,6 +13,8 @@ const Header = () => {
         window.location.reload()
     }
 
+    const user = JSON.parse(localStorage.getItem('user'))
+
     return (
         <header>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -37,37 +39,33 @@ const Header = () => {
                             </NavLink>
                         </li>
 
-                        {localStorage.getItem('user') && localStorage.getItem('reduxState') !== null ?
-                            (
-                                <li className="nav-item border-right-0">
-                                    <NavLink to='/'
-                                             style={{
-                                                 position: 'absolute',
-                                                 right: '0'
-                                             }}
-                                             className="nav-link info"
-                                             onClick={logoutHandler}>
-                                        Выйти
-                                    </NavLink>
-                                </li>
-                            )
-                            :
-                            (
-                                <li className="nav-item">
-                                    <NavLink
-                                        style={{
-                                            position: 'absolute',
-                                            right: '0'
-                                        }}
-                                        className="nav-link"
-                                        to='/login'>
-                                        Войти
-                                    </NavLink>
-                                </li>
-                            )
-                        }
-
                     </ul>
+
+                    {localStorage.getItem('user') && localStorage.getItem('reduxState') !== null ?
+                        (
+                            <div className="form-inline my-2 my-lg-0">
+                                <span className="mr-sm-2">Приветствуем Вас, {user.name} !</span>
+                                <NavLink
+                                    to='/'
+                                    onClick={logoutHandler}
+                                    className="btn btn-secondary my-2 my-sm-0">
+                                    <i className="fas fa-sign-out-alt"></i>Выйти
+                                </NavLink>
+                            </div>
+                        )
+                        :
+                        (
+                            <div>
+                                <NavLink
+                                    to='/login'
+                                    className="btn btn-secondary my-2 my-sm-0"
+                                >
+                                    <i className="fas fa-sign-in-alt"></i>Войти
+                                </NavLink>
+                            </div>
+                        )
+                    }
+
                 </div>
             </nav>
         </header>
