@@ -3,6 +3,7 @@ import Button from '../Button/Button';
 import Tabs from './Components/Tabs';
 import Sections from '../Sections/Sections';
 import TabContent from './Components/TabContent';
+import Links from '../Links/Links';
 
 const Dictionary = () => {
   const currentGroup = localStorage.getItem('textbookGroup') || 0;
@@ -21,15 +22,22 @@ const Dictionary = () => {
           <div className="col-md-3">
             <Sections mode="dictionary" />
           </div>
-          <div className="col-md-7">
+          <div className="col-md-6">
             <TabContent />
           </div>
-          <div className="col-md-2">
-            <Button
-              path={`/textbook/group/${currentGroup}`}
-              text="Учебник"
-              style={'fab fa-leanpub'}
-            />
+          <div className="col-md-3">
+            <div className="container">
+              <biv className="card-body">
+                <Button
+                  path={`/textbook/group/${currentGroup}`}
+                  text="Учебник"
+                  style={'fab fa-leanpub'}
+                />
+              </biv>
+              <div className="card-body">
+                <Links />
+              </div>
+            </div>
           </div>
         </div>
       </div>

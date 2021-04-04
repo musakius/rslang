@@ -94,12 +94,13 @@ const WordCard = ({ wordObj, currentTheme, userId, token }) => {
         <div className="card-body">
           <div className={classes.card}>
             <div
-              className={`${classes.image} card-body`}
+              className={`${classes.image} card-body p-0 `}
               style={{
                 backgroundImage: `url(${imgURL})`,
               }}
             />
-            <div className="card-body">
+            <div className="card-body align-self-start p-0 ml-2">
+              <div className=' d-flex flex-column m-0'>
               <h4 className="card-title">{`${wordObj.word} ${wordObj.transcription}`}</h4>
               {showTranslate && (
                 <h5 className="card-text text-dark">
@@ -107,6 +108,7 @@ const WordCard = ({ wordObj, currentTheme, userId, token }) => {
                   {wordObj.wordTranslate}
                 </h5>
               )}
+              </div>
             </div>
           </div>
           <div className="card-body">

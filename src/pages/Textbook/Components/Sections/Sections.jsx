@@ -53,7 +53,6 @@ const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
           </ul>
         </div>
       </div>
-      <Links />
     </div>
   );
 };

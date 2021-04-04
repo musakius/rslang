@@ -14,19 +14,14 @@ const SectionContent = () => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  let currentPage = localStorage.getItem("textbookPage") || 0;
-  const [page, setPage] = useState(currentPage);
-
-  let partUrl = `words?group=${group}`;
-  if (page) {
-    partUrl += `&page=${+page - 1}`;
-  }
+  let currentPage = localStorage.getItem("textbookPage") || 1;
+  const [page, setPage] = useState(+currentPage);
 
   const api = useMemo(() => new Service(), [group, page]);
 
   useEffect(() => {
     api
-      ._getResource(partUrl)
+      .getWordsAll(group, +page - 1)
       .then((result) => {
         setWordsSet(result);
         setIsLoaded(true);
