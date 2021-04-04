@@ -4,7 +4,7 @@ import Audio from '../Audio/';
 import classes from './SectionContent.module.scss';
 import Service from '../../../../services';
 
-const WordCard = ({ wordObj, currentTheme, userId, token }) => {
+const WordCard = ({ wordObj, currentTheme }) => {
   const settingBtn = useSelector((state) => state.settings.showButtons);
   const settingTranslate = useSelector((state) => state.settings.showTranslate);
   const [showHeader, setShowHeader] = useState(settingBtn);
@@ -49,21 +49,7 @@ const WordCard = ({ wordObj, currentTheme, userId, token }) => {
     }
   }, [mode, dictionarySection])
 
-  const setDifficultWord = (id) => {
-    console.log('id', id);
-    console.log('userId', userId);
-    console.log('token', token);
-
-    post.createUserWord({
-      userId,
-      wordId: id,
-      word: {
-        difficulty: 'weak',
-        optional: { testFieldString: 'test', testFieldBoolean: true },
-      },
-      token,
-    });
-  };
+  const setDifficultWord = (id) => {};
 
   const deleteWord = (id) => {};
 
@@ -142,8 +128,6 @@ const WordCard = ({ wordObj, currentTheme, userId, token }) => {
 const mapStateToProps = (state) => {
   return {
     currentTheme: state.theme.value,
-    userId: state.user.user[0].userId,
-    token: state.user.user[0].token,
   };
 };
 
