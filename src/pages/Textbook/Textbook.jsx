@@ -24,7 +24,6 @@ const Textbook = ({ setGameInfo }) => {
 
   const setInfo = (event) => {
     const tag = event.target.tagName.toUpperCase();
-    console.log('tag', tag);
     if (tag !== 'A' && tag !== 'I') {
       return;
     }
@@ -55,7 +54,7 @@ const Textbook = ({ setGameInfo }) => {
                 <Button
                   path={`/dictionary`}
                   text="Словарь"
-                  style="fas fa-book"
+                  style={"fas fa-book"}
                 />
               </div>
               <div className="card-body">

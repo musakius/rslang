@@ -17,7 +17,7 @@ const SectionContent = ({ setCurrentPage = () => {}}) => {
   let currentPage = localStorage.getItem("textbookPage") || 1;
   const [page, setPage] = useState(+currentPage);
 
-  const api = useMemo(() => new Service(), [group, page]);
+  const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
     api
@@ -32,7 +32,7 @@ const SectionContent = ({ setCurrentPage = () => {}}) => {
       setIsLoaded(false);
       setWordsSet([]);
     };
-  }, [api]);
+  }, [api, group, page]);
 
   const handlePageChange = (pageNum) => {
     localStorage.setItem("textbookPage", pageNum);

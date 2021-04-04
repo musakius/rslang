@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import WordCard from "./WordCard";
 import PaginationComponent from "../Pagination/";
 import { Carousel } from "react-responsive-carousel";

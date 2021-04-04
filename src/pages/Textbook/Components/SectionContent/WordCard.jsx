@@ -14,7 +14,6 @@ const WordCard = ({ wordObj, currentTheme }) => {
   const [btnColor, setBtnColor] = useState("btn-outline-danger");
   const mode = localStorage.getItem('userPage') || "";
   const dictionarySection = localStorage.getItem('dictionarySection') || "";
-  console.log('dictionarySection', dictionarySection);
 
   const imgURL = `https://apprslang.herokuapp.com/${wordObj.image}`;
   const audioURL = `https://apprslang.herokuapp.com/${wordObj.audio}`;

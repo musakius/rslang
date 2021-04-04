@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import classes from "../SectionContent/SectionContent.module.scss";
 
 const Audio = ({ audioURL, audioMeaningURL, audioExampleURL }) => {

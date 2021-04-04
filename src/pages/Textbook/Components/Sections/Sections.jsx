@@ -10,7 +10,6 @@ const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
   const { url } = useRouteMatch();
   const savedGroup = localStorage.getItem('textbookGroup') || 0;
   const [active, setActive] = useState(+savedGroup);
-  console.log('mode', mode);
   const handleChange = (e) => {
     let target = '';
     if (e.target.tagName.toUpperCase() !== 'A') {
