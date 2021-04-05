@@ -6,43 +6,48 @@ import Statistics from '../../components/gameComponents/Statistics';
 
 import classes from './GameMemory.module.scss';
 
+const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
+
 function GameMemory() {
   const [initGame, setInitGame] = useState(false);
   const [startGame, setStartGame] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [learnedWords, setLearnedWords] = useState(false);
   const [words, setWords] = useState([]);
-  const [englishWords, setEnglishWords] = useState([]);
-  const [russianWords, setRussianWords] = useState([]);
   const [results, setResults] = useState([]);
   const [level, setLevel] = useState(1);
   const [newWords, setNewWords] = useState(true);
   const [load, setLoad] = useState(false);
   const [soundStatus, setSoundStatus] = useState(true);
+  const [totalWorlds, setTotalWorlds] = useState(0);
 
   const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
     setLoad(true);
-    api
-      .getWordsAll(level - 1)
-      .then((data) => action(data))
-      .catch((error) => console.error(error))
+
+    const pages = getPages(level - 1);
+    let result = [];
+
+    Promise.all(pages.map((el) => api.getWordsAll(el.level, el.page)))
+      .then((data) => (result = [...result, ...data]))
+      .then((data) => {
+        console.log(data.flat().length);
+        setWords(data.flat());
+        setTotalWorlds(data.flat().length);
+      })
+      .catch((err) => console.error(err))
       .finally(() => setLoad(false));
-    return () => {
-      setWords([]);
-      setNewWords(false);
-    };
   }, [api, level]);
 
-  const action = (data) => {
-    if (newWords && data) {
-      mixed(data);
-      data.length = 10;
-      setEnglishWords(mixed(data));
-      setRussianWords(mixed(data));
+  const getPages = (level) => {
+    let pages = [];
+
+    for (let i = 0; i < 30; i++) {
+      pages.push({page: i, level});
     }
-    setWords(data);
+
+    return mixed(pages);
   };
 
   function mixed(array) {
@@ -66,16 +71,17 @@ function GameMemory() {
         <Game
           setGameOver={setGameOver}
           setResults={setResults}
-          setWords={setWords}
           setStartGame={setStartGame}
           setSoundStatus={setSoundStatus}
-          englishWords={englishWords}
-          russianWords={russianWords}
+          setWords={setWords}
           words={words}
+          newWords={newWords}
           startGame={startGame}
           results={results}
           load={load}
           soundStatus={soundStatus}
+          totalWorlds={totalWorlds}
+          mixed={mixed}
         ></Game>
       ) : null}
       {!gameOver && !initGame ? (
@@ -85,9 +91,7 @@ function GameMemory() {
           description="Цель игры – найти как можно больше парных карточек."
           setInitGame={setInitGame}
           setLevel={setLevel}
-          setLearnedWords={setLearnedWords}
           level={level}
-          learnedWords={learnedWords}
         ></StartScreen>
       ) : null}
     </div>

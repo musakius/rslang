@@ -4,6 +4,7 @@ import Timer from '../../../../components/gameComponents/Timer';
 import Spinner from '../../../../components/Spinner';
 import Pronounce from '../../../../components/gameComponents/Pronounce';
 import ToggleSound from '../../../../components/gameComponents/ToggleSound';
+import CountWorlds from '../../../../components/gameComponents/CountWorlds';
 import classes from './Game.module.scss';
 
 let targetsCombo = 0;
@@ -38,16 +39,15 @@ function Game({
     document.addEventListener('keypress', keyControl);
     return () => {
       document.removeEventListener('keypress', keyControl);
-      setMarks(['empty', 'empty', 'empty']);
-      setTargets(['empty', 'empty', 'empty']);
     };
-  }, [count]);
+  }, [count, load]);
 
   const keyControl = (e) => {
     e.preventDefault();
     e = e || window.event;
-    if (count === words.length - 1) setGameOver(true); //TODO fix error words[20]
+    if (count === words.length - 1) setGameOver(true); //TODO fix error words[max]
     if (e.keyCode === 37) {
+      console.log(words);
       onAnswer(words[count], false);
     } else if (e.keyCode === 39) {
       onAnswer(words[count], true);
@@ -91,6 +91,7 @@ function Game({
   };
 
   const onAnswer = (word, answer) => {
+    console.log(word);
     word.correctAnswer = word.correctFlag === answer;
     word.correctAnswer ? audioPlay('right', soundStatus) : audioPlay('wrong', soundStatus);
 
@@ -114,7 +115,8 @@ function Game({
 
             <Exit />
           </div>
-          <div className={classes['score-container']}>
+          <div className={classes['panel']}>
+            <CountWorlds count={count + 1} totalCount={words.length} />
             <p className={classes.score}>{score}</p>
             <ToggleSound setSoundStatus={setSoundStatus} soundStatus={soundStatus} />
           </div>

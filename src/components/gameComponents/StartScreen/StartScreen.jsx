@@ -10,9 +10,7 @@ const StartScreen = ({
   description,
   setInitGame,
   setLevel,
-  setLearnedWords,
   level,
-  learnedWords
 }) => {
   return (
     <section className={classes['container-start-screen']}>
@@ -28,21 +26,6 @@ const StartScreen = ({
         <p className={classes['game-description']}>{description}</p>
         <div className={classes['wrapper-switcher']}>
           <SwitcherLevel setLevel={setLevel} level={level} />
-          <div className={classes['mode-wrapper']}>
-            <p className={classes['mode-description']}>Только из словаря:</p>
-            <label htmlFor="mode" className={classes['checkbox-container']}>
-              <input
-                name="mode"
-                id="mode"
-                type="checkbox"
-                className={classes.checkbox}
-                onChange={() => {
-                  setLearnedWords(!learnedWords);
-                }}
-              />
-              <span className={classes['check-mark']} />
-            </label>
-          </div>
         </div>
         <form className="mt-3">
           <button type="button" className="btn btn-info btn-lg" onClick={() => setInitGame(true)}>

@@ -82,12 +82,11 @@
   cursor: pointer;
 }
 
-.lives {
-  position: relative;
+.panel {
   width: 910px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 .card-block {
@@ -115,6 +114,18 @@
   border-radius: 8px;
 }
 
+.card-eng {
+  div {
+    position: relative;
+    i {
+      position: absolute;
+      color: #2b3e50;
+      top: 16px;
+      right: 17px;
+    }
+  }
+}
+
 .info {
   color: #fff;
 }
@@ -125,42 +136,42 @@
 
 @media (max-width: 1250px) {
   .container-game,
-  .lives {
+  .panel {
     width: 850px;
   }
 }
 
 @media (max-width: 1150px) {
   .container-game,
-  .lives {
+  .panel {
     width: 750px;
   }
 }
 
 @media (max-width: 1115px) {
   .container-game,
-  .lives {
+  .panel {
     width: 650px;
   }
 }
 
 @media (max-width: 930px) {
   .container-game,
-  .lives {
+  .panel {
     margin-left: 190px;
   }
 }
 
 @media (max-width: 860px) {
   .container-game,
-  .lives {
+  .panel {
     width: 600px;
   }
 }
 
 @media (max-width: 800px) {
   .container-game,
-  .lives {
+  .panel {
     width: 500px;
   }
 
@@ -184,7 +195,7 @@
 
 @media (orientation: portrait) and (max-width: 575px) {
   .container-game,
-  .lives {
+  .panel {
     /* display: block; */
     width: 100vw;
     height: 100vh;
@@ -196,7 +207,7 @@
     flex: 4;
   }
 
-  .lives {
+  .panel {
     margin-top: 10px;
     flex-direction: column;
   }

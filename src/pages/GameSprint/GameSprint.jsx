@@ -24,31 +24,32 @@ function GameSprint() {
   useEffect(() => {
     setLoad(true);
 
-    const randomPages = getRandomPages(level - 1);
+    const pages = getPages(level - 1);
     let result = [];
 
-    Promise.all(randomPages.map((el) => api.getWordsAll(el.level, el.page)))
+    Promise.all(pages.map((el) => api.getWordsAll(el.level, el.page)))
       .then((data) => (result = [...result, ...data]))
       .then((data) => action(data.flat()))
       .catch((err) => console.error(err))
       .finally(() => setLoad(false));
-    return () => setWords([]);
   }, [api, level]);
 
-  const getRandomPages = (level) => {
+  const getPages = (level) => {
     let pages = [];
 
-    for (let i = 0; i < 10; i++) {
-      const randomPage = getRandomInt(29);
-      if (pages.some((el) => el.page === randomPage)) {
-        i--;
-      } else {
-        pages.push({page: randomPage, level});
-      }
+    for (let i = 0; i < 30; i++) {
+      pages.push({page: i, level});
     }
 
-    return pages;
+    return mixed(pages);
   };
+
+  function mixed(array) {
+    array.sort(() => Math.random() - 0.5);
+
+    const mixedArray = JSON.stringify(array);
+    return JSON.parse(mixedArray);
+  }
 
   const action = (data) => {
     /* const path = learnedWords ? data[0].paginatedResults : data; */
@@ -95,9 +96,7 @@ function GameSprint() {
           description="Игра учит быстро переводить слова."
           setInitGame={setInitGame}
           setLevel={setLevel}
-          setLearnedWords={setLearnedWords}
           level={level}
-          learnedWords={learnedWords}
         ></StartScreen>
       ) : null}
     </div>
