@@ -1,30 +1,37 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { useParams } from "react-router-dom";
-import Service from "../../../../services";
-import Error from "../../../../components/Error";
-import Spinner from "../Spinner/";
-import Page from "./Page";
+import React, { useEffect, useMemo, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import Service from '../../../../services';
+import Error from '../../../../components/Error';
+import Spinner from '../Spinner/';
+import Page from './Page';
 
-const SectionContent = ({ setCurrentPage = () => {}}) => {
+const SectionContent = ({ setCurrentPage = () => {} }) => {
   const { group } = useParams();
   if (group) {
-    localStorage.setItem("textbookGroup", group);
+    localStorage.setItem('textbookGroup', group);
   }
   const [wordsSet, setWordsSet] = useState([]);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  let currentPage = localStorage.getItem("textbookPage") || 1;
+  let currentPage = localStorage.getItem('textbookPage') || 1;
   const [page, setPage] = useState(+currentPage);
 
   const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
+    const _page = +page - 1;
     api
-      .getWordsAll(group, +page - 1)
+      .getWordsAll(group, _page)
       .then((result) => {
         setWordsSet(result);
-        setIsLoaded(true);
+        api
+          .getAggregatedWordsAll(group, _page, 20, '"userWord.optional.isDeleted":true')
+          .then((userWords) => {
+            setIsLoaded(true);
+            setWordsSet(filterWords(result, userWords[0].paginatedResults));
+          })
+          .catch((error) => setError(error.message));
       })
       .catch((error) => setError(error.message));
     return () => {
@@ -34,8 +41,13 @@ const SectionContent = ({ setCurrentPage = () => {}}) => {
     };
   }, [api, group, page]);
 
+  const filterWords = (result, userWords) => {
+    console.log('userWords', userWords);
+    return result.filter((word) => userWords.filter((userWord) => userWord._id == word.id).length === 0)
+  };
+
   const handlePageChange = (pageNum) => {
-    localStorage.setItem("textbookPage", pageNum);
+    localStorage.setItem('textbookPage', pageNum);
     setPage(pageNum);
     setCurrentPage(pageNum);
   };

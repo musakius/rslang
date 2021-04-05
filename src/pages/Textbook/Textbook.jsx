@@ -6,7 +6,7 @@ import Links from './Components/Links/Links';
 import SectionContent from './Components/SectionContent';
 import Sections from './Components/Sections/Sections';
 import { connect } from 'react-redux';
-import { setGameInfo } from '../../redux/actions';
+import { setGameInfo } from '../../redux/actions'; 
 
 const Textbook = ({ setGameInfo }) => {
   const { url } = useRouteMatch();
@@ -45,7 +45,7 @@ const Textbook = ({ setGameInfo }) => {
               <Route path={`${url}/group/:group`}>
                 <SectionContent setCurrentPage={setPage} />
               </Route>
-              <Redirect to="/textbook/group/0" />
+              <Redirect to={`/textbook/group/${savedGroup}`} />
             </Switch>
           </div>
           <div className="col-md-3">
