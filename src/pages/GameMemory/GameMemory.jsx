@@ -26,37 +26,36 @@ function GameMemory() {
   useEffect(() => {
     setLoad(true);
 
-    const randomPages = getRandomPages(level - 1);
+    const pages = getPages(level - 1);
     let result = [];
 
-    Promise.all(randomPages.map((el) => api.getWordsAll(el.level, el.page)))
+    Promise.all(pages.map((el) => api.getWordsAll(el.level, el.page)))
       .then((data) => (result = [...result, ...data]))
       .then((data) => {
+        console.log(data.flat().length);
         setWords(data.flat());
         setTotalWorlds(data.flat().length);
       })
       .catch((err) => console.error(err))
       .finally(() => setLoad(false));
-    return () => {
-      /* setWords([]);
-      setNewWords(false); */
-    };
   }, [api, level]);
 
-  const getRandomPages = (level) => {
+  const getPages = (level) => {
     let pages = [];
 
-    for (let i = 0; i < 10; i++) {
-      const randomPage = getRandomInt(29);
-      if (pages.some((el) => el.page === randomPage)) {
-        i--;
-      } else {
-        pages.push({page: randomPage, level});
-      }
+    for (let i = 0; i < 30; i++) {
+      pages.push({page: i, level});
     }
 
-    return pages;
+    return mixed(pages);
   };
+
+  function mixed(array) {
+    array.sort(() => Math.random() - 0.5);
+
+    const mixedArray = JSON.stringify(array);
+    return JSON.parse(mixedArray);
+  }
 
   return (
     <div className={classes['container-memory']}>
@@ -82,6 +81,7 @@ function GameMemory() {
           load={load}
           soundStatus={soundStatus}
           totalWorlds={totalWorlds}
+          mixed={mixed}
         ></Game>
       ) : null}
       {!gameOver && !initGame ? (

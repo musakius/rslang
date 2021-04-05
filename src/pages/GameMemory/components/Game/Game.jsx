@@ -27,7 +27,8 @@ function Game({
   results,
   load,
   soundStatus,
-  totalWorlds
+  totalWorlds,
+  mixed
 }) {
   const [count, setCount] = useState(0);
   const [idRussianWord, setIdRussianWord] = useState(null);
@@ -58,13 +59,6 @@ function Game({
       setRussianWords(mixed(currentData));
     }
   };
-
-  function mixed(array) {
-    array.sort(() => Math.random() - 0.5);
-
-    const mixedArray = JSON.stringify(array);
-    return JSON.parse(mixedArray);
-  }
 
   const checkResult = () => {
     setTimeout(() => {
