@@ -94,6 +94,11 @@ class Service {
     return await this._putResource(`users/${this._getUserId()}/statistics`, data);
   };
 
+  putUserWord = async (wordId, data = {}) => {
+    console.log('data', data);
+    return await this._putResource(`users/${this._getUserId()}/words/${wordId}`, data);
+  };
+
   // Delete
 
   _deleteResource = async (url, data = {}) => {

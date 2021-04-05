@@ -3,6 +3,7 @@ import { connect, useSelector } from 'react-redux';
 import Audio from '../Audio/';
 import classes from './SectionContent.module.scss';
 import Service from '../../../../services';
+import Error from '../../../../components/Error';
 
 const WordCard = ({ wordObj, currentTheme, setIsDeleted }) => {
   const settingBtn = useSelector((state) => state.settings.showButtons);
@@ -60,31 +61,28 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted }) => {
     if(disabled){
       return;
     }
-    api
-    .getUserWord(wordObj.id)
-    .then((result) => {
-      setUserWord(result);
-      console.log("word", result);
-      checkWord(result);
-    })
-    .catch((error) => console.log(error.message));
+    // api
+    // .getUserWord(wordObj.id)
+    // .then((result) => {
+    //   setUserWord(result);
+    //   console.log("word", result);
+    //   checkWord(result);
+    // })
+    // .catch((error) => +error.status !== 404 ? <Error error={error.message}></Error> : null);
   }, [api, queryMode])
 
-  const setDifficultWord = (id) => {
-    api.postWord(id, {"difficulty": "high", "optional": {isDifficult: true}});
-  };
-
-  const deleteWord = (id) => {
-    api.postWord(id, {"difficulty": "weak", "optional": {isDeleted: true}});
-  };
-
-  const restoreWord = (id) => {
-    api.postWord(id, {"difficulty": "weak", "optional": {isDeleted: false}});
-  }
-
   const updateWord = (id, mode) => {
-    const userWord = api.getUserWord(id);
-    console.log('userWord',userWord);
+    console.log('mode',mode);
+    console.log('id',id);
+    let difficulty = "weak";
+    let isDeleted = false;
+    if(mode === 'u') {
+      difficulty = 'high';
+    } else if(mode === 'd') {
+      isDeleted = true;
+      setQueryMode('d');
+    }
+    api.putUserWord(id, {difficulty, "optional": {isDeleted}});
   }
 
   const checkWord = (data) => {
@@ -107,7 +105,7 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted }) => {
             <button
               type="button"
               className={`btn btn-outline-secondary`}
-              onClick={() => setQueryMode('u')}
+              onClick={() => updateWord(wordObj.id, 'u')}
             >
               <i className="fas fa-brain mr-2"></i>
               Сложное слово
@@ -115,7 +113,7 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted }) => {
             <button
               type="button"
               className={`btn ${btnColor}`}
-              onClick={() => setQueryMode(btnMode)}
+              onClick={() => updateWord(wordObj.id, btnMode)}
             >
               <i className={`fas ${icon} mr-2`}></i>
               {button}
