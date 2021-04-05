@@ -23,7 +23,9 @@ class Service {
       }
     });
     if (!response.ok) {
-      throw new Error(`Could not fetch ${base + url}, received ${response.status}`);
+      let error = new Error(`Could not fetch ${base + url}, received ${response.status}`);
+      error.status = response.status;
+      throw error;
     }
 
     return await response.json();

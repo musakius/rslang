@@ -4,18 +4,17 @@ import Audio from '../Audio/';
 import classes from './SectionContent.module.scss';
 import Service from '../../../../services';
 import Error from '../../../../components/Error';
+import { updateWord } from '../../utils/queries';
 
-const WordCard = ({ wordObj, currentTheme, setIsDeleted }) => {
+const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage }) => {
   const settingBtn = useSelector((state) => state.settings.showButtons);
   const settingTranslate = useSelector((state) => state.settings.showTranslate);
   const [showHeader, setShowHeader] = useState(settingBtn);
   const [showTranslate, setShowTranslate] = useState(settingTranslate);
   const [button, setButton] = useState('Удалить');
   const [btnMode, setBtnMode] = useState('d');
-  const [queryMode, setQueryMode] = useState('');
-  const [userWord, setUserWord] = useState('');
-  const [isDifficult, setIsDifficult] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [error, setError] = useState(null);
   const [icon, setIcon] = useState('fa-trash-alt');
   const [btnColor, setBtnColor] = useState("btn-outline-danger");
   const mode = localStorage.getItem('userPage') || "";
@@ -32,17 +31,17 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted }) => {
 
   useEffect(() => {
     setShowHeader(settingBtn);
-    return () => {};
+    return () => { };
   }, [settingBtn]);
 
   useEffect(() => {
     setShowTranslate(settingTranslate);
-    return () => {};
+    return () => { };
   }, [settingTranslate]);
 
   useEffect(() => {
-    if(mode === "dictionary") {
-      if(dictionarySection === '2') {
+    if (mode === "dictionary") {
+      if (dictionarySection === '2') {
         setShowHeader(true);
         setButton("Восстановить");
         setIcon('fa-trash-restore-alt');
@@ -57,32 +56,15 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted }) => {
     }
   }, [mode, dictionarySection])
 
-  useEffect(() => {
-    if(disabled){
-      return;
-    }
-    // api
-    // .getUserWord(wordObj.id)
-    // .then((result) => {
-    //   setUserWord(result);
-    //   console.log("word", result);
-    //   checkWord(result);
-    // })
-    // .catch((error) => +error.status !== 404 ? <Error error={error.message}></Error> : null);
-  }, [api, queryMode])
 
-  const updateWord = (id, mode) => {
-    console.log('mode',mode);
-    console.log('id',id);
-    let difficulty = "weak";
-    let isDeleted = false;
-    if(mode === 'u') {
-      difficulty = 'high';
-    } else if(mode === 'd') {
-      isDeleted = true;
-      setQueryMode('d');
+  const updateCurrentWord = (id, mode) => {
+    const result = updateWord(api, id, mode);
+    console.log("result", result);
+    if (!result.error) {
+      setMessage(result.message);
+    } else {
+      setError(result.error);
     }
-    api.putUserWord(id, {difficulty, "optional": {isDeleted}});
   }
 
   const checkWord = (data) => {
@@ -91,7 +73,7 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted }) => {
       setIsDeleted(data.wordId);
       return;
     }
-    if(data && data.optional.isDifficult === true) {
+    if (data && data.optional.isDifficult === true) {
       setDisabled(true);
       return;
     }
@@ -105,7 +87,7 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted }) => {
             <button
               type="button"
               className={`btn btn-outline-secondary`}
-              onClick={() => updateWord(wordObj.id, 'u')}
+              onClick={() => updateCurrentWord(wordObj.id, 'u')}
             >
               <i className="fas fa-brain mr-2"></i>
               Сложное слово
@@ -113,7 +95,7 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted }) => {
             <button
               type="button"
               className={`btn ${btnColor}`}
-              onClick={() => updateWord(wordObj.id, btnMode)}
+              onClick={() => updateCurrentWord(wordObj.id, btnMode)}
             >
               <i className={`fas ${icon} mr-2`}></i>
               {button}
@@ -131,13 +113,13 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted }) => {
             />
             <div className="card-body align-self-start p-0 ml-2">
               <div className=' d-flex flex-column m-0'>
-              <h4 className="card-title">{`${wordObj.word} ${wordObj.transcription}`}</h4>
-              {showTranslate && (
-                <h5 className="card-text text-dark">
-                  {' '}
-                  {wordObj.wordTranslate}
-                </h5>
-              )}
+                <h4 className="card-title">{`${wordObj.word} ${wordObj.transcription}`}</h4>
+                {showTranslate && (
+                  <h5 className="card-text text-dark">
+                    {' '}
+                    {wordObj.wordTranslate}
+                  </h5>
+                )}
               </div>
             </div>
           </div>
