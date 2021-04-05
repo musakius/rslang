@@ -62,20 +62,15 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage }) => {
     console.log("result", result);
     if (!result.error) {
       setMessage(result.message);
+      if (mode === 'u') {
+        const diffcltBtn = document.getElementById(`diffcltBtn${id}`);
+        diffcltBtn.disabled = true;
+      }
+      if(mode === 'd') {
+        setIsDeleted(id);
+      }
     } else {
       setError(result.error);
-    }
-  }
-
-  const checkWord = (data) => {
-    setDisabled(false);
-    if (data && data.optional.isDeleted === true) {
-      setIsDeleted(data.wordId);
-      return;
-    }
-    if (data && data.optional.isDifficult === true) {
-      setDisabled(true);
-      return;
     }
   }
 
@@ -85,6 +80,7 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage }) => {
         {showHeader ? (
           <div className="card-header d-flex justify-content-between">
             <button
+              id={`diffcltBtn${wordObj.id}`}
               type="button"
               className={`btn btn-outline-secondary`}
               onClick={() => updateCurrentWord(wordObj.id, 'u')}
