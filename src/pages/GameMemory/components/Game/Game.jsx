@@ -4,6 +4,8 @@ import Lives from '../Lives';
 import Timer from '../../../../components/gameComponents/Timer';
 import Exit from '../../../../components/gameComponents/Exit';
 import ToggleSound from '../../../../components/gameComponents/ToggleSound';
+import Pronounce from '../../../../components/gameComponents/Pronounce';
+import CountWorlds from '../../../../components/gameComponents/CountWorlds';
 import Spinner from '../../../../components/Spinner';
 
 import classes from './Game.module.scss';
@@ -24,8 +26,10 @@ function Game({
   startGame,
   results,
   load,
-  soundStatus
+  soundStatus,
+  totalWorlds
 }) {
+  const [count, setCount] = useState(0);
   const [idRussianWord, setIdRussianWord] = useState(null);
   const [idEnglishWord, setIdEnglishWord] = useState(null);
   const [currentWorlds, setCurrentWorlds] = useState([]);
@@ -80,6 +84,7 @@ function Game({
       newCorrectAnswers.push(currentId);
       setCorrectAnswers(newCorrectAnswers);
       setDisabledBtn(true);
+      setCount(count + 1);
       if (correctAnswers.length % 10 === 0) action(words);
     } else {
       setLivesCount(livesCount - 1);
@@ -125,7 +130,8 @@ function Game({
           </div>
           <Exit />
         </div>
-        <div className={classes.lives}>
+        <div className={classes.panel}>
+          <CountWorlds count={count + 1} totalCount={totalWorlds} />
           <Lives livesCount={livesCount} setGameOver={setGameOver} />
           <ToggleSound setSoundStatus={setSoundStatus} soundStatus={soundStatus} />
         </div>
@@ -134,17 +140,19 @@ function Game({
             {words.length
               ? englishWords
                   .filter((x, i) => i < 10)
-                  .map(({word, id}) => (
-                    <Card
-                      key={id}
-                      onCardClick={() => cardHandler(id, idRussianWord, setIdEnglishWord)}
-                      isActive={idEnglishWord === id}
-                      isRight={isRight}
-                      isCorrect={correctAnswers.indexOf(id) !== -1}
-                      disabledBtn={disabledBtn}
-                    >
-                      {word}
-                    </Card>
+                  .map(({word, audio, id}) => (
+                    <div key={id}>
+                      <Card
+                        onCardClick={() => cardHandler(id, idRussianWord, setIdEnglishWord)}
+                        isActive={idEnglishWord === id}
+                        isRight={isRight}
+                        isCorrect={correctAnswers.indexOf(id) !== -1}
+                        disabledBtn={disabledBtn}
+                      >
+                        {word}
+                      </Card>
+                      <Pronounce audio={audio} soundStatus={soundStatus} color="#2b3e50" />
+                    </div>
                   ))
               : false}
           </div>

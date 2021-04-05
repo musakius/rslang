@@ -95,9 +95,7 @@ function GameSprint() {
           description="Игра учит быстро переводить слова."
           setInitGame={setInitGame}
           setLevel={setLevel}
-          setLearnedWords={setLearnedWords}
           level={level}
-          learnedWords={learnedWords}
         ></StartScreen>
       ) : null}
     </div>

@@ -21,11 +21,11 @@ const audioWord = (url, setLoad, soundStatus) => {
   }
 };
 
-const Pronounce = ({audio, soundStatus}) => {
+const Pronounce = ({audio, soundStatus, color}) => {
   const [load, setLoad] = useState(false);
 
   return load ? (
-    <Spinner size="20px" />
+    <Spinner size="20px" color={color} />
   ) : (
     <i className="fas fa-volume-up" onClick={() => audioWord(audio, setLoad, soundStatus)} />
   );

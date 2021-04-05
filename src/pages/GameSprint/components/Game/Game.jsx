@@ -4,6 +4,7 @@ import Timer from '../../../../components/gameComponents/Timer';
 import Spinner from '../../../../components/Spinner';
 import Pronounce from '../../../../components/gameComponents/Pronounce';
 import ToggleSound from '../../../../components/gameComponents/ToggleSound';
+import CountWorlds from '../../../../components/gameComponents/CountWorlds';
 import classes from './Game.module.scss';
 
 let targetsCombo = 0;
@@ -114,7 +115,8 @@ function Game({
 
             <Exit />
           </div>
-          <div className={classes['score-container']}>
+          <div className={classes['panel']}>
+            <CountWorlds count={count + 1} totalCount={words.length} />
             <p className={classes.score}>{score}</p>
             <ToggleSound setSoundStatus={setSoundStatus} soundStatus={soundStatus} />
           </div>

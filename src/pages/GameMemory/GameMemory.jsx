@@ -19,6 +19,7 @@ function GameMemory() {
   const [newWords, setNewWords] = useState(true);
   const [load, setLoad] = useState(false);
   const [soundStatus, setSoundStatus] = useState(true);
+  const [totalWorlds, setTotalWorlds] = useState(0);
 
   const api = useMemo(() => new Service(), []);
 
@@ -30,7 +31,10 @@ function GameMemory() {
 
     Promise.all(randomPages.map((el) => api.getWordsAll(el.level, el.page)))
       .then((data) => (result = [...result, ...data]))
-      .then((data) => setWords(data.flat()))
+      .then((data) => {
+        setWords(data.flat());
+        setTotalWorlds(data.flat().length);
+      })
       .catch((err) => console.error(err))
       .finally(() => setLoad(false));
     return () => {
@@ -77,6 +81,7 @@ function GameMemory() {
           results={results}
           load={load}
           soundStatus={soundStatus}
+          totalWorlds={totalWorlds}
         ></Game>
       ) : null}
       {!gameOver && !initGame ? (
@@ -86,9 +91,7 @@ function GameMemory() {
           description="Цель игры – найти как можно больше парных карточек."
           setInitGame={setInitGame}
           setLevel={setLevel}
-          setLearnedWords={setLearnedWords}
           level={level}
-          learnedWords={learnedWords}
         ></StartScreen>
       ) : null}
     </div>

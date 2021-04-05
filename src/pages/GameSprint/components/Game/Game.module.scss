@@ -46,11 +46,10 @@
       }
     }
 
-    .score-container {
-      position: relative;
+    .panel {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: space-between;
       height: 100px;
       width: 100%;
       max-width: 460px;
