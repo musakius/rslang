@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Service from '../../../../services';
 import Error from '../../../../components/Error';
-import Spinner from '../Spinner/';
+import Spinner from '../../../../components/Spinner';
 import Page from './Page';
 
 const SectionContent = ({ setCurrentPage = () => {} }) => {
@@ -56,7 +56,7 @@ const SectionContent = ({ setCurrentPage = () => {} }) => {
     return <Error error={error} />;
   }
   if (!isLoaded) {
-    return <Spinner />;
+    return <Spinner size="40px" />;
   }
 
   return (
