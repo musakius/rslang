@@ -139,14 +139,19 @@
   width: fit-content;
 
   padding: 10px;
-
-  
+ 
   font-family: "Roboto", sans-serif;
   font-size: 19px;
   line-height: 1.4;
   color: black;
   background-color: #ffffff;
   border-radius: 5px;
+  transition: all 0.3s;
+}
+
+.answer:hover {
+  cursor: pointer;
+  background-color: yellow;
 }
 
 .error {
@@ -237,4 +242,24 @@
   padding: 10px;
 
   width: fit-content;
+}
+
+.sound-on {
+  background-color: lightgreen;
+}
+
+#sound-button {
+  position: absolute;
+  top: 35px;
+  right: 5px;
+
+  padding: 8px;
+
+  font-family: "Roboto", sans-serif;
+  font-size: 18px;
+  line-height: 1.4;
+  color: black;
+  border-radius: 5px;
+  border: none;
+  transition: all 0.3s;
 }

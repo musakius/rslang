@@ -15,7 +15,7 @@ const Gamefield = (props) => {
   const [errors, setErrors] = useState([]);
   const [winMusic] = useState(new Audio(winSound));
   const [falseMusic] = useState(new Audio(falseSound));
-  const [volume, setVolume] = useState(1);
+  const [goodAnswers, setGoodAnswers] = useState([]);
   
   let url = `https://apprslang.herokuapp.com/words?page=2&group=${props.complexity}`;
 
@@ -42,24 +42,28 @@ const Gamefield = (props) => {
     let answerId = event.target.id
     let questionId = variants[round].id;
     let question = document.querySelector('.question');
+    let soundButton = document.querySelector("#sound-button");
     
     question.classList.remove('question--active');
 
     if(answerId === questionId) {
       console.log('Правильно');
       event.target.classList.add('right');
-      winMusic.play();
-      winMusic.volume = volume;
-
+      if(soundButton.classList.contains('sound-on')) {
+        winMusic.play();
+      }
+      
       setTimeout(() => {
+        setGoodAnswers([...goodAnswers, variants[round]]);
         props.plusPoint();
         event.target.classList.remove('right');     
       }, 2000);
     } else if(props.lifes > 1) {
       console.log('Неправильно');
       event.target.classList.add('error');
-      falseMusic.play();
-      falseMusic.volume = volume;
+      if(soundButton.classList.contains('sound-on')) {
+        falseMusic.play();
+      }     
       
       setTimeout(() => {
         setErrors([...errors, variants[round]]);
@@ -68,8 +72,9 @@ const Gamefield = (props) => {
       }, 2000);
     } else {
       event.target.classList.add('error');
-      falseMusic.play();
-      falseMusic.volume = volume;
+      if(soundButton.classList.contains('sound-on')) {
+        falseMusic.play();
+      }      
 
       setTimeout(() => {
         setErrors([...errors, variants[round]]);
@@ -77,8 +82,7 @@ const Gamefield = (props) => {
         event.target.classList.remove('error');
         setFinishRound(true);
         console.log('Игра закончена');  
-      }, 2000);
-      
+      }, 2000);      
     }
 
     setTimeout(() => {
@@ -88,6 +92,7 @@ const Gamefield = (props) => {
   }
 
   function timeIsOver() {
+    let soundButton = document.querySelector("#sound-button");
     let question = document.querySelector('.question');
 
     if(props.lifes > 1 && round < 20) {
@@ -95,8 +100,9 @@ const Gamefield = (props) => {
       props.minusLife();
       question.classList.remove('question--active');
       setErrors([...errors, variants[round]]);
-      falseMusic.play();
-      falseMusic.volume = volume;
+      if(soundButton.classList.contains('sound-on')) {
+        falseMusic.play();
+      }      
 
       setTimeout(() => {     
         question.classList.add('question--active'); 
@@ -108,18 +114,19 @@ const Gamefield = (props) => {
     }  
   }
   
-  function changeVolume() {
-    if(volume === 1) {
-      setVolume(0);
+  function changeVolume(event) {
+    if(event.target.className === "sound-on") {
+      event.target.className = "non-sound";
     } else {
-      setVolume(1);
+      event.target.className = "sound-on";
     }
+    console.log(event.target);
   }
 
   return (
     <>
       {finishRound
-        ? <EndGame errors={errors} points={props.points}/>
+        ? <EndGame goodAnswers={goodAnswers} errors={errors} points={props.points}/>
         : <>
             <Question timeIsOver={timeIsOver} round={round} variants={variants} />
             <Answers playerChoice={playerChoice} round={round} variants={variants} changeRound={changeRound} />

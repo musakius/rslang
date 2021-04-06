@@ -2,7 +2,7 @@ import React from 'react';
 
 const ToggleSound = (props) => {
   return (
-    <button onClick={props.changeVolume}>Нажать</button>
+    <button className="sound-on" id="sound-button" onClick={props.changeVolume}>Звук</button>
   )
 }
 export default ToggleSound;
