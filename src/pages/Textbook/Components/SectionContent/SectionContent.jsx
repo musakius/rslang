@@ -5,12 +5,13 @@ import Error from '../../../../components/Error';
 import Spinner from '../../../../components/Spinner';
 import Page from './Page';
 
-const SectionContent = ({ setCurrentPage = () => {} }) => {
+const SectionContent = ({ setCurrentPage = () => { } }) => {
   const { group } = useParams();
   if (group) {
     localStorage.setItem('textbookGroup', group);
   }
   const [wordsSet, setWordsSet] = useState([]);
+  const [userWords, setUserWords] = useState([]);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -20,31 +21,36 @@ const SectionContent = ({ setCurrentPage = () => {} }) => {
   const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
+    api.getUserWordsAll()
+      .then((result) => setUserWords(filterUserWords(result)))
+      .catch((error) => setError(error.message));
+  }, [api])
+
+  useEffect(() => {
     const _page = +page - 1;
     api
       .getWordsAll(group, _page)
-      .then((result) => {
-        setWordsSet(result);
-        api
-          .getAggregatedWordsAll(group, _page, 20, '"userWord.optional.isDeleted":true')
-          .then((userWords) => {
-            setIsLoaded(true);
-            setWordsSet(filterWords(result, userWords[0].paginatedResults));
-          })
-          .catch((error) => setError(error.message));
+      .then((wordsResult) => {
+        setWordsSet(filterWords(wordsResult, userWords))
+        setIsLoaded(true);
       })
       .catch((error) => setError(error.message));
     return () => {
-      setError(null);
       setIsLoaded(false);
+      setError(null);
       setWordsSet([]);
     };
-  }, [api, group, page]);
+  }, [api, group, page, userWords]);
 
-  const filterWords = (result, userWords) => {
-    console.log('userWords', userWords);
-    return result.filter((word) => userWords.filter((userWord) => userWord._id == word.id).length === 0)
+  const filterWords = (result, userWordsResult) => {
+    if (userWordsResult.length === 0) return result;
+    return result.filter((word) => userWordsResult.filter((userWord) => userWord.wordId === word.id).length === 0)
   };
+
+  const filterUserWords = (result) => {
+    if (result.length === 0) return result;
+    return result.filter((word) => word.optional.isDeleted === true)
+  }
 
   const handlePageChange = (pageNum) => {
     localStorage.setItem('textbookPage', pageNum);

@@ -65,6 +65,12 @@ class Service {
     );
   };
 
+  getUserWordsAll = async () => {
+    return await this._getResource(
+      `users/${this._getUserId()}/words`
+    );
+  };
+
   // Post
 
   _postResource = async (url, data = {}) => {
