@@ -18,7 +18,7 @@ const Table = ({gamesStats}) => {
 
   const getRightPercent = (data) => {
     const totalAnswers = data.rightAnswers + data.wrongAnswers;
-    const result = Math.round((data.rightAnswers * 100) / totalAnswers);
+    const result = ((data.rightAnswers * 100) / totalAnswers).toFixed(1);
     return result;
   };
 
@@ -107,7 +107,7 @@ const Table = ({gamesStats}) => {
           <tbody>{renderTBody(gamesStats)}</tbody>
         </table>
       )}
-      {!Object.keys(gamesStats).length && <h2>Нет результатов</h2>}
+      {!Object.keys(gamesStats).length && <h3>Нет результатов</h3>}
     </>
   );
 };
