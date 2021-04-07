@@ -7,7 +7,6 @@ import Error from '../../../../components/Error';
 import { updateWord } from '../../utils/queries';
 
 const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage, difficultyDisable }) => {
-  console.log('difficultyDisable', difficultyDisable)
   let token = null;
   if (localStorage.getItem('user')) {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -21,7 +20,6 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage, difficultyD
   const [showTranslate, setShowTranslate] = useState(settingTranslate);
   const [button, setButton] = useState('Удалить');
   const [btnMode, setBtnMode] = useState('d');
-  const [disable, setDisable] = useState(difficultyDisable);
   const [error, setError] = useState(null);
   const [icon, setIcon] = useState('fa-trash-alt');
   const [btnColor, setBtnColor] = useState("btn-outline-danger");
@@ -38,11 +36,12 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage, difficultyD
   const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
-    setBtnDisabled(wordObj.id, disable);
+    setBtnDisabled(wordObj.id, difficultyDisable);
   }, [wordObj]);
 
   useEffect(() => {
     setShowHeader(settingBtn);
+    //setBtnDisabled(wordObj.id, difficultyDisable);
     return () => { };
   }, [settingBtn]);
 
@@ -69,6 +68,7 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage, difficultyD
   }, [mode, dictionarySection])
 
   const setBtnDisabled = (id, disabled) => {
+    if (!document.getElementById(`diffcltBtn${id}`)) return;
     const diffcltBtn = document.getElementById(`diffcltBtn${id}`);
     diffcltBtn.disabled = disabled;
   }
