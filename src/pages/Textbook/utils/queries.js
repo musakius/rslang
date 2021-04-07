@@ -21,7 +21,7 @@ export const updateWord = (api, id, mode) => {
     api.getUserWord(id)
         .then(() => api.putUserWord(id, data))
         .catch((e) =>
-            e.status.toString() === '404'
+            e.status === 404
                 ? api.postWord(id, data)
                 : error = 'Что-то пошло не так... Попробуйте снова'
         );

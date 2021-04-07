@@ -6,14 +6,22 @@ import Service from '../../../../services';
 import Error from '../../../../components/Error';
 import { updateWord } from '../../utils/queries';
 
-const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage }) => {
+const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage, difficultyDisable }) => {
+  console.log('difficultyDisable', difficultyDisable)
+  let token = null;
+  if (localStorage.getItem('user')) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user.token) {
+      token = user.token;
+    }
+  }
   const settingBtn = useSelector((state) => state.settings.showButtons);
   const settingTranslate = useSelector((state) => state.settings.showTranslate);
   const [showHeader, setShowHeader] = useState(settingBtn);
   const [showTranslate, setShowTranslate] = useState(settingTranslate);
   const [button, setButton] = useState('Удалить');
   const [btnMode, setBtnMode] = useState('d');
-  const [disabled, setDisabled] = useState(false);
+  const [disable, setDisable] = useState(difficultyDisable);
   const [error, setError] = useState(null);
   const [icon, setIcon] = useState('fa-trash-alt');
   const [btnColor, setBtnColor] = useState("btn-outline-danger");
@@ -28,6 +36,10 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage }) => {
   const audioExampleURL = `${baseUrl}${wordObj.audioExample}`;
 
   const api = useMemo(() => new Service(), []);
+
+  useEffect(() => {
+    setBtnDisabled(wordObj.id, disable);
+  }, [wordObj]);
 
   useEffect(() => {
     setShowHeader(settingBtn);
@@ -56,6 +68,10 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage }) => {
     }
   }, [mode, dictionarySection])
 
+  const setBtnDisabled = (id, disabled) => {
+    const diffcltBtn = document.getElementById(`diffcltBtn${id}`);
+    diffcltBtn.disabled = disabled;
+  }
 
   const updateCurrentWord = (id, mode) => {
     const result = updateWord(api, id, mode);
@@ -63,10 +79,9 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage }) => {
     if (!result.error) {
       setMessage(result.message);
       if (mode === 'u') {
-        const diffcltBtn = document.getElementById(`diffcltBtn${id}`);
-        diffcltBtn.disabled = true;
+        setBtnDisabled(id, true);
       }
-      if(mode === 'd') {
+      if (mode === 'd') {
         setIsDeleted(id);
       }
     } else {
@@ -100,7 +115,12 @@ const WordCard = ({ wordObj, currentTheme, setIsDeleted, setMessage }) => {
         ) : null}
 
         <div className="card-body">
-          <div className={classes.card}>
+          {difficultyDisable &&
+            <div className='m-0 p-0 d-flex flex-row justify-content-center align-items-center'>
+              <i className="fas fa-brain mr-2 fa-sm text-danger">{` Вы отметили это слово, как сложное`}</i>
+            </div>
+          }
+          <div className={`${classes.card} card-body`}>
             <div
               className={`${classes.image} card-body p-0 `}
               style={{

@@ -7,11 +7,19 @@ import Page from './Page';
 
 const SectionContent = ({ setCurrentPage = () => { } }) => {
   const { group } = useParams();
+  let token = null;
   if (group) {
     localStorage.setItem('textbookGroup', group);
   }
+  if (localStorage.getItem('user')) {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if(user.token) {
+      token = user.token;
+    }
+  }
   const [wordsSet, setWordsSet] = useState([]);
-  const [userWords, setUserWords] = useState([]);
+  const [userDeletedWords, setUserDeletedWords] = useState([]);
+  const [userDifficultWords, setUserDifficultWords] = useState([]);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -21,8 +29,16 @@ const SectionContent = ({ setCurrentPage = () => { } }) => {
   const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
+    if(!token) {
+      setUserDeletedWords([]);
+      setUserDifficultWords([])
+      return;
+    }
     api.getUserWordsAll()
-      .then((result) => setUserWords(filterUserWords(result)))
+      .then((result) => {
+        setUserDeletedWords(filterUserDeletedWords(result));
+        setUserDifficultWords(filterUserDifficultyWords(result));
+      })
       .catch((error) => setError(error.message));
   }, [api])
 
@@ -31,7 +47,7 @@ const SectionContent = ({ setCurrentPage = () => { } }) => {
     api
       .getWordsAll(group, _page)
       .then((wordsResult) => {
-        setWordsSet(filterWords(wordsResult, userWords))
+        setWordsSet(filterWords(wordsResult, userDeletedWords))
         setIsLoaded(true);
       })
       .catch((error) => setError(error.message));
@@ -40,18 +56,27 @@ const SectionContent = ({ setCurrentPage = () => { } }) => {
       setError(null);
       setWordsSet([]);
     };
-  }, [api, group, page, userWords]);
+  }, [api, group, page, userDeletedWords]);
 
   const filterWords = (result, userWordsResult) => {
     if (userWordsResult.length === 0) return result;
     return result.filter((word) => userWordsResult.filter((userWord) => userWord.wordId === word.id).length === 0)
   };
 
-  const filterUserWords = (result) => {
+  const filterUserDeletedWords = (result) => {
     if (result.length === 0) return result;
     return result.filter((word) => word.optional.isDeleted === true)
   }
-
+  const filterUserDifficultyWords = (result) => {
+    if (result.length === 0) return result;
+    return result.map((word) => {
+      if(word.difficulty === 'high') {
+        return word.wordId;
+      }
+      return null;
+    }).filter((id) => id !== null);
+  }
+console.log('userDifficultWords', userDifficultWords)
   const handlePageChange = (pageNum) => {
     localStorage.setItem('textbookPage', pageNum);
     setPage(pageNum);
@@ -73,6 +98,7 @@ const SectionContent = ({ setCurrentPage = () => { } }) => {
           setWordsSet={setWordsSet}
           handlePageChange={handlePageChange}
           page={page}
+          userDifficultWords={userDifficultWords}
         />
       ) : null}
     </div>
