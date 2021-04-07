@@ -8,12 +8,15 @@ import { changeTheme } from '../../../../redux/actions';
 
 const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
   const { url } = useRouteMatch();
-  const savedGroup = localStorage.getItem('textbookGroup') || 0;
+  const savedGroup =
+    mode === 'textbook'
+      ? localStorage.getItem('textbookGroup') || 0
+      : localStorage.getItem('dictionaryGroup') || 0;
   const [active, setActive] = useState(+savedGroup);
   let token = null;
   if (localStorage.getItem('user')) {
     const user = JSON.parse(localStorage.getItem('user'));
-    if(user.token) {
+    if (user.token) {
       token = user.token;
     }
   }

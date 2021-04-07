@@ -30,9 +30,9 @@ const Page = ({ wordsSet, setWordsSet, handlePageChange, page, userDifficultWord
           ? <Modal message={message} setShowModal={setShowModal} />
           : null
       }
-      <div className="container d-flex flex-column justify-content-center align-items-center">
+      <div className="d-flex flex-column justify-content-center align-items-center">
         <div className=" container carousel-wrapper ">
-          <Carousel showThumbs={false} useKeyboardArrows infiniteLoop>
+          <Carousel showThumbs={false} useKeyboardArrows infiniteLoop width='100%'>
             {wordsSet.map((word) => (
               <WordCard
                 key={word.id}

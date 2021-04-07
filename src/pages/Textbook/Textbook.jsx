@@ -14,6 +14,8 @@ const Textbook = ({ setGameInfo }) => {
   const savedPage = localStorage.getItem('textbookPage') || 0;
   const [group, setGroup] = useState(savedGroup);
   const [page, setPage] = useState(savedPage);
+  const dictionaryGroup = localStorage.getItem('dictionaryGroup') || 0;
+
   let token = null;
   if (localStorage.getItem('user')) {
     const user = JSON.parse(localStorage.getItem('user'));
@@ -50,7 +52,7 @@ const Textbook = ({ setGameInfo }) => {
           <div className="col-md-6">
             <Switch>
               <Route path={`${url}/group/:group`}>
-                <SectionContent setCurrentPage={setPage} />
+                <SectionContent setCurrentPage={setPage} mode='textbook' />
               </Route>
               <Redirect to={`/textbook/group/${savedGroup}`} />
             </Switch>
@@ -59,7 +61,7 @@ const Textbook = ({ setGameInfo }) => {
             <div className="container">
               <div className="card-body pt-0">
                 <Button
-                  path={token ? `/dictionary` : '/login'}
+                  path={token ? `/dictionary/${dictionaryGroup}` : '/login'}
                   text="Словарь"
                   style="fas fa-book"
                 />

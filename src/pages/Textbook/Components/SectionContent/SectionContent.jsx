@@ -4,16 +4,29 @@ import Service from '../../../../services';
 import Error from '../../../../components/Error';
 import Spinner from '../../../../components/Spinner';
 import Page from './Page';
+import {
+  filterWords,
+  filterUserDeletedWords,
+  filterUserDifficultyWords,
+} from './utils/filters';
 
-const SectionContent = ({ setCurrentPage = () => { } }) => {
+const SectionContent = ({
+  setCurrentPage = () => {},
+  dictionarySection = '',
+  mode,
+}) => {
   const { group } = useParams();
   let token = null;
   if (group) {
-    localStorage.setItem('textbookGroup', group);
+    if (mode === 'textbook') {
+      localStorage.setItem('textbookGroup', group);
+    } else {
+      localStorage.setItem('dictionaryGroup', group);
+    }
   }
   if (localStorage.getItem('user')) {
     const user = JSON.parse(localStorage.getItem('user'));
-    if(user.token) {
+    if (user.token) {
       token = user.token;
     }
   }
@@ -23,31 +36,43 @@ const SectionContent = ({ setCurrentPage = () => { } }) => {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  let currentPage = localStorage.getItem('textbookPage') || 1;
+  // 0 - studied words, 1 - difficult words, 2 - deleted words
+  const queryFilters = {
+    0: '"$and":[{"userWord.difficulty":"high", "userWord.optional.isStudied":true}]',
+    1: '"$and":[{"userWord.difficulty":"high"}]',
+    2: '"$and":[{"userWord.optional.isDeleted":true}]',
+  };
+
+  let currentPage =
+    mode === 'textbook'
+      ? localStorage.getItem('textbookPage') || 1
+      : localStorage.getItem('dictionaryPage') || 1;
   const [page, setPage] = useState(+currentPage);
 
   const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
-    if(!token) {
+    if (!token || mode === 'dictionary') {
       setUserDeletedWords([]);
-      setUserDifficultWords([])
+      setUserDifficultWords([]);
       return;
     }
-    api.getUserWordsAll()
+    api
+      .getUserWordsAll()
       .then((result) => {
         setUserDeletedWords(filterUserDeletedWords(result));
         setUserDifficultWords(filterUserDifficultyWords(result));
       })
       .catch((error) => setError(error.message));
-  }, [api])
+  }, [api, mode]);
 
   useEffect(() => {
+    if (!token || mode !== 'textbook') return;
     const _page = +page - 1;
     api
       .getWordsAll(group, _page)
       .then((wordsResult) => {
-        setWordsSet(filterWords(wordsResult, userDeletedWords))
+        setWordsSet(filterWords(wordsResult, userDeletedWords));
         setIsLoaded(true);
       })
       .catch((error) => setError(error.message));
@@ -56,29 +81,30 @@ const SectionContent = ({ setCurrentPage = () => { } }) => {
       setError(null);
       setWordsSet([]);
     };
-  }, [api, group, page, userDeletedWords]);
+  }, [api, group, page, userDeletedWords, mode]);
 
-  const filterWords = (result, userWordsResult) => {
-    if (userWordsResult.length === 0) return result;
-    return result.filter((word) => userWordsResult.filter((userWord) => userWord.wordId === word.id).length === 0)
-  };
+  useEffect(() => {
+    if (mode !== 'dictionary') return;
+    const _page = +page - 1;
+    api.getAggregatedWordsAll(group, _page, queryFilters[dictionarySection])
+    .then((result) => {
+      setWordsSet(result[0].paginatedResults);
+      setIsLoaded(true);
+    })
+    .catch((error) => setError(error.message));
+    return () => {
+      setIsLoaded(false);
+      setError(null);
+      setWordsSet([]);
+    };
+  }, [api, group, page, mode, dictionarySection]);
 
-  const filterUserDeletedWords = (result) => {
-    if (result.length === 0) return result;
-    return result.filter((word) => word.optional.isDeleted === true)
-  }
-  const filterUserDifficultyWords = (result) => {
-    if (result.length === 0) return result;
-    return result.map((word) => {
-      if(word.difficulty === 'high') {
-        return word.wordId;
-      }
-      return null;
-    }).filter((id) => id !== null);
-  }
-console.log('userDifficultWords', userDifficultWords)
+  console.log('userDifficultWords', userDifficultWords);
+
   const handlePageChange = (pageNum) => {
-    localStorage.setItem('textbookPage', pageNum);
+    mode === 'textbook'
+      ? localStorage.setItem('textbookPage', pageNum)
+      : localStorage.setItem('dictionaryPage', pageNum);
     setPage(pageNum);
     setCurrentPage(pageNum);
   };
@@ -89,7 +115,7 @@ console.log('userDifficultWords', userDifficultWords)
   if (!isLoaded) {
     return <Spinner size="40px" />;
   }
-
+console.log("dictionary wordsSet", wordsSet)
   return (
     <div>
       {wordsSet ? (
