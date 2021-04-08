@@ -5,13 +5,10 @@ const Games = () => {
   return (
     <>
       <div>GAMES</div>
-      <Link to="games/sprint">Sprint</Link>
-<<<<<<< HEAD
+      <Link to="games/sprint">Sprint</Link>    
+      <Link to="games/memory">Memory</Link>
       <div><Link to="games/savanna">Savanna</Link></div>
       <div><Link to="games/voice">Voice</Link></div>
-=======
-      <Link to="games/memory">Memory</Link>
->>>>>>> ba1b9959c792c0f2388680ba3ace5e484d523622
     </>
   );
 };
