@@ -3,6 +3,7 @@ import { useRoutes } from "./routes";
 import { connect } from "react-redux";
 import Header from "./Header";
 
+
 const App = ({ user }) => {
   let isAuth = false;
   if(localStorage.getItem("user")) {
