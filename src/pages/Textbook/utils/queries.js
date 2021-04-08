@@ -7,11 +7,15 @@ export const updateWord = (api, id, mode) => {
 
     const data = {
         difficulty: "weak",
-        optional: { isDeleted: false }
+        optional: { 
+            isDeleted: false,
+            isStudied: false, 
+        }
     }
     let successMessage = 'Слово успешно восстановлено';
     if (mode === 'u') {
         data.difficulty = 'high';
+        data.optional.isStudied = true;
         successMessage = 'Слово отмечено, как Сложное';
 
     } else if (mode === 'd') {

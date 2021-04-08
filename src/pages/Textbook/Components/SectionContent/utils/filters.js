@@ -23,3 +23,9 @@ export const filterUserDifficultyWords = (result) => {
     })
     .filter((id) => id !== null);
 };
+
+export const countPages = (length) => {
+  if (length === 0) return length;
+  if (length < 20) return 1;
+  return Math.ceil(length / 20);
+}

@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router';
 import SectionContent from '../../../Textbook/Components/SectionContent';
 
-const TabContent = ({ dictionarySection, setPage }) => {
+const TabContent = ({ dictionarySection, setPage, setQueryFilter }) => {
   const { url } = useRouteMatch();
   return (
     <Switch>
@@ -10,6 +10,7 @@ const TabContent = ({ dictionarySection, setPage }) => {
         <SectionContent
           setCurrentPage={setPage}
           dictionarySection={dictionarySection}
+          setQueryFilter={setQueryFilter}
           mode="dictionary"
         />
       </Route>

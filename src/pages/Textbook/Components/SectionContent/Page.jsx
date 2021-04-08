@@ -6,7 +6,7 @@ import Error from '../../../../components/Error/Error';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Modal from '../Modal';
 
-const Page = ({ wordsSet, setWordsSet, handlePageChange, page, userDifficultWords }) => {
+const Page = ({ wordsSet, setWordsSet, handlePageChange, page, userDifficultWords, totalPages }) => {
   const [isDeleted, setIsDeleted] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState(null);
@@ -44,7 +44,7 @@ const Page = ({ wordsSet, setWordsSet, handlePageChange, page, userDifficultWord
             ))}
           </Carousel>
         </div>
-        <PaginationComponent page={page} handlePageChange={handlePageChange} />
+        <PaginationComponent page={page} handlePageChange={handlePageChange} totalPages={totalPages} />
       </div>
     </>
   );

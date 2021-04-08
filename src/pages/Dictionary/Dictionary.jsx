@@ -10,8 +10,10 @@ import { setGameInfo } from '../../redux/actions';
 const Dictionary = ({ setGameInfo }) => {
   const savedGroup = localStorage.getItem('dictionaryGroup') || 0;
   const savedPage = localStorage.getItem('dictionaryPage') || 0;
+  const savedQueryFilter = localStorage.getItem('queryFilter') || '';
   const [group, setGroup] = useState(savedGroup);
   const [page, setPage] = useState(savedPage);
+  const [queryFilter, setQueryFilter] = useState(savedQueryFilter);
 
   const textbookGroup = localStorage.getItem('textbookGroup') || 0;
   const [dictionarySection, setDictionarySection] = useState();
@@ -28,7 +30,7 @@ const Dictionary = ({ setGameInfo }) => {
     if (tag !== 'A' && tag !== 'I') {
       return;
     }
-    setGameInfo(page, group, 'dictionary');
+    setGameInfo(page, group, 'dictionary', queryFilter);
   };
   return (
     <div className="container mt-5">
@@ -36,12 +38,13 @@ const Dictionary = ({ setGameInfo }) => {
         <div className="row">
           <Tabs setDictionarySection={setDictionarySection} />
           <div className="col-md-3">
-            <Sections mode="dictionary" />
+            <Sections mode="dictionary" setGroup={setGroup} />
           </div>
           <div className="col-md-6">
             <TabContent
               dictionarySection={dictionarySection}
               setPage={setPage}
+              setQueryFilter={setQueryFilter}
             />
           </div>
           <div className="col-md-3">

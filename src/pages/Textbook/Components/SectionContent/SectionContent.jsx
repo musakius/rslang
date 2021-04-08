@@ -8,12 +8,14 @@ import {
   filterWords,
   filterUserDeletedWords,
   filterUserDifficultyWords,
+  countPages,
 } from './utils/filters';
 
 const SectionContent = ({
-  setCurrentPage = () => {},
+  setCurrentPage = () => { },
   dictionarySection = '',
   mode,
+  setQueryFilter = () => { },
 }) => {
   const { group } = useParams();
   let token = null;
@@ -35,12 +37,13 @@ const SectionContent = ({
   const [userDifficultWords, setUserDifficultWords] = useState([]);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [totalPages, setTotalPages] = useState(30);
 
   // 0 - studied words, 1 - difficult words, 2 - deleted words
   const queryFilters = {
-    0: '"$and":[{"userWord.difficulty":"high", "userWord.optional.isStudied":true}]',
-    1: '"$and":[{"userWord.difficulty":"high"}]',
-    2: '"$and":[{"userWord.optional.isDeleted":true}]',
+    0: '"userWord.optional.isStudied":true',
+    1: '"userWord.difficulty":"high"',
+    2: '"userWord.optional.isDeleted":true',
   };
 
   let currentPage =
@@ -87,11 +90,14 @@ const SectionContent = ({
     if (mode !== 'dictionary') return;
     const _page = +page - 1;
     api.getAggregatedWordsAll(group, _page, queryFilters[dictionarySection])
-    .then((result) => {
-      setWordsSet(result[0].paginatedResults);
-      setIsLoaded(true);
-    })
-    .catch((error) => setError(error.message));
+      .then((result) => {
+        setWordsSet(result[0].paginatedResults);
+        localStorage.setItem('queryFilter', queryFilters[dictionarySection]);
+        setQueryFilter(queryFilters[dictionarySection]);
+        setIsLoaded(true);
+      })
+      .catch((error) => setError(error.message));
+    //dictionarySection === 1 ? setTotalPages(countPages(userDifficultWords.length)) : setTotalPages(countPages(userDeletedWords.length));
     return () => {
       setIsLoaded(false);
       setError(null);
@@ -100,6 +106,7 @@ const SectionContent = ({
   }, [api, group, page, mode, dictionarySection]);
 
   console.log('userDifficultWords', userDifficultWords);
+  console.log('userDeletedWords', userDeletedWords);
 
   const handlePageChange = (pageNum) => {
     mode === 'textbook'
@@ -115,7 +122,9 @@ const SectionContent = ({
   if (!isLoaded) {
     return <Spinner size="40px" />;
   }
-console.log("dictionary wordsSet", wordsSet)
+
+  console.log("dictionary wordsSet", wordsSet);
+  console.log('totalPages', totalPages);
   return (
     <div>
       {wordsSet ? (
@@ -124,6 +133,7 @@ console.log("dictionary wordsSet", wordsSet)
           setWordsSet={setWordsSet}
           handlePageChange={handlePageChange}
           page={page}
+          totalPages={totalPages}
           userDifficultWords={userDifficultWords}
         />
       ) : null}

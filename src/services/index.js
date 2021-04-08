@@ -47,10 +47,10 @@ class Service {
   getAggregatedWordsAll = async (
     group,
     page,
-    optional = '"userWord.optional.isDeleted":true'
+    optional = '"userWord":{"$exists": true}'
   ) => {
     return await this._getResource(
-      `users/${this._getUserId()}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=200&filter={${optional}}`
+      `users/${this._getUserId()}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20&filter={${optional}}`
     );
   };
 
