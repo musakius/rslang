@@ -70,7 +70,6 @@ const Gamefield = (props) => {
     overlayChange();
 
     if(answerId === questionId) {
-      console.log('Правильно');
       event.target.classList.add('right');
       if(soundButton.classList.contains('sound-on')) {
         winMusic.play();
@@ -82,7 +81,6 @@ const Gamefield = (props) => {
         event.target.classList.remove('right');     
       }, 2000);
     } else if(props.lifes > 1) {
-      console.log('Неправильно');
       event.target.classList.add('error');
       colorizeGoodAnswer();
       if(soundButton.classList.contains('sound-on')) {
@@ -104,8 +102,7 @@ const Gamefield = (props) => {
         setErrors([...errors, variants[round]]);
         props.minusLife();
         event.target.classList.remove('error');
-        setFinishRound(true);
-        console.log('Игра закончена');  
+        setFinishRound(true);  
       }, 2000);      
     }
 
@@ -120,7 +117,6 @@ const Gamefield = (props) => {
     } else {
       event.target.className = "sound-on";
     }
-    console.log(event.target);
   }
 
   return (
