@@ -1,24 +1,35 @@
-import { act } from "react-dom/test-utils";
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux';
 import {
   CHANGE_THEME,
   SHOW_BUTTONS,
   SHOW_TRANSLATE,
   TEST_METHOD,
-} from "../types/types";
+  USER_INFO,
+  GAME_INFO,
+} from '../types/types';
 
 const initialState = {
   testData: {},
 };
 
 const initialThemeState = {
-  value: "info",
+  value: 'info',
 };
 
 const initialSettingsState = {
-  settings: {
-    showButtons: true,
-    showTranslate: true,
+  showButtons: true,
+  showTranslate: true,
+};
+
+const initialUserState = {
+  user: [],
+};
+
+const initialGameState = {
+  gameInfo: {
+    pageNum: '',
+    groupNum: '',
+    page: '',
   },
 };
 
@@ -51,10 +62,34 @@ const settingsReducer = (state = initialSettingsState, action) => {
   }
 };
 
+const userReducer = (state = initialUserState, action) => {
+  switch (action.type) {
+    case USER_INFO:
+      return { ...state, user: action.payload };
+    default:
+      return state;
+  }
+};
+
+const gameInfoReducer = (state = initialGameState, action) => {
+  switch (action.type) {
+    case GAME_INFO:
+      return Object.assign({}, state, {
+        pageNum: action.pageNum,
+        groupNum: action.groupNum,
+        page: action.page,
+      });
+    default:
+      return state;
+  }
+};
+
 const reducer = combineReducers({
   testReducer,
   theme: themeReducer,
   settings: settingsReducer,
+  user: userReducer,
+  gameInfo: gameInfoReducer,
 });
 
 export default reducer;

@@ -10,19 +10,23 @@ const Settings = () => {
   const dispatch = useDispatch();
 
 
-  const handleTranslateChange = () => {
-    setShowTrnslt(!showTrnslt);
-    dispatch(showTranslate(!showTrnslt));
+  const handleTranslateChange = (event) => {
+    const target = event.target;
+    const value = target.checked;
+    setShowTrnslt(value);
+    dispatch(showTranslate(value));
   }
-  const handleBtnChange = () => {
-    setShowBtn(!showBtn);
-    dispatch(showButtons(!showBtn));
+  const handleBtnChange = (event) => {
+    const target = event.target;
+    const value = target.checked;
+    setShowBtn(value);
+    dispatch(showButtons(value));
   }
   return (
     <div className='card border-info mb-3'>
       <div className='card-header'>
-        <i className='fas fa-tools'></i>
-        &nbsp;Настройки
+        <i className='fas fa-tools mr-2'></i>
+        Настройки
       </div>
       <div className='card-body'>
         <fieldset className='form-group'>
@@ -32,7 +36,7 @@ const Settings = () => {
                 className='form-check-input'
                 type='checkbox'
                 checked={showTrnslt}
-                onChange={() => handleTranslateChange()}
+                onChange={(event) => handleTranslateChange(event)}
               />
               Отображать перевод
             </label>
@@ -43,7 +47,7 @@ const Settings = () => {
                 className='form-check-input'
                 type='checkbox'
                 checked={showBtn}
-                onChange={() => handleBtnChange()}
+                onChange={(event) => handleBtnChange(event)}
               />
               Отображать кнопки
             </label>

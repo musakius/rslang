@@ -6,8 +6,8 @@ const Button = ({ path, text, style }) => {
     <div className='btn btn-info'>
       <Link className='text-white' to={path}>
         {" "}
-        <i className={style}></i>
-        &nbsp;{text}
+        <i className={`${style} mr-2`}></i>
+        {text}
       </Link>
     </div>
   );

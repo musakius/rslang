@@ -1,7 +1,18 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import React, {useState} from 'react';
+import {NavLink, useHistory} from 'react-router-dom';
 
 const Header = () => {
+
+    const logoutHandler = (e) => {
+
+        e.preventDefault()
+
+        localStorage.removeItem('user')
+        localStorage.removeItem('reduxState')
+
+        window.location.reload()
+    }
+
     return (
         <header>
             <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -25,6 +36,37 @@ const Header = () => {
                                 Статистика
                             </NavLink>
                         </li>
+
+                        {localStorage.getItem('user') && localStorage.getItem('reduxState') !== null ?
+                            (
+                                <li className="nav-item border-right-0">
+                                    <NavLink to='/'
+                                             style={{
+                                                 position: 'absolute',
+                                                 right: '0'
+                                             }}
+                                             className="nav-link info"
+                                             onClick={logoutHandler}>
+                                        Выйти
+                                    </NavLink>
+                                </li>
+                            )
+                            :
+                            (
+                                <li className="nav-item">
+                                    <NavLink
+                                        style={{
+                                            position: 'absolute',
+                                            right: '0'
+                                        }}
+                                        className="nav-link"
+                                        to='/login'>
+                                        Войти
+                                    </NavLink>
+                                </li>
+                            )
+                        }
+
                     </ul>
                 </div>
             </nav>
