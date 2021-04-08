@@ -7,6 +7,7 @@ const Games = () => {
       <div>GAMES</div>
       <Link to="games/sprint">Sprint</Link>
       <div><Link to="games/savanna">Savanna</Link></div>
+      <div><Link to="games/voice">Voice</Link></div>
     </>
   );
 };
