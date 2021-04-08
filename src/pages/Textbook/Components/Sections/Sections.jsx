@@ -39,8 +39,8 @@ const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
       {mode === 'textbook' ? token ? <Settings /> : null : null}
       <div className="card border-info mb-3">
         <div className="card-header">
-          <i className="fas fa-list-ul mr-2"></i>
-          Меню
+          <i className="fas fa-folder-open mr-2"></i>
+          {'Раздел'}
         </div>
         <div className="card-body">
           <ul className="list-group" onClick={(e) => handleChange(e)}>

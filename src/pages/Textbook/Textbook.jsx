@@ -61,7 +61,7 @@ const Textbook = ({ setGameInfo }) => {
             <div className="container">
               <div className="card-body pt-0">
                 <Button
-                  path={token ? `/dictionary/${dictionaryGroup}` : '/login'}
+                  path={token ? `/dictionary/group/${dictionaryGroup}` : '/login'}
                   text="Словарь"
                   style="fas fa-book"
                 />

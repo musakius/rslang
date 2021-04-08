@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router';
 import SectionContent from '../../../Textbook/Components/SectionContent';
 
 const TabContent = ({ dictionarySection, setPage, setQueryFilter }) => {
@@ -14,7 +14,7 @@ const TabContent = ({ dictionarySection, setPage, setQueryFilter }) => {
           mode="dictionary"
         />
       </Route>
-      {/* <Redirect to='/textbook/group/0' /> */}
+      <Redirect to='/dictionary/group/0' />
     </Switch>
   );
 };

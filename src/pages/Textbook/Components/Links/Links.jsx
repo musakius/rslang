@@ -14,11 +14,10 @@ const Links = ({ setInfo }) => {
           {gamesList.map((game) => (
             <li
               key={game.id}
-              className="list-group-item list-group-item-action d-flex justify-content-start align-items-baseline"
+              className="list-group-item list-group-item-action d-flex justify-content-start align-items-baseline pl-2"
             >
               <Link key={game.id} className="text-white text-decoration-none" to={`${game.path}`}>
-                <i className={`${game.style}`}></i>
-                {game.item}
+                <i className={`${game.style}`}></i>{` ${game.item}`}
               </Link>
             </li>
           ))}

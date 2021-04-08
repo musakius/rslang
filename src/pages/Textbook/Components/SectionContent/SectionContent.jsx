@@ -12,10 +12,10 @@ import {
 } from './utils/filters';
 
 const SectionContent = ({
-  setCurrentPage = () => { },
+  setCurrentPage = () => {},
   dictionarySection = '',
   mode,
-  setQueryFilter = () => { },
+  setQueryFilter = () => {},
 }) => {
   const { group } = useParams();
   let token = null;
@@ -70,15 +70,15 @@ const SectionContent = ({
   }, [api, mode]);
 
   useEffect(() => {
-    if (!token || mode !== 'textbook') return;
+    if (mode !== 'textbook') return;
     const _page = +page - 1;
     api
       .getWordsAll(group, _page)
       .then((wordsResult) => {
         setWordsSet(filterWords(wordsResult, userDeletedWords));
-        setIsLoaded(true);
       })
-      .catch((error) => setError(error.message));
+      .catch((error) => setError(error.message))
+      .finally(setIsLoaded(true));
     return () => {
       setIsLoaded(false);
       setError(null);
@@ -89,14 +89,15 @@ const SectionContent = ({
   useEffect(() => {
     if (mode !== 'dictionary') return;
     const _page = +page - 1;
-    api.getAggregatedWordsAll(group, _page, queryFilters[dictionarySection])
+    api
+      .getAggregatedWordsByGroup(group, _page, queryFilters[dictionarySection])
       .then((result) => {
         setWordsSet(result[0].paginatedResults);
         localStorage.setItem('queryFilter', queryFilters[dictionarySection]);
         setQueryFilter(queryFilters[dictionarySection]);
-        setIsLoaded(true);
       })
-      .catch((error) => setError(error.message));
+      .catch((error) => setError(error.message))
+      .finally(setIsLoaded(true));
     //dictionarySection === 1 ? setTotalPages(countPages(userDifficultWords.length)) : setTotalPages(countPages(userDeletedWords.length));
     return () => {
       setIsLoaded(false);
@@ -123,7 +124,7 @@ const SectionContent = ({
     return <Spinner size="40px" />;
   }
 
-  console.log("dictionary wordsSet", wordsSet);
+  console.log('dictionary wordsSet', wordsSet);
   console.log('totalPages', totalPages);
   return (
     <div>

@@ -2,6 +2,7 @@ const base = 'https://apprslang.herokuapp.com/';
 
 class Service {
   _getToken = () => {
+    if (!localStorage.getItem('user')) return '';
     const user = JSON.parse(localStorage.getItem('user'));
     return user.token ? `Bearer ${user.token}` : '';
   };
@@ -44,7 +45,7 @@ class Service {
       `users/${this._getUserId()}/aggregatedWords?&filter={${optional}}`
     );
   };
-  getAggregatedWordsAll = async (
+  getAggregatedWordsByGroup = async (
     group,
     page,
     optional = '"userWord":{"$exists": true}'
