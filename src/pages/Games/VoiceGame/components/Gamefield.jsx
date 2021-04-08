@@ -34,14 +34,12 @@ const Gamefield = (props) => {
       setRound(round + 1);
     } else {
       setFinishRound(true);
-      console.log('Игра закончена');
     }    
   }
 
   function colorizeGoodAnswer() {
     
     let answers = document.querySelectorAll('.answer');
-    let question = document.querySelector('.question');
     let questionId = variants[round].id;
 
     for(let item of answers) {
