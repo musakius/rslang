@@ -5,6 +5,7 @@ import { Carousel } from 'react-responsive-carousel';
 import Error from '../../../../components/Error/Error';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Modal from '../Modal';
+import classes from './SectionContent.module.scss';
 
 const Page = ({ wordsSet, setWordsSet, handlePageChange, page, userDifficultWords, totalPages }) => {
   const [isDeleted, setIsDeleted] = useState('');
@@ -35,8 +36,8 @@ const Page = ({ wordsSet, setWordsSet, handlePageChange, page, userDifficultWord
           ? <Modal message={message} setShowModal={setShowModal} />
           : null
       } */}
-      <div className="d-flex flex-column justify-content-center align-items-center">
-        <div className=" container carousel-wrapper ">
+      <div className={`${classes.page}`}>
+        <div className={`${classes.carousel} container carousel-wrapper`}>
           <Carousel showThumbs={false} useKeyboardArrows infiniteLoop width='100%'>
             {wordsSet.map((word) => (
               <WordCard
