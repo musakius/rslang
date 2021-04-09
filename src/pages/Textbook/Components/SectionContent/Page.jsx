@@ -17,19 +17,24 @@ const Page = ({ wordsSet, setWordsSet, handlePageChange, page, userDifficultWord
 
   useEffect(() => {
     if (message) {
-      setShowModal(true);
+      show();
     }
   }, [message])
 
-  console.log("showModal", showModal);
+
+  const show = () => {
+    document.getElementById("modalBox").style.display = "block";
+    document.getElementById("modalBox").classList.add('show');
+  }
 
   return (
     <>
-      {
+      <Modal message={message} setMessage={setMessage} />
+      {/* {
         showModal
           ? <Modal message={message} setShowModal={setShowModal} />
           : null
-      }
+      } */}
       <div className="d-flex flex-column justify-content-center align-items-center">
         <div className=" container carousel-wrapper ">
           <Carousel showThumbs={false} useKeyboardArrows infiniteLoop width='100%'>
