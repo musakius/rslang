@@ -1,6 +1,4 @@
 export const updateWord = (api, id, mode) => {
-    console.log('mode', mode);
-    console.log('id', id);
     let done = false;
     let message = '';
     let error = null;
@@ -9,7 +7,7 @@ export const updateWord = (api, id, mode) => {
         difficulty: "weak",
         optional: { 
             isDeleted: false,
-            isStudied: false, 
+            isStudied: true, 
         }
     }
     let successMessage = 'Слово успешно восстановлено';
@@ -20,10 +18,13 @@ export const updateWord = (api, id, mode) => {
 
     } else if (mode === 'd') {
         data.optional.isDeleted = true;
+        data.optional.isStudied = false;
         successMessage = 'Слово успешно удалено';
-    }
+    } 
     api.getUserWord(id)
-        .then(() => api.putUserWord(id, data))
+        .then(() => {
+            api.putUserWord(id, data)
+        })
         .catch((e) =>
             e.status === 404
                 ? api.postWord(id, data)

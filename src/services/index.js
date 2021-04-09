@@ -8,6 +8,7 @@ class Service {
   };
 
   _getUserId = () => {
+    if (!localStorage.getItem('user')) return '';
     const user = JSON.parse(localStorage.getItem('user'));
     return user.userId;
   };
@@ -39,12 +40,13 @@ class Service {
   };
 
   getAggregatedWordsAll = async (
-    optional = '"userWord.optional.isDeleted":false'
+    optional = '"userWord.optional.deleted":false'
   ) => {
     return await this._getResource(
       `users/${this._getUserId()}/aggregatedWords?&filter={${optional}}`
     );
   };
+
   getAggregatedWordsByGroup = async (
     group,
     page,
@@ -66,9 +68,7 @@ class Service {
   };
 
   getUserWordsAll = async () => {
-    return await this._getResource(
-      `users/${this._getUserId()}/words`
-    );
+    return await this._getResource(`users/${this._getUserId()}/words`);
   };
 
   // Post
@@ -129,7 +129,6 @@ class Service {
   };
 
   putUserWord = async (wordId, data = {}) => {
-    console.log('data', data);
     return await this._putResource(
       `users/${this._getUserId()}/words/${wordId}`,
       data

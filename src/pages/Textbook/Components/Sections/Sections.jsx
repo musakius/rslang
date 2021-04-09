@@ -5,6 +5,7 @@ import Settings from '../Settings/Settings';
 import { items } from '../../config';
 import List from './List';
 import { changeTheme } from '../../../../redux/actions';
+import { isAuth } from '../../utils/functions';
 
 const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
   const { url } = useRouteMatch();
@@ -13,13 +14,7 @@ const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
       ? localStorage.getItem('textbookGroup') || 0
       : localStorage.getItem('dictionaryGroup') || 0;
   const [active, setActive] = useState(+savedGroup);
-  let token = null;
-  if (localStorage.getItem('user')) {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user.token) {
-      token = user.token;
-    }
-  }
+
   const handleChange = (e) => {
     let target = '';
     if (e.target.tagName.toUpperCase() !== 'A') {
@@ -36,7 +31,7 @@ const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
 
   return (
     <div className="container-fluid">
-      {mode === 'textbook' ? token ? <Settings /> : null : null}
+      {mode === 'textbook' ? isAuth() ? <Settings /> : null : null}
       <div className="card border-info mb-3">
         <div className="card-header">
           <i className="fas fa-folder-open mr-2"></i>

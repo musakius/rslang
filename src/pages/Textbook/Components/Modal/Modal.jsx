@@ -8,7 +8,6 @@ const Modal = ({ message, setMessage }) => {
         document.getElementById("modalBox").classList.remove('show');
         setMessage(null);
     }
-    console.log('modal message', message);
     return (
         <div id="modalBox" className={`${classes.modal} modal`}>
             <div className="modal-dialog" role="document">

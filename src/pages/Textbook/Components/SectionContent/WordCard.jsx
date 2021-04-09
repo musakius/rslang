@@ -5,6 +5,8 @@ import classes from './SectionContent.module.scss';
 import Service from '../../../../services';
 import Error from '../../../../components/Error';
 import { updateWord } from '../../utils/queries';
+import { isAuth, setBtnDisabled } from '../../utils/functions';
+import DifficultyMarker from '../DifficultyMarker/DifficultyMarker';
 
 const WordCard = ({
   wordObj,
@@ -12,34 +14,28 @@ const WordCard = ({
   setIsDeleted,
   setMessage,
   difficultyDisable,
+  dictionarySection,
 }) => {
-  let token = null;
-  if (localStorage.getItem('user')) {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user.token) {
-      token = user.token;
-    }
-  }
+  const api = useMemo(() => new Service(), []);
+  const baseUrl = 'https://apprslang.herokuapp.com/';
+
   const settingBtn = useSelector((state) => state.settings.showButtons);
   const settingTranslate = useSelector((state) => state.settings.showTranslate);
   const [showHeader, setShowHeader] = useState(settingBtn);
   const [showTranslate, setShowTranslate] = useState(settingTranslate);
   const [button, setButton] = useState('Удалить');
   const [btnMode, setBtnMode] = useState('d');
+  const [checkDifficult, setCheckDifficult] = useState(difficultyDisable);
   const [error, setError] = useState(null);
   const [icon, setIcon] = useState('fa-trash-alt');
   const [btnColor, setBtnColor] = useState('btn-outline-danger');
   const mode = localStorage.getItem('userPage') || 'textbook';
-  const dictionarySection = localStorage.getItem('dictionarySection') || '';
-
-  const baseUrl = 'https://apprslang.herokuapp.com/';
+  //const dictionarySection = localStorage.getItem('dictionarySection') || '';
 
   const imgURL = `${baseUrl}${wordObj.image}`;
   const audioURL = `${baseUrl}${wordObj.audio}`;
   const audioMeaningURL = `${baseUrl}${wordObj.audioMeaning}`;
   const audioExampleURL = `${baseUrl}${wordObj.audioExample}`;
-
-  const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
     setBtnDisabled(wordObj.id, difficultyDisable);
@@ -47,8 +43,6 @@ const WordCard = ({
 
   useEffect(() => {
     setShowHeader(settingBtn);
-    //setBtnDisabled(wordObj.id, difficultyDisable);
-    return () => {};
   }, [settingBtn]);
 
   useEffect(() => {
@@ -58,7 +52,7 @@ const WordCard = ({
 
   useEffect(() => {
     if (mode === 'dictionary') {
-      if (dictionarySection.match('1|2')) {
+      if (dictionarySection.toString().match('1|2')) {
         setShowHeader(true);
         setButton('Восстановить');
         setIcon('fa-trash-restore-alt');
@@ -70,39 +64,37 @@ const WordCard = ({
     }
     return () => {
       setShowHeader(settingBtn);
+      if(mode === 'dictionary' && dictionarySection !== 0) {
+        setCheckDifficult(false);
+      }
     };
   }, [mode, dictionarySection]);
 
-  const setBtnDisabled = (id, disabled) => {
-    if (!document.getElementById(`diffcltBtn${id}`)) return;
-    const diffcltBtn = document.getElementById(`diffcltBtn${id}`);
-    diffcltBtn.disabled = disabled;
-  };
-
   const updateCurrentWord = (id, mode) => {
     const result = updateWord(api, id, mode);
-    console.log('result', result);
     if (!result.error) {
       setMessage(result.message);
       if (mode === 'u') {
         setBtnDisabled(id, true);
+        setCheckDifficult(true);
       }
       if (mode === 'd') {
         setIsDeleted(id);
       }
     } else {
       setError(result.error);
+      console.log('WordCard error', result.error);
     }
   };
 
   return (
     <div className={classes.wordCard}>
       <div className="card text-white bg-light mr-5 ml-5 mb-5">
-        {showHeader ? (
+        {showHeader && isAuth() ? (
           <div className="card-header d-flex justify-content-between">
             {mode === 'textbook' ? (
               <button
-                id={`diffcltBtn${wordObj.id}`}
+                id={`difficultyBtn${wordObj.id}`}
                 type="button"
                 className={`btn btn-outline-secondary`}
                 onClick={() => updateCurrentWord(wordObj.id, 'u')}
@@ -123,11 +115,7 @@ const WordCard = ({
         ) : null}
 
         <div className={`card-body ${classes.item}`}>
-          {difficultyDisable && (
-            <div className="m-0 p-0 d-flex flex-row justify-content-center align-items-center">
-              <i className="fas fa-brain mr-2 fa-sm text-danger">{` Вы отметили это слово, как сложное`}</i>
-            </div>
-          )}
+          {checkDifficult && <DifficultyMarker />}
           <div className={`${classes.card} card-body`}>
             <div
               className={`${classes.image} card-body p-0 `}

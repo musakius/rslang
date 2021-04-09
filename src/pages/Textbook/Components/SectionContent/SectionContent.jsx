@@ -4,6 +4,8 @@ import Service from '../../../../services';
 import Error from '../../../../components/Error';
 import Spinner from '../../../../components/Spinner';
 import Page from './Page';
+import { isAuth, setLS, getCurrentPage } from '../../utils/functions';
+import { queryFilters, DICTIONARY_PAGES, TEXTBOOK_PAGES } from '../../config';
 import {
   filterWords,
   filterUserDeletedWords,
@@ -17,45 +19,26 @@ const SectionContent = ({
   mode,
   setQueryFilter = () => {},
 }) => {
+  const api = useMemo(() => new Service(), []);
   const { group } = useParams();
-  let token = null;
-  if (group) {
-    if (mode === 'textbook') {
-      localStorage.setItem('textbookGroup', group);
-    } else {
-      localStorage.setItem('dictionaryGroup', group);
-    }
-  }
-  if (localStorage.getItem('user')) {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user.token) {
-      token = user.token;
-    }
-  }
   const [wordsSet, setWordsSet] = useState([]);
   const [userDeletedWords, setUserDeletedWords] = useState([]);
   const [userDifficultWords, setUserDifficultWords] = useState([]);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [totalPages, setTotalPages] = useState(30);
+  const [totalPages, setTotalPages] = useState();
+  const [page, setPage] = useState(getCurrentPage(mode));
 
-  // 0 - studied words, 1 - difficult words, 2 - deleted words
-  const queryFilters = {
-    0: '"userWord.optional.isStudied":true',
-    1: '"userWord.difficulty":"high"',
-    2: '"userWord.optional.isDeleted":true',
-  };
-
-  let currentPage =
-    mode === 'textbook'
-      ? localStorage.getItem('textbookPage') || 1
-      : localStorage.getItem('dictionaryPage') || 1;
-  const [page, setPage] = useState(+currentPage);
-
-  const api = useMemo(() => new Service(), []);
+  if (group) {
+    setLS(mode, group, '');
+  }
+  if (mode === 'dictionary') {
+    setLS(mode, '', queryFilters[dictionarySection]);
+    setQueryFilter(queryFilters[dictionarySection]);
+  }
 
   useEffect(() => {
-    if (!token || mode === 'dictionary') {
+    if (!isAuth() || mode !== 'textbook') {
       setUserDeletedWords([]);
       setUserDifficultWords([]);
       return;
@@ -77,6 +60,7 @@ const SectionContent = ({
       .then((wordsResult) => {
         setWordsSet(filterWords(wordsResult, userDeletedWords));
       })
+      .then(() => setTotalPages(TEXTBOOK_PAGES))
       .catch((error) => setError(error.message))
       .finally(setIsLoaded(true));
     return () => {
@@ -93,21 +77,20 @@ const SectionContent = ({
       .getAggregatedWordsByGroup(group, _page, queryFilters[dictionarySection])
       .then((result) => {
         setWordsSet(result[0].paginatedResults);
-        localStorage.setItem('queryFilter', queryFilters[dictionarySection]);
-        setQueryFilter(queryFilters[dictionarySection]);
+        setTotalPages(
+          result[0].totalCount.length > 0
+            ? countPages(Number.parseInt(result[0].totalCount[0].count))
+            : 0
+        );
       })
       .catch((error) => setError(error.message))
       .finally(setIsLoaded(true));
-    //dictionarySection === 1 ? setTotalPages(countPages(userDifficultWords.length)) : setTotalPages(countPages(userDeletedWords.length));
     return () => {
       setIsLoaded(false);
       setError(null);
       setWordsSet([]);
     };
   }, [api, group, page, mode, dictionarySection]);
-
-  console.log('userDifficultWords', userDifficultWords);
-  console.log('userDeletedWords', userDeletedWords);
 
   const handlePageChange = (pageNum) => {
     mode === 'textbook'
@@ -124,8 +107,6 @@ const SectionContent = ({
     return <Spinner size="40px" />;
   }
 
-  console.log('dictionary wordsSet', wordsSet);
-  console.log('totalPages', totalPages);
   return (
     <div>
       {wordsSet ? (
@@ -136,6 +117,8 @@ const SectionContent = ({
           page={page}
           totalPages={totalPages}
           userDifficultWords={userDifficultWords}
+          mode={mode}
+          dictionarySection={dictionarySection}
         />
       ) : null}
     </div>

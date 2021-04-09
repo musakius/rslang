@@ -3,13 +3,22 @@ import WordCard from './WordCard';
 import PaginationComponent from '../Pagination/';
 import { Carousel } from 'react-responsive-carousel';
 import Error from '../../../../components/Error/Error';
-import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import Modal from '../Modal';
+import { show } from '../../utils/functions';
 import classes from './SectionContent.module.scss';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
-const Page = ({ wordsSet, setWordsSet, handlePageChange, page, userDifficultWords, totalPages }) => {
+const Page = ({
+  wordsSet,
+  setWordsSet,
+  handlePageChange,
+  page,
+  userDifficultWords,
+  totalPages,
+  mode,
+  dictionarySection,
+}) => {
   const [isDeleted, setIsDeleted] = useState('');
-  const [showModal, setShowModal] = useState(false);
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
@@ -20,37 +29,52 @@ const Page = ({ wordsSet, setWordsSet, handlePageChange, page, userDifficultWord
     if (message) {
       show();
     }
-  }, [message])
+  }, [message]);
 
-
-  const show = () => {
-    document.getElementById("modalBox").style.display = "block";
-    document.getElementById("modalBox").classList.add('show');
-  }
+  const checkDifficulty = (difficultyArr, wordId) => {
+    return difficultyArr.includes(wordId) ? true : false;
+  };
 
   return (
     <>
       <Modal message={message} setMessage={setMessage} />
-      {/* {
-        showModal
-          ? <Modal message={message} setShowModal={setShowModal} />
-          : null
-      } */}
       <div className={`${classes.page}`}>
         <div className={`${classes.carousel} container carousel-wrapper`}>
-          <Carousel showThumbs={false} useKeyboardArrows infiniteLoop width='100%'>
-            {wordsSet.map((word) => (
-              <WordCard
-                key={word.id}
-                wordObj={word}
-                setIsDeleted={setIsDeleted}
-                setMessage={setMessage}
-                difficultyDisable={userDifficultWords.includes(word.id) ? true : false}
-              />
-            ))}
-          </Carousel>
+          {wordsSet.length > 0 ? (
+            <Carousel
+              showThumbs={false}
+              useKeyboardArrows
+              infiniteLoop
+              width="100%"
+            >
+              {wordsSet.map((word) => (
+                <WordCard
+                  key={word.word}
+                  wordObj={word}
+                  setIsDeleted={setIsDeleted}
+                  setMessage={setMessage}
+                  dictionarySection={dictionarySection}
+                  difficultyDisable={
+                    mode === 'textbook'
+                      ? checkDifficulty(userDifficultWords, word.id)
+                      : word.userWord.difficulty === 'high'
+                      ? true
+                      : false
+                  }
+                />
+              ))}
+            </Carousel>
+          ) : (
+            <div className="alert alert-dismissible alert-info">
+              <strong>В этой категории нет слов</strong>
+            </div>
+          )}
         </div>
-        <PaginationComponent page={page} handlePageChange={handlePageChange} totalPages={totalPages} />
+        <PaginationComponent
+          page={page}
+          handlePageChange={handlePageChange}
+          totalPages={totalPages}
+        />
       </div>
     </>
   );

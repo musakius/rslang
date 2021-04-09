@@ -7,6 +7,7 @@ import SectionContent from './Components/SectionContent';
 import Sections from './Components/Sections/Sections';
 import { connect } from 'react-redux';
 import { setGameInfo } from '../../redux/actions';
+import { isAuth } from './utils/functions';
 
 const Textbook = ({ setGameInfo }) => {
   const { url } = useRouteMatch();
@@ -15,14 +16,6 @@ const Textbook = ({ setGameInfo }) => {
   const [group, setGroup] = useState(savedGroup);
   const [page, setPage] = useState(savedPage);
   const dictionaryGroup = localStorage.getItem('dictionaryGroup') || 0;
-
-  let token = null;
-  if (localStorage.getItem('user')) {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user.token) {
-      token = user.token;
-    }
-  }
 
   useEffect(() => {
     localStorage.setItem('userPage', 'textbook');
@@ -61,7 +54,7 @@ const Textbook = ({ setGameInfo }) => {
             <div className="container">
               <div className="card-body pt-0">
                 <Button
-                  path={token ? `/dictionary/group/${dictionaryGroup}` : '/login'}
+                  path={isAuth() ? `/dictionary/group/${dictionaryGroup}` : '/login'}
                   text="Словарь"
                   style="fas fa-book"
                 />
