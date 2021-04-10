@@ -12,7 +12,6 @@ const Register = ({setUserInfo}) => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-
     const api = useMemo(() => new Service(), [])
 
     const submitForm = (e) => {
@@ -38,6 +37,7 @@ const Register = ({setUserInfo}) => {
                         api
                             .login("signin", user)
                             .then((response) => {
+                                data['token'] = response.token
                                 setUserInfo([response])
                                 localStorage.setItem('user', JSON.stringify(data))
                                 setValidate(true)
