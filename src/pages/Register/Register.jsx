@@ -12,7 +12,6 @@ const Register = ({setUserInfo}) => {
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
-
     const api = useMemo(() => new Service(), [])
 
     const submitForm = (e) => {
