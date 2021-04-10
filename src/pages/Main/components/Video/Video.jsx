@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player'
 import './Video.css'
 
 const Video = () => {
@@ -7,7 +7,7 @@ const Video = () => {
         <div className='app'>
             <ReactPlayer
                 controls
-                url='https://www.youtube.com/watch?v=w7ejDZ8SWv8&t=177s'
+                url='https://www.youtube.com/watch?v=w7ejDZ8SWv8'
                 height="360px"
                 width="640px"
             />
