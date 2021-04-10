@@ -42,12 +42,13 @@ export const setUserInfo = (value) => {
   };
 };
 
-export const setGameInfo = (pageNum, groupNum, page) => {
+export const setGameInfo = (pageNum, groupNum, page, filter) => {
   return {
     type: GAME_INFO,
     pageNum,
     groupNum,
     page,
+    filter,
   };
 };
 

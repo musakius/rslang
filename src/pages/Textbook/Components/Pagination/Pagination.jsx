@@ -1,7 +1,7 @@
 import React from "react";
 import Pagination from "react-js-pagination";
 
-const PaginationComponent = ({ page, handlePageChange }) => {
+const PaginationComponent = ({ page, handlePageChange, totalPages }) => {
   return (
     <div>
       <Pagination
@@ -10,7 +10,7 @@ const PaginationComponent = ({ page, handlePageChange }) => {
         linkClass='page-link'
         activePage={+page}
         itemsCountPerPage={1}
-        totalItemsCount={30}
+        totalItemsCount={totalPages}
         pageRangeDisplayed={5}
         onChange={(e) => handlePageChange(e)}
       />

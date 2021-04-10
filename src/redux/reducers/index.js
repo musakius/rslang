@@ -30,6 +30,7 @@ const initialGameState = {
     pageNum: '',
     groupNum: '',
     page: '',
+    filter: '',
   },
 };
 
@@ -78,6 +79,7 @@ const gameInfoReducer = (state = initialGameState, action) => {
         pageNum: action.pageNum,
         groupNum: action.groupNum,
         page: action.page,
+        filter: action.filter,
       });
     default:
       return state;

@@ -35,7 +35,15 @@ export const useRoutes = (isAuthenticated) => {
     <Switch>
       <Route path="/login" exact render={() => <Login />} />
       <Route path="/register" exact render={() => <Register />} />
+      <Route path="/" exact render={() => <Main />} />
+      <Route path="/textbook" render={() => <Textbook />} />
+      <Route path="/games" exact render={() => <Games />} />
+      <Route path="/games/sprint" render={() => <GameSprint />} />
+      <Route path="/games/memory" render={() => <GameMemory />} />
+      <Route path="/games/savanna" render={() => <Savanna />} />
+      <Route path="/games/voice" render={() => <VoiceGame />} />
       <Redirect to="/login" />
+      <Route render={() => <Page404 />} />
     </Switch>
   );
 };

@@ -7,6 +7,7 @@ import SectionContent from './Components/SectionContent';
 import Sections from './Components/Sections/Sections';
 import { connect } from 'react-redux';
 import { setGameInfo } from '../../redux/actions';
+import { isAuth } from './utils/functions';
 
 const Textbook = ({ setGameInfo }) => {
   const { url } = useRouteMatch();
@@ -14,6 +15,7 @@ const Textbook = ({ setGameInfo }) => {
   const savedPage = localStorage.getItem('textbookPage') || 0;
   const [group, setGroup] = useState(savedGroup);
   const [page, setPage] = useState(savedPage);
+  const dictionaryGroup = localStorage.getItem('dictionaryGroup') || 0;
 
   useEffect(() => {
     localStorage.setItem('userPage', 'textbook');
@@ -43,18 +45,18 @@ const Textbook = ({ setGameInfo }) => {
           <div className="col-md-6">
             <Switch>
               <Route path={`${url}/group/:group`}>
-                <SectionContent setCurrentPage={setPage} />
+                <SectionContent setCurrentPage={setPage} mode='textbook' />
               </Route>
-              <Redirect to="/textbook/group/0" />
+              <Redirect to={`/textbook/group/${savedGroup}`} />
             </Switch>
           </div>
           <div className="col-md-3">
             <div className="container">
-              <div className="card-body">
+              <div className="card-body pt-0">
                 <Button
-                  path={`/dictionary`}
+                  path={isAuth() ? `/dictionary/group/${dictionaryGroup}` : '/login'}
                   text="Словарь"
-                  style={"fas fa-book"}
+                  style="fas fa-book"
                 />
               </div>
               <div className="card-body">

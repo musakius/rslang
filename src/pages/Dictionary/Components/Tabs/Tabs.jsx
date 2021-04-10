@@ -1,14 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { dictionaryItems } from '../../../Textbook/config';
 
-const Tabs = () => {
+const Tabs = ({setDictionarySection}) => {
   const savedSection = localStorage.getItem('dictionarySection') || 0;
   const [active, setActive] = useState(+savedSection);
 
+  useEffect(() => {
+    setDictionarySection(active);
+    localStorage.setItem('dictionarySection', active);
+  }, [active]);
+
   const openTab = (id) => {
     setActive(id);
-    localStorage.setItem('dictionarySection', active);
   };
+  
   return (
     <div className="container mb-5">
       <ul className="nav nav-tabs d-flex justify-content-center">

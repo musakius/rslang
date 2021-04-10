@@ -5,11 +5,16 @@ import Settings from '../Settings/Settings';
 import { items } from '../../config';
 import List from './List';
 import { changeTheme } from '../../../../redux/actions';
+import { isAuth } from '../../utils/functions';
 
 const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
   const { url } = useRouteMatch();
-  const savedGroup = localStorage.getItem('textbookGroup') || 0;
+  const savedGroup =
+    mode === 'textbook'
+      ? localStorage.getItem('textbookGroup') || 0
+      : localStorage.getItem('dictionaryGroup') || 0;
   const [active, setActive] = useState(+savedGroup);
+
   const handleChange = (e) => {
     let target = '';
     if (e.target.tagName.toUpperCase() !== 'A') {
@@ -26,11 +31,11 @@ const Sections = ({ mode, changeTheme, setGroup = () => {} }) => {
 
   return (
     <div className="container-fluid">
-      {mode === 'textbook' ? <Settings /> : null}
+      {mode === 'textbook' ? isAuth() ? <Settings /> : null : null}
       <div className="card border-info mb-3">
         <div className="card-header">
-          <i className="fas fa-list-ul mr-2"></i>
-          Меню
+          <i className="fas fa-folder-open mr-2"></i>
+          {'Раздел'}
         </div>
         <div className="card-body">
           <ul className="list-group" onClick={(e) => handleChange(e)}>
