@@ -53,7 +53,7 @@ class Service {
     optional = '"userWord":{"$exists": true}'
   ) => {
     return await this._getResource(
-      `users/${this._getUserId()}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20&filter={${optional}}`
+      `users/${this._getUserId()}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20&filter={"$and":[{${optional}}, {"userWord":{"$exists": true}}]}`
     );
   };
 

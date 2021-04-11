@@ -8,6 +8,7 @@ import Sections from './Components/Sections/Sections';
 import { connect } from 'react-redux';
 import { setGameInfo } from '../../redux/actions';
 import { isAuth } from './utils/functions';
+import classes from './Textbook.module.scss';
 
 const Textbook = ({ setGameInfo }) => {
   const { url } = useRouteMatch();
@@ -33,7 +34,7 @@ const Textbook = ({ setGameInfo }) => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className={`${classes.wrapper} container mt-5`}>
       <div className="jumborton">
         <div className="nav nav-tabs d-flex justify-content-center mb-5">
           <Description group={group} />

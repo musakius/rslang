@@ -36,6 +36,7 @@ const WordCard = ({
   const audioURL = `${baseUrl}${wordObj.audio}`;
   const audioMeaningURL = `${baseUrl}${wordObj.audioMeaning}`;
   const audioExampleURL = `${baseUrl}${wordObj.audioExample}`;
+  const flow = [audioURL, audioMeaningURL, audioExampleURL];
 
   useEffect(() => {
     setBtnDisabled(wordObj.id, difficultyDisable);
@@ -153,9 +154,7 @@ const WordCard = ({
           className={`card-footer d-flex justify-content-between bg-${currentTheme}`}
         >
           <Audio
-            audioURL={audioURL}
-            audioMeaningURL={audioMeaningURL}
-            audioExampleURL={audioExampleURL}
+            flow={flow}
           />
         </div>
       </div>
