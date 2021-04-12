@@ -8,7 +8,9 @@ import classes from './Main.module.scss';
 const Main = () => {
   return <main className={classes['container-main']}>
     <Features/>
+    <div className="line-break"></div>
     <Video/>
+    <div className="line-break"></div>
     <Team/>
   </main>;
 };
