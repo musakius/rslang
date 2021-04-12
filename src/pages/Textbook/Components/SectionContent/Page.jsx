@@ -40,7 +40,8 @@ const Page = ({
       <Modal message={message} setMessage={setMessage} />
       <div className={`${classes.page}`}>
         <div className={`${classes.carousel} container carousel-wrapper`}>
-            <Carousel
+          {wordsSet.length > 0
+            ? <Carousel
               showThumbs={false}
               useKeyboardArrows
               infiniteLoop
@@ -57,18 +58,24 @@ const Page = ({
                     mode === 'textbook'
                       ? checkDifficulty(userDifficultWords, word.id)
                       : word.userWord.difficulty === 'high'
-                      ? true
-                      : false
+                        ? true
+                        : false
                   }
                 />
               ))}
             </Carousel>
+            : <div className="alert alert-dismissible alert-info">
+              <strong>В этой категории нет слов</strong>
+            </div>}
         </div>
-        <PaginationComponent
-          page={page}
-          handlePageChange={handlePageChange}
-          totalPages={totalPages}
-        />
+        {totalPages > 0
+          ? <PaginationComponent
+            page={page}
+            handlePageChange={handlePageChange}
+            totalPages={totalPages}
+          />
+          : null
+        }
       </div>
     </>
   );

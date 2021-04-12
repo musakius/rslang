@@ -110,22 +110,16 @@ const SectionContent = ({
 
   return (
     <div>
-      {wordsSet.length > 0 ? (
-        <Page
-          wordsSet={wordsSet}
-          setWordsSet={setWordsSet}
-          handlePageChange={handlePageChange}
-          page={page}
-          totalPages={totalPages}
-          userDifficultWords={userDifficultWords}
-          mode={mode}
-          dictionarySection={dictionarySection}
-        />
-      ) :
-        <div className="alert alert-dismissible alert-info">
-          <strong>В этой категории нет слов</strong>
-        </div>
-      }
+      <Page
+        wordsSet={wordsSet}
+        setWordsSet={setWordsSet}
+        handlePageChange={handlePageChange}
+        page={page}
+        totalPages={totalPages}
+        userDifficultWords={userDifficultWords}
+        mode={mode}
+        dictionarySection={dictionarySection}
+      />
     </div>
   );
 };
