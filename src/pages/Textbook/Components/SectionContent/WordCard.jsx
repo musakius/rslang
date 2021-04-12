@@ -46,6 +46,10 @@ const WordCard = ({
   }, [settingBtn]);
 
   useEffect(() => {
+    setBtnDisabled(wordObj.id, checkDifficult);
+  }, [showHeader])
+
+  useEffect(() => {
     setShowTranslate(settingTranslate);
     return () => {};
   }, [settingTranslate]);
