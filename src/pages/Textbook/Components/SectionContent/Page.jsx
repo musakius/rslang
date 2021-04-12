@@ -40,7 +40,6 @@ const Page = ({
       <Modal message={message} setMessage={setMessage} />
       <div className={`${classes.page}`}>
         <div className={`${classes.carousel} container carousel-wrapper`}>
-          {wordsSet.length > 0 ? (
             <Carousel
               showThumbs={false}
               useKeyboardArrows
@@ -64,11 +63,6 @@ const Page = ({
                 />
               ))}
             </Carousel>
-          ) : (
-            <div className="alert alert-dismissible alert-info">
-              <strong>В этой категории нет слов</strong>
-            </div>
-          )}
         </div>
         <PaginationComponent
           page={page}

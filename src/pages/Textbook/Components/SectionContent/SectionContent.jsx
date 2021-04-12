@@ -14,10 +14,10 @@ import {
 } from './utils/filters';
 
 const SectionContent = ({
-  setCurrentPage = () => {},
+  setCurrentPage = () => { },
   dictionarySection = '',
   mode,
-  setQueryFilter = () => {},
+  setQueryFilter = () => { },
 }) => {
   const api = useMemo(() => new Service(), []);
   const { group } = useParams();
@@ -26,8 +26,9 @@ const SectionContent = ({
   const [userDifficultWords, setUserDifficultWords] = useState([]);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [preLoad, setPreLoad] = useState(false);
   const [totalPages, setTotalPages] = useState();
-  const [page, setPage] = useState(getCurrentPage(mode));
+  const [page, setPage] = useState(mode === 'dictionary' ? 1 : getCurrentPage(mode));
 
   if (group) {
     setLS(mode, group, '');
@@ -41,19 +42,23 @@ const SectionContent = ({
     if (!isAuth() || mode !== 'textbook') {
       setUserDeletedWords([]);
       setUserDifficultWords([]);
+      setPreLoad(true);
       return;
     }
+    setPreLoad(false);
     api
       .getUserWordsAll()
       .then((result) => {
         setUserDeletedWords(filterUserDeletedWords(result));
         setUserDifficultWords(filterUserDifficultyWords(result));
+        setPreLoad(true);
       })
-      .catch((error) => setError(error.message));
+      .catch((error) => setError(error.message))
   }, [api, mode]);
 
   useEffect(() => {
-    if (mode !== 'textbook') return;
+    if (mode !== 'textbook' || !preLoad) return;
+    setIsLoaded(false);
     const _page = +page - 1;
     api
       .getWordsAll(group, _page)
@@ -63,16 +68,12 @@ const SectionContent = ({
       .then(() => setTotalPages(TEXTBOOK_PAGES))
       .catch((error) => setError(error.message))
       .finally(setIsLoaded(true));
-    return () => {
-      setIsLoaded(false);
-      setError(null);
-      setWordsSet([]);
-    };
-  }, [api, group, page, userDeletedWords, mode]);
+  }, [preLoad, group, page, userDeletedWords]);
 
   useEffect(() => {
     if (mode !== 'dictionary') return;
     const _page = +page - 1;
+    setIsLoaded(false);
     api
       .getAggregatedWordsByGroup(group, _page, queryFilters[dictionarySection])
       .then((result) => {
@@ -81,15 +82,10 @@ const SectionContent = ({
           result[0].totalCount.length > 0
             ? countPages(Number.parseInt(result[0].totalCount[0].count))
             : 0
-        );
+        )
       })
       .catch((error) => setError(error.message))
       .finally(setIsLoaded(true));
-    return () => {
-      setIsLoaded(false);
-      setError(null);
-      setWordsSet([]);
-    };
   }, [api, group, page, mode, dictionarySection]);
 
   const handlePageChange = (pageNum) => {
@@ -103,13 +99,13 @@ const SectionContent = ({
   if (error) {
     return <Error error={error} />;
   }
-  if (!isLoaded) {
+  if (!isLoaded || !preLoad) {
     return <Spinner size="40px" />;
   }
 
   return (
     <div>
-      {wordsSet ? (
+      {wordsSet.length > 0 ? (
         <Page
           wordsSet={wordsSet}
           setWordsSet={setWordsSet}
@@ -120,7 +116,11 @@ const SectionContent = ({
           mode={mode}
           dictionarySection={dictionarySection}
         />
-      ) : null}
+      ) :
+        <div className="alert alert-dismissible alert-info">
+          <strong>В этой категории нет слов</strong>
+        </div>
+      }
     </div>
   );
 };
