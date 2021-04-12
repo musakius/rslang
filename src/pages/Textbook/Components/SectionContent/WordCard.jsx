@@ -30,7 +30,6 @@ const WordCard = ({
   const [icon, setIcon] = useState('fa-trash-alt');
   const [btnColor, setBtnColor] = useState('btn-outline-danger');
   const mode = localStorage.getItem('userPage') || 'textbook';
-  //const dictionarySection = localStorage.getItem('dictionarySection') || '';
 
   const imgURL = `${baseUrl}${wordObj.image}`;
   const audioURL = `${baseUrl}${wordObj.audio}`;
@@ -53,8 +52,9 @@ const WordCard = ({
 
   useEffect(() => {
     if (mode === 'dictionary') {
-      if (dictionarySection.toString().match('1|2')) {
+      if (!!dictionarySection.toString().match('1|2')) {
         setShowHeader(true);
+        setCheckDifficult(false);
         setButton('Восстановить');
         setIcon('fa-trash-restore-alt');
         setBtnColor('btn-success');
@@ -65,9 +65,6 @@ const WordCard = ({
     }
     return () => {
       setShowHeader(settingBtn);
-      if(mode === 'dictionary' && dictionarySection !== 0) {
-        setCheckDifficult(false);
-      }
     };
   }, [mode, dictionarySection]);
 

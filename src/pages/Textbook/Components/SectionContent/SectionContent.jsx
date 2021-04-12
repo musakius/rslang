@@ -18,6 +18,7 @@ const SectionContent = ({
   dictionarySection = '',
   mode,
   setQueryFilter = () => { },
+  setCountWords,
 }) => {
   const api = useMemo(() => new Service(), []);
   const { group } = useParams();
@@ -87,6 +88,10 @@ const SectionContent = ({
       .catch((error) => setError(error.message))
       .finally(setIsLoaded(true));
   }, [api, group, page, mode, dictionarySection]);
+
+  useEffect(() => {
+    setCountWords(wordsSet.length);
+  }, [wordsSet])
 
   const handlePageChange = (pageNum) => {
     mode === 'textbook'

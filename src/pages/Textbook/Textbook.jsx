@@ -16,6 +16,7 @@ const Textbook = ({ setGameInfo }) => {
   const savedPage = localStorage.getItem('textbookPage') || 0;
   const [group, setGroup] = useState(savedGroup);
   const [page, setPage] = useState(savedPage);
+  const [countWords, setCountWords] = useState(0);
   const dictionaryGroup = localStorage.getItem('dictionaryGroup') || 0;
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const Textbook = ({ setGameInfo }) => {
           <div className="col-md-6">
             <Switch>
               <Route path={`${url}/group/:group`}>
-                <SectionContent setCurrentPage={setPage} mode='textbook' />
+                <SectionContent setCurrentPage={setPage} mode='textbook' setCountWords={setCountWords} />
               </Route>
               <Redirect to={`/textbook/group/${savedGroup}`} />
             </Switch>
@@ -61,7 +62,7 @@ const Textbook = ({ setGameInfo }) => {
                 />
               </div>
               <div className="card-body">
-                <Links setInfo={setInfo} />
+                <Links setInfo={setInfo} countWords={countWords} />
               </div>
             </div>
           </div>
