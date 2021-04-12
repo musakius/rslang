@@ -13,13 +13,14 @@ const Team = () => {
 
     return (
         <div>
+
             <h1 className='team'>Команда разработки</h1>
 
-            <div className='container'>
+            <div className='containerTeam'>
 
-                <div className='wrapper'>
+                <div className='wrapperTeam'>
 
-                    <div className='card'>
+                    <div className='cardTeam'>
                         <img src={background} alt="background image" className='cardImg'/>
                         <img src={profile1} alt="background image" className='profile'/>
                         <h1>Irina</h1>
@@ -27,7 +28,7 @@ const Team = () => {
                         <p className='about'>My work on project</p>
                     </div>
 
-                    <div className='card'>
+                    <div className='cardTeam'>
                         <img src={background} alt="background image" className='cardImg'/>
                         <img src={profile2} alt="background image" className='profile'/>
                         <h1>Petr Mikhailau</h1>
@@ -36,7 +37,7 @@ const Team = () => {
 
                     </div>
 
-                    <div className='card'>
+                    <div className='cardTeam'>
                         <img src={background} alt="background image" className='cardImg'/>
                         <img src={profile3} alt="background image" className='profile'/>
                         <h1>Aleksandr Zanko</h1>
@@ -45,7 +46,7 @@ const Team = () => {
 
                     </div>
 
-                    <div className='card'>
+                    <div className='cardTeam'>
                         <img src={background} alt="background image" className='cardImg'/>
                         <img src={profile4} alt="background image" className='profile'/>
                         <h1>Danila</h1>
