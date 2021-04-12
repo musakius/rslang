@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import {NavLink, useHistory} from 'react-router-dom';
+import Select from './Select';
 
 const Header = () => {
 
@@ -21,12 +22,14 @@ const Header = () => {
                 <NavLink to='/' className="navbar-brand">
                     RSLang
                 </NavLink>
+                <Select></Select>
                 <div className="collapse navbar-collapse" id="navbarColor03">
                     <ul className="navbar-nav mr-auto">
                         <li className="nav-item">
-                            <NavLink to='/textbook' className="nav-link">
+                            
+                            {/* <NavLink to='/textbook' className="nav-link">
                                 Учебник
-                            </NavLink>
+                            </NavLink> */}
                         </li>
                         <li className="nav-item">
                             <NavLink to='/games' className="nav-link">

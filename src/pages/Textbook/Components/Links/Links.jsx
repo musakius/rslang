@@ -29,7 +29,7 @@ const Links = ({ setInfo, countWords }) => {
               </li>
             ))}
           </ul>
-          : <i class="far fa-frown">{` Не достаточно слов для игры`}</i>}
+          : <i className="far fa-frown">{` Не достаточно слов для игры`}</i>}
       </div>
     </div>
   );
