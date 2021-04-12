@@ -12,6 +12,7 @@ const WordCard = ({
   wordObj,
   currentTheme,
   setIsDeleted,
+  setIsUpdated,
   setMessage,
   difficultyDisable,
   dictionarySection,
@@ -36,9 +37,10 @@ const WordCard = ({
   const audioMeaningURL = `${baseUrl}${wordObj.audioMeaning}`;
   const audioExampleURL = `${baseUrl}${wordObj.audioExample}`;
   const flow = [audioURL, audioMeaningURL, audioExampleURL];
+  const id = mode === 'textbook' ? wordObj.id : wordObj._id;
 
   useEffect(() => {
-    setBtnDisabled(wordObj.id, difficultyDisable);
+    setBtnDisabled(id, difficultyDisable);
   }, [wordObj]);
 
   useEffect(() => {
@@ -46,12 +48,12 @@ const WordCard = ({
   }, [settingBtn]);
 
   useEffect(() => {
-    setBtnDisabled(wordObj.id, checkDifficult);
+    setBtnDisabled(id, checkDifficult);
   }, [showHeader])
 
   useEffect(() => {
     setShowTranslate(settingTranslate);
-    return () => {};
+    return () => { };
   }, [settingTranslate]);
 
   useEffect(() => {
@@ -83,10 +85,13 @@ const WordCard = ({
       if (mode === 'd') {
         setIsDeleted(id);
       }
-    } else {
-      setError(result.error);
-      console.log('WordCard error', result.error);
+      if (mode === 'r') {
+        setIsUpdated(id);
+      }
+      return;
     }
+    setError(result.error);
+    console.log('WordCard error', result.error);
   };
 
   return (
@@ -99,7 +104,7 @@ const WordCard = ({
                 id={`difficultyBtn${wordObj.id}`}
                 type="button"
                 className={`btn btn-outline-secondary`}
-                onClick={() => updateCurrentWord(wordObj.id, 'u')}
+                onClick={() => updateCurrentWord(id, 'u')}
               >
                 <i className="fas fa-brain mr-2"></i>
                 Сложное слово
@@ -108,7 +113,7 @@ const WordCard = ({
             <button
               type="button"
               className={`btn ${btnColor}`}
-              onClick={() => updateCurrentWord(wordObj.id, btnMode)}
+              onClick={() => updateCurrentWord(id, btnMode)}
             >
               <i className={`fas ${icon} mr-2`}></i>
               {button}

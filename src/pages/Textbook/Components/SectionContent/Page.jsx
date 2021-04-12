@@ -19,11 +19,16 @@ const Page = ({
   dictionarySection,
 }) => {
   const [isDeleted, setIsDeleted] = useState('');
+  const [isUpdated, setIsUpdated] = useState('');
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
     setWordsSet(wordsSet.filter((word) => word.id !== isDeleted));
   }, [isDeleted]);
+
+  useEffect(() => {
+    setWordsSet(wordsSet.filter((word) => word._id !== isUpdated));
+  }, [isUpdated]);
 
   useEffect(() => {
     if (message) {
@@ -52,6 +57,7 @@ const Page = ({
                   key={word.word}
                   wordObj={word}
                   setIsDeleted={setIsDeleted}
+                  setIsUpdated={setIsUpdated}
                   setMessage={setMessage}
                   dictionarySection={dictionarySection}
                   difficultyDisable={
