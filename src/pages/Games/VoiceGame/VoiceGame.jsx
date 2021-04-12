@@ -55,7 +55,7 @@ const VoiceGame = () => {
 
   return (
     <>
-    <NavLink to="/games">Назад</NavLink>
+    <NavLink to="/games" className="back-to-menu"></NavLink>
     <h2 className="savanna-title">Игра Голос</h2>
       <FullScreen handle={handle}>
         <div className={classFullScreen}> 
