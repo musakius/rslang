@@ -1,71 +1,75 @@
-import React, { useState } from 'react';
-import { NavLink, useHistory } from 'react-router-dom';
-import Select from './Select';
+import React, {useState} from 'react';
+import {NavLink, useHistory} from 'react-router-dom';
 
 const Header = () => {
-  const logoutHandler = (e) => {
-    e.preventDefault();
 
-    localStorage.removeItem('user');
-    localStorage.removeItem('reduxState');
+    const logoutHandler = (e) => {
 
-    window.location.reload();
-  };
+        e.preventDefault()
 
-  return (
-    <header>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <NavLink to="/" className="navbar-brand">
-          RSLang
-        </NavLink>
-        <Select />
-        <div className="collapse navbar-collapse" id="navbarColor03">
-          <ul className="navbar-nav mr-auto">
-            <li className="nav-item">
-              <NavLink to="/games" className="nav-link">
-                Мини-игры
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/stat" className="nav-link">
-                Статистика
-              </NavLink>
-            </li>
+        localStorage.removeItem('user')
+        localStorage.removeItem('reduxState')
 
-            {localStorage.getItem('user') &&
-            localStorage.getItem('reduxState') !== null ? (
-              <li className="nav-item border-right-0">
-                <NavLink
-                  to="/"
-                  style={{
-                    position: 'absolute',
-                    right: '0',
-                  }}
-                  className="nav-link info"
-                  onClick={logoutHandler}
-                >
-                  Выйти
+        window.location.reload()
+    }
+
+    const user = JSON.parse(localStorage.getItem('user'))
+
+    return (
+        <header>
+            <nav className="navbar navbar-expand-lg navbar-light bg-light">
+                <NavLink to='/' className="navbar-brand">
+                    RSLang
                 </NavLink>
-              </li>
-            ) : (
-              <li className="nav-item">
-                <NavLink
-                  style={{
-                    position: 'absolute',
-                    right: '0',
-                  }}
-                  className="nav-link"
-                  to="/login"
-                >
-                  Войти
-                </NavLink>
-              </li>
-            )}
-          </ul>
-        </div>
-      </nav>
-    </header>
-  );
-};
+                <div className="collapse navbar-collapse" id="navbarColor03">
+                    <ul className="navbar-nav mr-auto">
+                        <li className="nav-item">
+                            <NavLink to='/textbook' className="nav-link">
+                                Учебник
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink to='/games' className="nav-link">
+                                Мини-игры
+                            </NavLink>
+                        </li>
+                        <li className="nav-item">
+                            <NavLink to='/stat' className="nav-link">
+                                Статистика
+                            </NavLink>
+                        </li>
+
+                    </ul>
+
+                    {localStorage.getItem('user') && localStorage.getItem('reduxState') !== null ?
+                        (
+                            <div className="form-inline my-2 my-lg-0">
+                                <span className="mr-sm-2">Приветствуем Вас, {user.name} !</span>
+                                <NavLink
+                                    to='/'
+                                    onClick={logoutHandler}
+                                    className="btn btn-secondary my-2 my-sm-0">
+                                    <i className="fas fa-sign-out-alt"></i>Выйти
+                                </NavLink>
+                            </div>
+                        )
+                        :
+                        (
+                            <div>
+                                <NavLink
+                                    to='/login'
+                                    className="btn btn-secondary my-2 my-sm-0"
+                                >
+                                    <i className="fas fa-sign-in-alt"></i>Войти
+                                </NavLink>
+                            </div>
+                        )
+                    }
+
+                </div>
+            </nav>
+        </header>
+    );
+}
 
 export default Header;
