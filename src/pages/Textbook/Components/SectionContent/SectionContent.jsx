@@ -38,7 +38,7 @@ const SectionContent = ({
     setLS(mode, group, "");
   }
   if (mode === "dictionary") {
-    setLS(mode, "", queryFilters[dictionarySection]);
+    setLS(mode, group, queryFilters[dictionarySection]);
     setQueryFilter(queryFilters[dictionarySection]);
   }
 

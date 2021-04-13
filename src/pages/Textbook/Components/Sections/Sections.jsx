@@ -12,7 +12,7 @@ const Sections = ({
   changeTheme,
   group,
   setTextbookGroup,
-  setGroup = () => {},
+  setGroup,
 }) => {
   const { url } = useRouteMatch();
   const savedGroup =
@@ -33,7 +33,7 @@ const Sections = ({
     changeTheme(theme);
     setGroup(+id);
     setActive(+id);
-    setTextbookGroup(+id);
+    if (mode === "textbook") setTextbookGroup(+id);
   };
 
   useEffect(() => {

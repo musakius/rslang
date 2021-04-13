@@ -6,11 +6,11 @@ import Links from "./Components/Links/Links";
 import SectionContent from "./Components/SectionContent";
 import Sections from "./Components/Sections/Sections";
 import { connect } from "react-redux";
-import { setGameInfo, setTextbookGroup } from "../../redux/actions";
+import { setGameInfo } from "../../redux/actions";
 import { isAuth } from "./utils/functions";
 import classes from "./Textbook.module.scss";
 
-const Textbook = ({ setGameInfo, textbookGroup, setTextbookGroup }) => {
+const Textbook = ({ setGameInfo, textbookGroup }) => {
   const { url } = useRouteMatch();
   const savedGroup = textbookGroup || 0;
   const savedPage = localStorage.getItem("textbookPage") || 0;
@@ -27,6 +27,7 @@ const Textbook = ({ setGameInfo, textbookGroup, setTextbookGroup }) => {
   }, []);
 
   useEffect(() => {
+    if (!textbookGroup || textbookGroup === "") return;
     setGroup(textbookGroup);
   }, [textbookGroup]);
 
@@ -85,7 +86,6 @@ const Textbook = ({ setGameInfo, textbookGroup, setTextbookGroup }) => {
 
 const mapDispatchToProps = {
   setGameInfo,
-  setTextbookGroup,
 };
 
 const mapStateToProps = (state) => {
