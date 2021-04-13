@@ -53,7 +53,6 @@ const WordCard = ({
 
   useEffect(() => {
     setShowTranslate(settingTranslate);
-    return () => { };
   }, [settingTranslate]);
 
   useEffect(() => {
@@ -91,7 +90,7 @@ const WordCard = ({
       return;
     }
     setError(result.error);
-    console.log('WordCard error', result.error);
+    console.log('error', result.error);
   };
 
   return (

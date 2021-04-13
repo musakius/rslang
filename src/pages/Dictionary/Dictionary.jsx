@@ -39,7 +39,7 @@ const Dictionary = ({ setGameInfo }) => {
         <div className="row">
           <Tabs setDictionarySection={setDictionarySection} />
           <div className="col-md-3">
-            <Sections mode="dictionary" setGroup={setGroup} />
+            <Sections mode="dictionary" group={group} setGroup={setGroup} />
           </div>
           <div className="col-md-6">
             <TabContent
