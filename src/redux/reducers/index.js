@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 import {
   CHANGE_THEME,
   SHOW_BUTTONS,
@@ -6,14 +6,15 @@ import {
   TEST_METHOD,
   USER_INFO,
   GAME_INFO,
-} from '../types/types';
+  CHANGE_GROUP,
+} from "../types/types";
 
 const initialState = {
   testData: {},
 };
 
 const initialThemeState = {
-  value: 'info',
+  value: "info",
 };
 
 const initialSettingsState = {
@@ -27,11 +28,15 @@ const initialUserState = {
 
 const initialGameState = {
   gameInfo: {
-    pageNum: '',
-    groupNum: '',
-    page: '',
-    filter: '',
+    pageNum: "",
+    groupNum: "",
+    page: "",
+    filter: "",
   },
+};
+
+const initialGroupState = {
+  value: null,
 };
 
 const testReducer = (state = initialState, action) => {
@@ -81,6 +86,15 @@ const gameInfoReducer = (state = initialGameState, action) => {
         page: action.page,
         filter: action.filter,
       });
+    default:
+      return state;
+  }
+};
+
+const groupReducer = (state = initialGroupState, action) => {
+  switch (action.type) {
+    case CHANGE_GROUP:
+      return { ...state, value: action.payload };
     default:
       return state;
   }

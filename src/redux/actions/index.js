@@ -5,6 +5,7 @@ import {
   TEST_METHOD,
   USER_INFO,
   GAME_INFO,
+  CHANGE_GROUP,
 } from "../types/types";
 
 const testMethod = (value) => {
@@ -51,5 +52,12 @@ export const setGameInfo = (pageNum, groupNum, page, filter) => {
     filter,
   };
 };
+
+export const setGroup = (value) => {
+  return {
+    type: CHANGE_GROUP,
+    payload: value,
+  };
+}
 
 export { testMethod };

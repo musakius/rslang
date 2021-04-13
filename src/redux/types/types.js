@@ -4,3 +4,4 @@ export const SHOW_BUTTONS = 'SHOW_BUTTONS';
 export const SHOW_TRANSLATE = 'SHOW_TRANSLATE';
 export const USER_INFO = 'USER_INFO';
 export const GAME_INFO = 'GAME_INFO';
+export const CHANGE_GROUP = 'CHANGE_GROUP';
