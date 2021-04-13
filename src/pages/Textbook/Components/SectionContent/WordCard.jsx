@@ -12,6 +12,7 @@ const WordCard = ({
   wordObj,
   currentTheme,
   setIsDeleted,
+  setIsUpdated,
   setMessage,
   difficultyDisable,
   dictionarySection,
@@ -30,15 +31,16 @@ const WordCard = ({
   const [icon, setIcon] = useState('fa-trash-alt');
   const [btnColor, setBtnColor] = useState('btn-outline-danger');
   const mode = localStorage.getItem('userPage') || 'textbook';
-  //const dictionarySection = localStorage.getItem('dictionarySection') || '';
 
   const imgURL = `${baseUrl}${wordObj.image}`;
   const audioURL = `${baseUrl}${wordObj.audio}`;
   const audioMeaningURL = `${baseUrl}${wordObj.audioMeaning}`;
   const audioExampleURL = `${baseUrl}${wordObj.audioExample}`;
+  const flow = [audioURL, audioMeaningURL, audioExampleURL];
+  const id = mode === 'textbook' ? wordObj.id : wordObj._id;
 
   useEffect(() => {
-    setBtnDisabled(wordObj.id, difficultyDisable);
+    setBtnDisabled(id, difficultyDisable);
   }, [wordObj]);
 
   useEffect(() => {
@@ -46,14 +48,19 @@ const WordCard = ({
   }, [settingBtn]);
 
   useEffect(() => {
+    setBtnDisabled(id, checkDifficult);
+  }, [showHeader])
+
+  useEffect(() => {
     setShowTranslate(settingTranslate);
-    return () => {};
+    return () => { };
   }, [settingTranslate]);
 
   useEffect(() => {
     if (mode === 'dictionary') {
-      if (dictionarySection.toString().match('1|2')) {
+      if (!!dictionarySection.toString().match('1|2')) {
         setShowHeader(true);
+        setCheckDifficult(false);
         setButton('Восстановить');
         setIcon('fa-trash-restore-alt');
         setBtnColor('btn-success');
@@ -64,9 +71,6 @@ const WordCard = ({
     }
     return () => {
       setShowHeader(settingBtn);
-      if(mode === 'dictionary' && dictionarySection !== 0) {
-        setCheckDifficult(false);
-      }
     };
   }, [mode, dictionarySection]);
 
@@ -81,10 +85,13 @@ const WordCard = ({
       if (mode === 'd') {
         setIsDeleted(id);
       }
-    } else {
-      setError(result.error);
-      console.log('WordCard error', result.error);
+      if (mode === 'r') {
+        setIsUpdated(id);
+      }
+      return;
     }
+    setError(result.error);
+    console.log('WordCard error', result.error);
   };
 
   return (
@@ -97,7 +104,7 @@ const WordCard = ({
                 id={`difficultyBtn${wordObj.id}`}
                 type="button"
                 className={`btn btn-outline-secondary`}
-                onClick={() => updateCurrentWord(wordObj.id, 'u')}
+                onClick={() => updateCurrentWord(id, 'u')}
               >
                 <i className="fas fa-brain mr-2"></i>
                 Сложное слово
@@ -106,7 +113,7 @@ const WordCard = ({
             <button
               type="button"
               className={`btn ${btnColor}`}
-              onClick={() => updateCurrentWord(wordObj.id, btnMode)}
+              onClick={() => updateCurrentWord(id, btnMode)}
             >
               <i className={`fas ${icon} mr-2`}></i>
               {button}
@@ -153,9 +160,7 @@ const WordCard = ({
           className={`card-footer d-flex justify-content-between bg-${currentTheme}`}
         >
           <Audio
-            audioURL={audioURL}
-            audioMeaningURL={audioMeaningURL}
-            audioExampleURL={audioExampleURL}
+            flow={flow}
           />
         </div>
       </div>

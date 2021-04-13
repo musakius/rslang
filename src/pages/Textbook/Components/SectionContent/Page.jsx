@@ -19,11 +19,16 @@ const Page = ({
   dictionarySection,
 }) => {
   const [isDeleted, setIsDeleted] = useState('');
+  const [isUpdated, setIsUpdated] = useState('');
   const [message, setMessage] = useState(null);
 
   useEffect(() => {
     setWordsSet(wordsSet.filter((word) => word.id !== isDeleted));
   }, [isDeleted]);
+
+  useEffect(() => {
+    setWordsSet(wordsSet.filter((word) => word._id !== isUpdated));
+  }, [isUpdated]);
 
   useEffect(() => {
     if (message) {
@@ -40,8 +45,8 @@ const Page = ({
       <Modal message={message} setMessage={setMessage} />
       <div className={`${classes.page}`}>
         <div className={`${classes.carousel} container carousel-wrapper`}>
-          {wordsSet.length > 0 ? (
-            <Carousel
+          {wordsSet.length > 0
+            ? <Carousel
               showThumbs={false}
               useKeyboardArrows
               infiniteLoop
@@ -52,29 +57,31 @@ const Page = ({
                   key={word.word}
                   wordObj={word}
                   setIsDeleted={setIsDeleted}
+                  setIsUpdated={setIsUpdated}
                   setMessage={setMessage}
                   dictionarySection={dictionarySection}
                   difficultyDisable={
                     mode === 'textbook'
                       ? checkDifficulty(userDifficultWords, word.id)
                       : word.userWord.difficulty === 'high'
-                      ? true
-                      : false
+                        ? true
+                        : false
                   }
                 />
               ))}
             </Carousel>
-          ) : (
-            <div className="alert alert-dismissible alert-info">
+            : <div className="alert alert-dismissible alert-info">
               <strong>В этой категории нет слов</strong>
-            </div>
-          )}
+            </div>}
         </div>
-        <PaginationComponent
-          page={page}
-          handlePageChange={handlePageChange}
-          totalPages={totalPages}
-        />
+        {totalPages > 0
+          ? <PaginationComponent
+            page={page}
+            handlePageChange={handlePageChange}
+            totalPages={totalPages}
+          />
+          : null
+        }
       </div>
     </>
   );

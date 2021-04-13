@@ -1,23 +1,25 @@
-import React, { useEffect, useMemo, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Service from '../../../../services';
-import Error from '../../../../components/Error';
-import Spinner from '../../../../components/Spinner';
-import Page from './Page';
-import { isAuth, setLS, getCurrentPage } from '../../utils/functions';
-import { queryFilters, DICTIONARY_PAGES, TEXTBOOK_PAGES } from '../../config';
+import React, { useEffect, useMemo, useState } from "react";
+import { useParams } from "react-router-dom";
+import Service from "../../../../services";
+import Error from "../../../../components/Error";
+import Spinner from "../../../../components/Spinner";
+import Page from "./Page";
+import { isAuth, setLS, getCurrentPage } from "../../utils/functions";
+import { queryFilters, DICTIONARY_PAGES, TEXTBOOK_PAGES } from "../../config";
 import {
   filterWords,
   filterUserDeletedWords,
   filterUserDifficultyWords,
   countPages,
-} from './utils/filters';
+} from "./utils/filters";
 
 const SectionContent = ({
   setCurrentPage = () => {},
-  dictionarySection = '',
+  dictionarySection = "",
   mode,
   setQueryFilter = () => {},
+  setCountWords,
+  textbookGroup = "",
 }) => {
   const api = useMemo(() => new Service(), []);
   const { group } = useParams();
@@ -26,34 +28,41 @@ const SectionContent = ({
   const [userDifficultWords, setUserDifficultWords] = useState([]);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [preLoad, setPreLoad] = useState(false);
   const [totalPages, setTotalPages] = useState();
-  const [page, setPage] = useState(getCurrentPage(mode));
+  const [page, setPage] = useState(
+    mode === "dictionary" ? 1 : getCurrentPage(mode)
+  );
 
   if (group) {
-    setLS(mode, group, '');
+    setLS(mode, group, "");
   }
-  if (mode === 'dictionary') {
-    setLS(mode, '', queryFilters[dictionarySection]);
+  if (mode === "dictionary") {
+    setLS(mode, group, queryFilters[dictionarySection]);
     setQueryFilter(queryFilters[dictionarySection]);
   }
 
   useEffect(() => {
-    if (!isAuth() || mode !== 'textbook') {
+    if (!isAuth() || mode !== "textbook") {
       setUserDeletedWords([]);
       setUserDifficultWords([]);
+      setPreLoad(true);
       return;
     }
+    setPreLoad(false);
     api
       .getUserWordsAll()
       .then((result) => {
         setUserDeletedWords(filterUserDeletedWords(result));
         setUserDifficultWords(filterUserDifficultyWords(result));
+        setPreLoad(true);
       })
       .catch((error) => setError(error.message));
   }, [api, mode]);
 
   useEffect(() => {
-    if (mode !== 'textbook') return;
+    if (mode !== "textbook" || !preLoad) return;
+    setIsLoaded(false);
     const _page = +page - 1;
     api
       .getWordsAll(group, _page)
@@ -63,16 +72,12 @@ const SectionContent = ({
       .then(() => setTotalPages(TEXTBOOK_PAGES))
       .catch((error) => setError(error.message))
       .finally(setIsLoaded(true));
-    return () => {
-      setIsLoaded(false);
-      setError(null);
-      setWordsSet([]);
-    };
-  }, [api, group, page, userDeletedWords, mode]);
+  }, [preLoad, group, page, userDeletedWords]);
 
   useEffect(() => {
-    if (mode !== 'dictionary') return;
+    if (mode !== "dictionary") return;
     const _page = +page - 1;
+    setIsLoaded(false);
     api
       .getAggregatedWordsByGroup(group, _page, queryFilters[dictionarySection])
       .then((result) => {
@@ -85,17 +90,16 @@ const SectionContent = ({
       })
       .catch((error) => setError(error.message))
       .finally(setIsLoaded(true));
-    return () => {
-      setIsLoaded(false);
-      setError(null);
-      setWordsSet([]);
-    };
   }, [api, group, page, mode, dictionarySection]);
 
+  useEffect(() => {
+    setCountWords(wordsSet.length);
+  }, [wordsSet]);
+
   const handlePageChange = (pageNum) => {
-    mode === 'textbook'
-      ? localStorage.setItem('textbookPage', pageNum)
-      : localStorage.setItem('dictionaryPage', pageNum);
+    mode === "textbook"
+      ? localStorage.setItem("textbookPage", pageNum)
+      : localStorage.setItem("dictionaryPage", pageNum);
     setPage(pageNum);
     setCurrentPage(pageNum);
   };
@@ -103,24 +107,22 @@ const SectionContent = ({
   if (error) {
     return <Error error={error} />;
   }
-  if (!isLoaded) {
-    return <Spinner size="40px" />;
+  if (!isLoaded || !preLoad) {
+    return <Spinner size='40px' />;
   }
 
   return (
     <div>
-      {wordsSet ? (
-        <Page
-          wordsSet={wordsSet}
-          setWordsSet={setWordsSet}
-          handlePageChange={handlePageChange}
-          page={page}
-          totalPages={totalPages}
-          userDifficultWords={userDifficultWords}
-          mode={mode}
-          dictionarySection={dictionarySection}
-        />
-      ) : null}
+      <Page
+        wordsSet={wordsSet}
+        setWordsSet={setWordsSet}
+        handlePageChange={handlePageChange}
+        page={page}
+        totalPages={totalPages}
+        userDifficultWords={userDifficultWords}
+        mode={mode}
+        dictionarySection={dictionarySection}
+      />
     </div>
   );
 };

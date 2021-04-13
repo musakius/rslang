@@ -13,6 +13,7 @@ const Dictionary = ({ setGameInfo }) => {
   const savedQueryFilter = localStorage.getItem('queryFilter') || '';
   const [group, setGroup] = useState(savedGroup);
   const [page, setPage] = useState(savedPage);
+  const [countWords, setCountWords] = useState(0);
   const [queryFilter, setQueryFilter] = useState(savedQueryFilter);
 
   const textbookGroup = localStorage.getItem('textbookGroup') || 0;
@@ -45,6 +46,7 @@ const Dictionary = ({ setGameInfo }) => {
               dictionarySection={dictionarySection}
               setPage={setPage}
               setQueryFilter={setQueryFilter}
+              setCountWords={setCountWords}
             />
           </div>
           <div className="col-md-3">
@@ -57,7 +59,7 @@ const Dictionary = ({ setGameInfo }) => {
                 />
               </div>
               <div className="card-body">
-                <Links setInfo={setInfo} />
+                <Links setInfo={setInfo} countWords={countWords} />
               </div>
             </div>
           </div>

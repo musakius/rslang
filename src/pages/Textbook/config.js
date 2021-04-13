@@ -78,4 +78,4 @@ export const queryFilters = {
 };
 
 export const TEXTBOOK_PAGES = 30;
-export const DICTIONARY_PAGES = 0;
+export const DICTIONARY_PAGES = 1;
