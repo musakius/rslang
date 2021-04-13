@@ -6,7 +6,7 @@ import {
   TEST_METHOD,
   USER_INFO,
   GAME_INFO,
-  CHANGE_GROUP,
+  CHANGE_TEXTBOOK_GROUP,
 } from "../types/types";
 
 const initialState = {
@@ -35,7 +35,7 @@ const initialGameState = {
   },
 };
 
-const initialGroupState = {
+const initialTextbookGroupState = {
   value: null,
 };
 
@@ -91,9 +91,9 @@ const gameInfoReducer = (state = initialGameState, action) => {
   }
 };
 
-const groupReducer = (state = initialGroupState, action) => {
+const textbookGroupReducer = (state = initialTextbookGroupState, action) => {
   switch (action.type) {
-    case CHANGE_GROUP:
+    case CHANGE_TEXTBOOK_GROUP:
       return { ...state, value: action.payload };
     default:
       return state;
@@ -106,6 +106,7 @@ const reducer = combineReducers({
   settings: settingsReducer,
   user: userReducer,
   gameInfo: gameInfoReducer,
+  textbookGroup: textbookGroupReducer,
 });
 
 export default reducer;
