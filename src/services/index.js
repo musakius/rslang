@@ -72,10 +72,12 @@ class Service {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
     if (!response.ok) {
-      throw new Error(`Could not fetch ${base + url}, received ${response.status}`);
+      throw new Error(
+        `Could not fetch ${base + url}, received ${response.status}`
+      );
     }
     return await response.json();
   };
@@ -95,11 +97,13 @@ class Service {
         Accept: 'application/json',
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
-      throw new Error(`Could not fetch ${base + url}, received ${response.status}`);
+      throw new Error(
+        `Could not fetch ${base + url}, received ${response.status}`
+      );
     }
     return await response.json();
   };
@@ -118,13 +122,47 @@ class Service {
     const response = await fetch(`${base}${url}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
-      throw new Error(`Could not fetch ${base + url}, received ${response.status}`);
+      throw new Error(
+        `Could not fetch ${base + url}, received ${response.status}`
+      );
+    }
+  };
+
+  postCreateUser = async (url, data = {}) => {
+    const response = await fetch(`${base}${url}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      return response.json();
+    }
+
+    if (!response.ok) {
+    }
+  };
+
+  login = async (url, data = {}) => {
+    const response = await fetch(`${base}${url}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      return response.json();
+    } else if (!response.ok) {
     }
   };
 

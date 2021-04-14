@@ -21,6 +21,7 @@ function GameSprint({deleteGameInfo, gameInfo}) {
   const [totalWorlds, setTotalWorlds] = useState(0);
   const [learnWorlds, setLearnWorlds] = useState(0);
 
+
   const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
@@ -120,6 +121,7 @@ function GameSprint({deleteGameInfo, gameInfo}) {
           soundStatus={soundStatus}
           keyName="sprint"
           learnWorlds={learnWorlds}
+
         />
       ) : null}
       {initGame && !gameOver ? (
@@ -163,3 +165,4 @@ const mapStateToProps = (state) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(GameSprint);
+
