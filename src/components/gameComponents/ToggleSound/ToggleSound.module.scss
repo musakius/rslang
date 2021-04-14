@@ -1,0 +1,12 @@
+.container-toggle-sound {
+  display: flex;
+  flex-direction: column;
+  border: 0.56px solid #4e5d6c;
+  padding: 7px 15px 7px 3rem;
+  border-radius: 3px;
+
+  .label {
+    font-size: 18px;
+    cursor: pointer;
+  }
+}
