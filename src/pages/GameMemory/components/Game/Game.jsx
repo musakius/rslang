@@ -22,7 +22,6 @@ function Game({
   setSoundStatus,
   setWords,
   words,
-  newWords,
   startGame,
   results,
   load,
@@ -50,14 +49,12 @@ function Game({
   }, [load]);
 
   const action = (data) => {
-    if (newWords && data) {
-      const currentData = mixed(data.filter((x, i) => i < 10));
-      const restData = data.filter((x, i) => i >= 10);
-      setCurrentWorlds(currentData);
-      setWords(restData);
-      setEnglishWords(mixed(currentData));
-      setRussianWords(mixed(currentData));
-    }
+    const currentData = mixed(data.filter((x, i) => i < 10));
+    const restData = data.filter((x, i) => i >= 10);
+    setCurrentWorlds(currentData);
+    setWords(restData);
+    setEnglishWords(mixed(currentData));
+    setRussianWords(mixed(currentData));
   };
 
   const checkResult = () => {
@@ -91,7 +88,7 @@ function Game({
       setResults([...results, newWord]);
     }
 
-    if (results.length === words.length - 1) {
+    if (count === totalWorlds - 1) {
       setTimeout(() => {
         setGameOver(true);
       }, 500);
@@ -131,7 +128,7 @@ function Game({
         </div>
         <div className={classes['card-block']}>
           <div className={classes['card-eng']}>
-            {words.length
+            {currentWorlds.length
               ? englishWords
                   .filter((x, i) => i < 10)
                   .map(({word, audio, id}) => (
@@ -152,7 +149,7 @@ function Game({
           </div>
 
           <div className={classes['card-rus']}>
-            {words.length
+            {currentWorlds.length
               ? russianWords
                   .filter((x, i) => i < 10)
                   .map(({wordTranslate, id}, index) => (

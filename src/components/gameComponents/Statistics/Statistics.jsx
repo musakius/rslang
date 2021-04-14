@@ -5,7 +5,7 @@ import {Link} from 'react-router-dom';
 
 import classes from './Statistics.module.scss';
 
-const Statistics = ({results, setSoundStatus, soundStatus, keyName}) => {
+const Statistics = ({results, setSoundStatus, soundStatus, keyName, learnWorlds}) => {
   const api = useMemo(() => new Service(), []);
 
   useEffect(() => {
@@ -18,7 +18,6 @@ const Statistics = ({results, setSoundStatus, soundStatus, keyName}) => {
       0
     );
   };
-
 
   const getBaseData = (dateString) => {
     const baseStatistics = {
@@ -49,7 +48,7 @@ const Statistics = ({results, setSoundStatus, soundStatus, keyName}) => {
     if (statistics[dateString]) {
       statistics[dateString] = {
         countGames: statistics[dateString].countGames + 1,
-        learnedWords: 0,
+        learnedWords: learnWorlds,
         maxRightAnswers: Math.max(statistics[dateString].maxRightAnswers, countWords(true)),
         rightAnswers: statistics[dateString].rightAnswers + countWords(true),
         wrongAnswers: statistics[dateString].wrongAnswers + countWords(false)

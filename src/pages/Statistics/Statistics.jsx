@@ -16,7 +16,7 @@ const Statistics = () => {
     api
       .getStatisticsUser()
       .then((data) => setGameStats(data))
-      .catch((error) => console.log(error))
+      .catch((error) => console.error(error))
       .finally(() => setLoad(false));
   }, [api]);
 
