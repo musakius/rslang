@@ -13,8 +13,7 @@ const Team = () => {
 
     return (
         <div>
-
-            <h1 className='team'>Команда разработки</h1>
+            <h1 className='team mt-4'>Команда разработки</h1>
 
             <div className='containerTeam'>
 
@@ -24,8 +23,8 @@ const Team = () => {
                         <img src={background} alt="background image" className='cardImg'/>
                         <img src={profile1} alt="background image" className='profile'/>
                         <h1>Irina</h1>
-                        <p className='job'>Developer</p>
-                        <p className='about'>My work on project</p>
+                        <p className='job'>Teamleader</p>
+                        <p className='about'>Реализовация учебника, создание словаря, помощь команде в затрудительных ситуациях</p>
                     </div>
 
                     <div className='cardTeam'>
@@ -33,7 +32,7 @@ const Team = () => {
                         <img src={profile2} alt="background image" className='profile'/>
                         <h1>Petr Mikhailau</h1>
                         <p className='job'>Developer</p>
-                        <p className='about'>My work on project</p>
+                        <p className='about'>Реализация мини-игр "Спринт" и "Мемори", добавление статистики, HTTP-client</p>
 
                     </div>
 
@@ -42,7 +41,7 @@ const Team = () => {
                         <img src={profile3} alt="background image" className='profile'/>
                         <h1>Aleksandr Zanko</h1>
                         <p className='job'>Developer</p>
-                        <p className='about'>My work on project</p>
+                        <p className='about'>Реализация мини-игр "Саванна" и "Голос" связь со словарем, стилизация страницы мини-игр</p>
 
                     </div>
 
@@ -51,8 +50,7 @@ const Team = () => {
                         <img src={profile4} alt="background image" className='profile'/>
                         <h1>Danila</h1>
                         <p className='job'>Developer</p>
-                        <p className='about'>My work on project</p>
-
+                        <p className='about'>Cоздание функционала регистрации и авторизации, реализация главной страницы</p>
                     </div>
 
                 </div>
