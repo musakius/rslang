@@ -19,12 +19,6 @@ const Statistics = ({results, setSoundStatus, soundStatus, keyName}) => {
     );
   };
 
-  const rightPercent = () => {
-    const allAnswers = results.length;
-    const rightAnswers = countWords(true);
-
-    return (rightAnswers * 100) / allAnswers;
-  };
 
   const getBaseData = (dateString) => {
     const baseStatistics = {
