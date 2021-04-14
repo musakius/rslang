@@ -43,7 +43,7 @@ class Service {
     optional = '"userWord.optional.deleted":false'
   ) => {
     return await this._getResource(
-      `users/${this._getUserId()}/aggregatedWords?&filter={${optional}}`
+      `users/${this._getUserId()}/aggregatedWords?wordsPerPage=150?&filter={${optional}}`
     );
   };
 
