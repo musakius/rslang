@@ -26,14 +26,7 @@ const initialUserState = {
   user: [],
 };
 
-const initialGameState = {
-  gameInfo: {
-    pageNum: "",
-    groupNum: "",
-    page: "",
-    filter: "",
-  },
-};
+const initialGameState = {};
 
 const initialTextbookGroupState = {
   value: null,
