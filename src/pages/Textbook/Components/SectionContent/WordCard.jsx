@@ -7,6 +7,7 @@ import Error from '../../../../components/Error';
 import { updateWord } from '../../utils/queries';
 import { isAuth, setBtnDisabled } from '../../utils/functions';
 import DifficultyMarker from '../DifficultyMarker/DifficultyMarker';
+import Player from '../Audio/Player';
 
 const WordCard = ({
   wordObj,
@@ -158,7 +159,7 @@ const WordCard = ({
         <div
           className={`card-footer d-flex justify-content-between bg-${currentTheme}`}
         >
-          <Audio
+          <Player
             flow={flow}
           />
         </div>

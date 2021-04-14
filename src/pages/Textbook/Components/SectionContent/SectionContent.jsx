@@ -41,7 +41,6 @@ const SectionContent = ({
     setLS(mode, group, queryFilters[dictionarySection]);
     setQueryFilter(queryFilters[dictionarySection]);
   }
-
   useEffect(() => {
     if (!isAuth() || mode !== "textbook") {
       setUserDeletedWords([]);

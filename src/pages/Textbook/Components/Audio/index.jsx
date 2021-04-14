@@ -1,3 +1,3 @@
-import Audio from "./Audio";
+import Player from "./Player";
 
-export default Audio;
+export default Player;
