@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useRoutes } from "./routes";
 import { connect } from "react-redux";
 import Header from "./Header";
+import Footer from './Footer';
 
 
 const App = ({ user }) => {
@@ -23,6 +24,7 @@ const App = ({ user }) => {
     <>
       <Header />
       {routes}
+      <Footer />
     </>
   );
 };
