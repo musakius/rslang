@@ -16,6 +16,14 @@ const Gamefield = (props) => {
   const [winMusic] = useState(new Audio(winSound));
   const [falseMusic] = useState(new Audio(falseSound));
   const [goodAnswers, setGoodAnswers] = useState([]);
+
+  const mapStateToProps = function (state) {
+    
+    return {
+        
+    }
+  }
+  
   
   let url = `https://apprslang.herokuapp.com/words?page=2&group=${props.complexity}`;
 
@@ -34,7 +42,6 @@ const Gamefield = (props) => {
       setRound(round + 1);
     } else {
       setFinishRound(true);
-      console.log('Игра закончена');
     }    
   }
   
@@ -47,7 +54,6 @@ const Gamefield = (props) => {
     question.classList.remove('question--active');
 
     if(answerId === questionId) {
-      console.log('Правильно');
       event.target.classList.add('right');
       if(soundButton.classList.contains('sound-on')) {
         winMusic.play();
@@ -59,7 +65,6 @@ const Gamefield = (props) => {
         event.target.classList.remove('right');     
       }, 2000);
     } else if(props.lifes > 1) {
-      console.log('Неправильно');
       event.target.classList.add('error');
       if(soundButton.classList.contains('sound-on')) {
         falseMusic.play();
@@ -80,8 +85,7 @@ const Gamefield = (props) => {
         setErrors([...errors, variants[round]]);
         props.minusLife();
         event.target.classList.remove('error');
-        setFinishRound(true);
-        console.log('Игра закончена');  
+        setFinishRound(true);  
       }, 2000);      
     }
 
@@ -110,7 +114,6 @@ const Gamefield = (props) => {
     } else {
       setErrors([...errors, variants[round]]);
       setFinishRound(true);
-      console.log('Игра закончена');
     }  
   }
   
@@ -120,7 +123,6 @@ const Gamefield = (props) => {
     } else {
       event.target.className = "sound-on";
     }
-    console.log(event.target);
   }
 
   return (

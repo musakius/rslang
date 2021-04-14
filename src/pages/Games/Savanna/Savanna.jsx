@@ -15,7 +15,7 @@ const Savanna = () => {
   const [complexity, setComplexity] = useState(0);
 
   useEffect(() => {
-    console.log(complexity);
+    
   })
 
   const handle = useFullScreenHandle();
