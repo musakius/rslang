@@ -1,5 +1,13 @@
-.figure {
-  margin: 0;
+.page {
+  height: 80vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+
+  .carousel {
+    height: 80%;
+  }
 }
 
 .wordCard {
@@ -11,7 +19,10 @@
       background-repeat: no-repeat;
       background-size: 150px;
       width: 200px;
-      height: 150px;
+      height: 100px;
     }
+  }
+  .item {
+    height: 340px;
   }
 }

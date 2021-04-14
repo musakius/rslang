@@ -1,77 +1,63 @@
-import React, {useState} from 'react';
-import {NavLink, useHistory} from 'react-router-dom';
+import React, { useState } from "react";
+import { NavLink, useHistory } from "react-router-dom";
+import Select from "./Select";
 
 const Header = () => {
+  const logoutHandler = (e) => {
+    e.preventDefault();
 
-    const logoutHandler = (e) => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("reduxState");
 
-        e.preventDefault()
+    window.location.reload();
+  };
 
-        localStorage.removeItem('user')
-        localStorage.removeItem('reduxState')
+  const user = JSON.parse(localStorage.getItem("user"));
 
-        window.location.reload()
-    }
+  return (
+    <header>
+      <nav className='navbar navbar-expand-lg navbar-light bg-light'>
+        <NavLink to='/' className='navbar-brand'>
+          RSLang
+        </NavLink>
+        <Select />
+        <div className='collapse navbar-collapse' id='navbarColor03'>
+          <ul className='navbar-nav mr-auto'>
+            <li className='nav-item'>
+              <NavLink to='/games' className='nav-link'>
+                Мини-игры
+              </NavLink>
+            </li>
+            <li className='nav-item'>
+              <NavLink to='/stat' className='nav-link'>
+                Статистика
+              </NavLink>
+            </li>
+          </ul>
 
-    return (
-        <header>
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                <NavLink to='/' className="navbar-brand">
-                    RSLang
-                </NavLink>
-                <div className="collapse navbar-collapse" id="navbarColor03">
-                    <ul className="navbar-nav mr-auto">
-                        <li className="nav-item">
-                            <NavLink to='/textbook' className="nav-link">
-                                Учебник
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink to='/games' className="nav-link">
-                                Мини-игры
-                            </NavLink>
-                        </li>
-                        <li className="nav-item">
-                            <NavLink to='/stat' className="nav-link">
-                                Статистика
-                            </NavLink>
-                        </li>
-
-                        {localStorage.getItem('user') && localStorage.getItem('reduxState') !== null ?
-                            (
-                                <li className="nav-item border-right-0">
-                                    <NavLink to='/'
-                                             style={{
-                                                 position: 'absolute',
-                                                 right: '0'
-                                             }}
-                                             className="nav-link info"
-                                             onClick={logoutHandler}>
-                                        Выйти
-                                    </NavLink>
-                                </li>
-                            )
-                            :
-                            (
-                                <li className="nav-item">
-                                    <NavLink
-                                        style={{
-                                            position: 'absolute',
-                                            right: '0'
-                                        }}
-                                        className="nav-link"
-                                        to='/login'>
-                                        Войти
-                                    </NavLink>
-                                </li>
-                            )
-                        }
-
-                    </ul>
-                </div>
-            </nav>
-        </header>
-    );
-}
+          {localStorage.getItem("user") &&
+          localStorage.getItem("reduxState") !== null ? (
+            <div className='form-inline my-2 my-lg-0'>
+              <span className='mr-sm-2'>Приветствуем Вас, {user.name} !</span>
+              <NavLink
+                to='/'
+                onClick={logoutHandler}
+                className='btn btn-secondary my-2 my-sm-0'
+              >
+                <i className='fas fa-sign-out-alt rm-2'></i>Выйти
+              </NavLink>
+            </div>
+          ) : (
+            <div>
+              <NavLink to='/login' className='btn btn-secondary my-2 my-sm-0'>
+                <i className='fas fa-sign-in-alt mr-2'></i>Войти
+              </NavLink>
+            </div>
+          )}
+        </div>
+      </nav>
+    </header>
+  );
+};
 
 export default Header;

@@ -1,15 +1,21 @@
 import React from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router';
 import SectionContent from '../../../Textbook/Components/SectionContent';
 
-const TabContent = () => {
-    const { url } = useRouteMatch();
-    return (
+const TabContent = ({ dictionarySection, setPage, setQueryFilter, setCountWords }) => {
+  const { url } = useRouteMatch();
+  return (
     <Switch>
       <Route path={`${url}/group/:group`}>
-        <SectionContent />
+        <SectionContent
+          setCurrentPage={setPage}
+          dictionarySection={dictionarySection}
+          setQueryFilter={setQueryFilter}
+          setCountWords={setCountWords}
+          mode="dictionary"
+        />
       </Route>
-      {/* <Redirect to='/textbook/group/0' /> */}
+      <Redirect to='/dictionary/group/0' />
     </Switch>
   );
 };

@@ -46,9 +46,36 @@ export const dictionaryItems = [
 export const gamesList = [
   {
     id: 0,
-    item: 'Sprint',
-    style: 'fas fa-running mr-2',
+    item: 'Спринт',
+    style: 'fas fa-dice-one mr-1',
     path: '/games/sprint',
   },
-  { id: 1, item: 'Memory', style: 'fas fa-th mr-2', path: '/games/memory' },
+  {
+    id: 1,
+    item: 'Мемори',
+    style: 'fas fa-dice-two mr-1',
+    path: '/games/memory',
+  },
+  {
+    id: 2,
+    item: 'Саванна',
+    style: 'fas fa-dice-three mr-1',
+    path: '/games/savanna',
+  },
+  {
+    id: 3,
+    item: 'Аудиовызов',
+    style: 'fas fa-dice-four mr-1',
+    path: '/games/voice',
+  },
 ];
+
+// 0 - studied words, 1 - difficult words, 2 - deleted words
+export const queryFilters = {
+  0: '"userWord.optional.isStudied":true',
+  1: '"userWord.difficulty":"high"',
+  2: '"userWord.optional.isDeleted":true',
+};
+
+export const TEXTBOOK_PAGES = 30;
+export const DICTIONARY_PAGES = 1;

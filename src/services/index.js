@@ -2,11 +2,13 @@ const base = 'https://apprslang.herokuapp.com/';
 
 class Service {
   _getToken = () => {
+    if (!localStorage.getItem('user')) return '';
     const user = JSON.parse(localStorage.getItem('user'));
     return user.token ? `Bearer ${user.token}` : '';
   };
 
   _getUserId = () => {
+    if (!localStorage.getItem('user')) return '';
     const user = JSON.parse(localStorage.getItem('user'));
     return user.userId;
   };
@@ -19,11 +21,15 @@ class Service {
       headers: {
         Authorization: this._getToken(),
         Accept: 'application/json',
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     });
     if (!response.ok) {
-      throw new Error(`Could not fetch ${base + url}, received ${response.status}`);
+      let error = new Error(
+        `Could not fetch ${base + url}, received ${response.status}`
+      );
+      error.status = response.status;
+      throw error;
     }
 
     return await response.json();
@@ -33,14 +39,36 @@ class Service {
     return await this._getResource(`words?group=${group}&page=${page}`);
   };
 
-  getAggregatedWordsAll = async (optional = '"userWord.optional.isDeleted":true') => {
+  getAggregatedWordsAll = async (
+    optional = '"userWord.optional.deleted":false'
+  ) => {
     return await this._getResource(
       `users/${this._getUserId()}/aggregatedWords?wordsPerPage=150?&filter={${optional}}`
     );
   };
 
+  getAggregatedWordsByGroup = async (
+    group,
+    page,
+    optional = '"userWord":{"$exists": true}'
+  ) => {
+    return await this._getResource(
+      `users/${this._getUserId()}/aggregatedWords?group=${group}&page=${page}&wordsPerPage=20&filter={"$and":[{${optional}}, {"userWord":{"$exists": true}}]}`
+    );
+  };
+
   getStatisticsUser = async () => {
     return await this._getResource(`users/${this._getUserId()}/statistics`);
+  };
+
+  getUserWord = async (wordId) => {
+    return await this._getResource(
+      `users/${this._getUserId()}/words/${wordId}`
+    );
+  };
+
+  getUserWordsAll = async () => {
+    return await this._getResource(`users/${this._getUserId()}/words`);
   };
 
   // Post
@@ -52,18 +80,23 @@ class Service {
       headers: {
         Authorization: this._getToken(),
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
     if (!response.ok) {
-      throw new Error(`Could not fetch ${base + url}, received ${response.status}`);
+      throw new Error(
+        `Could not fetch ${base + url}, received ${response.status}`
+      );
     }
     return await response.json();
   };
 
   postWord = async (wordId, data) => {
-    return await this._postResource(`users/${this._getUserId()}/words/${wordId}`, data);
+    return await this._postResource(
+      `users/${this._getUserId()}/words/${wordId}`,
+      data
+    );
   };
 
   // Put
@@ -75,19 +108,31 @@ class Service {
       headers: {
         Authorization: this._getToken(),
         Accept: 'application/json',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
-      throw new Error(`Could not fetch ${base + url}, received ${response.status}`);
+      throw new Error(
+        `Could not fetch ${base + url}, received ${response.status}`
+      );
     }
     return await response.json();
   };
 
   putStatisticsUser = async (data = {}) => {
-    return await this._putResource(`users/${this._getUserId()}/statistics`, data);
+    return await this._putResource(
+      `users/${this._getUserId()}/statistics`,
+      data
+    );
+  };
+
+  putUserWord = async (wordId, data = {}) => {
+    return await this._putResource(
+      `users/${this._getUserId()}/words/${wordId}`,
+      data
+    );
   };
 
   // Delete
@@ -96,13 +141,15 @@ class Service {
     const response = await fetch(`${base}${url}`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
-      throw new Error(`Could not fetch ${base + url}, received ${response.status}`);
+      throw new Error(
+        `Could not fetch ${base + url}, received ${response.status}`
+      );
     }
   };
 
@@ -110,9 +157,9 @@ class Service {
     const response = await fetch(`${base}${url}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
 
     if (response.ok) {
@@ -127,9 +174,9 @@ class Service {
     const response = await fetch(`${base}${url}`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     });
 
     if (response.ok) {

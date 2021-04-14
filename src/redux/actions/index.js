@@ -5,6 +5,7 @@ import {
   TEST_METHOD,
   USER_INFO,
   GAME_INFO,
+  CHANGE_TEXTBOOK_GROUP,
 } from "../types/types";
 
 const testMethod = (value) => {
@@ -42,13 +43,21 @@ export const setUserInfo = (value) => {
   };
 };
 
-export const setGameInfo = (pageNum, groupNum, page) => {
+export const setGameInfo = (pageNum, groupNum, page, filter) => {
   return {
     type: GAME_INFO,
     pageNum,
     groupNum,
     page,
+    filter,
   };
 };
+
+export const setTextbookGroup = (value) => {
+  return {
+    type: CHANGE_TEXTBOOK_GROUP,
+    payload: value,
+  };
+}
 
 export { testMethod };

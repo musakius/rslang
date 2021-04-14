@@ -1,4 +1,4 @@
-import { combineReducers } from 'redux';
+import { combineReducers } from "redux";
 import {
   CHANGE_THEME,
   SHOW_BUTTONS,
@@ -6,14 +6,15 @@ import {
   TEST_METHOD,
   USER_INFO,
   GAME_INFO,
-} from '../types/types';
+  CHANGE_TEXTBOOK_GROUP,
+} from "../types/types";
 
 const initialState = {
   testData: {},
 };
 
 const initialThemeState = {
-  value: 'info',
+  value: "info",
 };
 
 const initialSettingsState = {
@@ -27,10 +28,15 @@ const initialUserState = {
 
 const initialGameState = {
   gameInfo: {
-    pageNum: '',
-    groupNum: '',
-    page: '',
+    pageNum: "",
+    groupNum: "",
+    page: "",
+    filter: "",
   },
+};
+
+const initialTextbookGroupState = {
+  value: null,
 };
 
 const testReducer = (state = initialState, action) => {
@@ -78,7 +84,17 @@ const gameInfoReducer = (state = initialGameState, action) => {
         pageNum: action.pageNum,
         groupNum: action.groupNum,
         page: action.page,
+        filter: action.filter,
       });
+    default:
+      return state;
+  }
+};
+
+const textbookGroupReducer = (state = initialTextbookGroupState, action) => {
+  switch (action.type) {
+    case CHANGE_TEXTBOOK_GROUP:
+      return { ...state, value: action.payload };
     default:
       return state;
   }
@@ -90,6 +106,7 @@ const reducer = combineReducers({
   settings: settingsReducer,
   user: userReducer,
   gameInfo: gameInfoReducer,
+  textbookGroup: textbookGroupReducer,
 });
 
 export default reducer;

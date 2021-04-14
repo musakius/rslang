@@ -1,16 +1,22 @@
-import React from "react";
-import classes from "../SectionContent/SectionContent.module.scss";
+import React, { useEffect, useState } from "react";
+import {loadFlow, playSource, stopSource} from './audioHandler';
+import "./Audio.scss";
 
-const Audio = ({ audioURL, audioMeaningURL, audioExampleURL }) => {
+const Audio = ({ flow }) => {
+  //const [play, setPlay] = useState(false);
+
+  const load = () => {
+    loadFlow(flow);
+    playSource();
+  }
+
   return (
-    <figure className={classes.figure}>
-      <audio controls>
-        <source src={audioMeaningURL} type='audio/mpeg' />
-        <source src={audioURL} type='audio/mpeg' />
-        Your browser does not support the
-        <code>audio</code> element.
-      </audio>
-    </figure>
+    <div
+      id='btnPlay'
+      type='button'
+      className='audio-btn fas fa-music'
+      onClick={() => load()}
+    />
   );
 };
 

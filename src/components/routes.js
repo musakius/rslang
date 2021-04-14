@@ -10,6 +10,8 @@ import GameMemory from '../pages/GameMemory';
 import Stat from '../pages/Statistics';
 import Textbook from '../pages/Textbook';
 import Dictionary from '../pages/Dictionary';
+import Savanna from '../pages/Games/Savanna/Savanna';
+import VoiceGame from '../pages/Games/VoiceGame/VoiceGame';
 
 export const useRoutes = (isAuthenticated) => {
   if (isAuthenticated) {
@@ -22,6 +24,8 @@ export const useRoutes = (isAuthenticated) => {
         <Route path="/games/sprint" render={() => <GameSprint />} />
         <Route path="/games/memory" render={() => <GameMemory />} />
         <Route path="/stat" render={() => <Stat />} />
+        <Route path="/games/savanna" render={() => <Savanna />} />
+        <Route path="/games/voice" render={() => <VoiceGame />} />
         <Redirect to="/" />
         <Route render={() => <Page404 />} />
       </Switch>
@@ -31,7 +35,15 @@ export const useRoutes = (isAuthenticated) => {
     <Switch>
       <Route path="/login" exact render={() => <Login />} />
       <Route path="/register" exact render={() => <Register />} />
+      <Route path="/" exact render={() => <Main />} />
+      <Route path="/textbook" render={() => <Textbook />} />
+      <Route path="/games" exact render={() => <Games />} />
+      <Route path="/games/sprint" render={() => <GameSprint />} />
+      <Route path="/games/memory" render={() => <GameMemory />} />
+      <Route path="/games/savanna" render={() => <Savanna />} />
+      <Route path="/games/voice" render={() => <VoiceGame />} />
       <Redirect to="/login" />
+      <Route render={() => <Page404 />} />
     </Switch>
   );
 };
