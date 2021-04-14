@@ -4,6 +4,7 @@ import Answers from './Answers';
 import EndGame from './EndGame';
 import ToggleSound from './ToggleSound';
 import { connect } from 'react-redux';
+import { deleteGameInfo } from '../../../../redux/actions/index';
 
 import winSound from '../audio/true.mp3';
 import falseSound from '../audio/false.mp3';
@@ -23,7 +24,7 @@ const Gamefield = (props) => {
 
   if(Object.keys(props.gameInfo).length === 0) {
     url = `https://apprslang.herokuapp.com/words?page=3&group=${props.complexity}`;
-  } else {   
+  } else {  
     url = `https://apprslang.herokuapp.com/words?page=${props.gameInfo.pageNum}&group=${props.gameInfo.groupNum}`;
   }
 
@@ -35,7 +36,7 @@ const Gamefield = (props) => {
   
   useEffect(() => {
     getWords(url);
-    
+    return () => props.deleteGameInfo();
   }, [url])
 
   function changeRound() {
@@ -146,4 +147,8 @@ const mapStateToProps = (state) => {
   };
 };
 
-export default connect(mapStateToProps, null)(Gamefield);
+const mapDispatchToProps = {
+  deleteGameInfo,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Gamefield);
