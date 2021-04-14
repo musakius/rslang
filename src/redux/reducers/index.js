@@ -10,13 +10,8 @@ import {
   DELETE_GAME_INFO
 } from '../types/types';
 
-
 const initialState = {
-  testData: {},
-};
-
-const initialThemeState = {
-  value: "info",
+  testData: {}
 };
 
 const initialThemeState = {
