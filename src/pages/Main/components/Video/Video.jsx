@@ -6,7 +6,7 @@ const Video = () => {
     return (
         <div>
 
-        <p className='videoText '>Посмотри видео и узнай как использовать приложение!</p>
+        <p className='videoText '>Посмотри видео и узнай как использовать приложение!!!</p>
 
         <div className='app'>
 
