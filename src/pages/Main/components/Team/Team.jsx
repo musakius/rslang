@@ -24,7 +24,7 @@ const Team = () => {
                         <img src={profile1} alt="background image" className='profile'/>
                         <h1>Irina</h1>
                         <p className='job'>Teamleader</p>
-                        <p className='about'>Реализовация учебника, создание словаря, помощь команде в затрудительных ситуациях</p>
+                        <p className='about'>Реализация учебника, создание словаря, помощь команде в затруднительных ситуациях</p>
                     </div>
 
                     <div className='cardTeam'>
