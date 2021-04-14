@@ -16,23 +16,34 @@ const audioPlay = (name, soundStatus) => {
   if (soundStatus) audio.play();
 };
 
+const getRandomInt = (max) => Math.floor(Math.random() * Math.floor(max));
+
 function Game({
   setGameOver,
   setResults,
   setStartGame,
   setSoundStatus,
+  setWords,
   words,
   startGame,
   results,
   load,
-  soundStatus
+  soundStatus,
+  totalWorlds,
+  mixed
 }) {
   const [count, setCount] = useState(0);
+  const [totalCount, setTotalCount] = useState(0);
   const [marksCombo, setMarksCombo] = useState(0);
   const [marks, setMarks] = useState(['empty', 'empty', 'empty']);
   const [targets, setTargets] = useState(['empty', 'empty', 'empty']);
+  const [currentWorlds, setCurrentWorlds] = useState([]);
   const [score, setScore] = useState(0);
   const [rate, setRate] = useState(1);
+
+  useEffect(() => {
+    action(words);
+  }, [load]);
 
   useEffect(() => {
     document.onkeydown = keyControl;
@@ -45,13 +56,31 @@ function Game({
   const keyControl = (e) => {
     e.preventDefault();
     e = e || window.event;
-    if (count === words.length - 1) setGameOver(true); //TODO fix error words[max]
+    if (count === totalWorlds - 1) setGameOver(true);
     if (e.keyCode === 37) {
-      console.log(words);
-      onAnswer(words[count], false);
+      onAnswer(currentWorlds[count], false);
     } else if (e.keyCode === 39) {
-      onAnswer(words[count], true);
+      onAnswer(currentWorlds[count], true);
     }
+  };
+
+  const action = (data) => {
+    const currentData = mixed(data.filter((x, i) => i < 20));
+    const restData = data.filter((x, i) => i >= 20);
+
+    currentData.forEach((el) => {
+      el.falsyTranslate = el.wordTranslate;
+    });
+    currentData.forEach((el) => {
+      el.falsyTranslate = getRandomInt(2)
+        ? currentData[getRandomInt(currentData.length - 1)].falsyTranslate
+        : el.falsyTranslate;
+      el.correctFlag = el.falsyTranslate === el.wordTranslate;
+    });
+
+    setCurrentWorlds(currentData);
+    setWords(restData);
+    setCount(0);
   };
 
   const changeScore = (bool) => {
@@ -91,17 +120,18 @@ function Game({
   };
 
   const onAnswer = (word, answer) => {
-    console.log(word);
     word.correctAnswer = word.correctFlag === answer;
     word.correctAnswer ? audioPlay('right', soundStatus) : audioPlay('wrong', soundStatus);
 
     results.push(word);
     setResults(results);
     setCount(count + 1);
+    setTotalCount(totalCount + 1);
     changeMark(word.correctAnswer);
     changeScore(word.correctAnswer);
 
-    if (count === words.length - 1) setGameOver(true);
+    if (count === totalWorlds - 1) setGameOver(true);
+    if (results.length % 20 === 0) action(words);
   };
 
   if (startGame) {
@@ -116,7 +146,7 @@ function Game({
             <Exit />
           </div>
           <div className={classes['panel']}>
-            <CountWorlds count={count + 1} totalCount={words.length} />
+            <CountWorlds count={totalCount + 1} totalCount={totalWorlds} />
             <p className={classes.score}>{score}</p>
             <ToggleSound setSoundStatus={setSoundStatus} soundStatus={soundStatus} />
           </div>
@@ -141,23 +171,23 @@ function Game({
                 ))}
               </div>
 
-              {words.length ? (
+              {currentWorlds.length ? (
                 <div className={classes.words}>
-                  <p className={classes['en-word']}>{words[count].word}</p>
-                  <p className={classes['ru-word']}>{words[count].falsyTranslate}</p>
+                  <p className={classes['en-word']}>{currentWorlds[count].word}</p>
+                  <p className={classes['ru-word']}>{currentWorlds[count].falsyTranslate}</p>
                 </div>
               ) : null}
 
               <div className={classes.buttons}>
                 <button
                   className={`${classes.btn} btn btn-danger btn-lg`}
-                  onClick={() => onAnswer(words[count], false)}
+                  onClick={() => onAnswer(currentWorlds[count], false)}
                 >
                   Не верно
                 </button>
                 <button
                   className={`${classes.btn} btn btn-success btn-lg`}
-                  onClick={() => onAnswer(words[count], true)}
+                  onClick={() => onAnswer(currentWorlds[count], true)}
                 >
                   Верно
                 </button>
@@ -172,7 +202,7 @@ function Game({
                 </button>
               </div>
               <div className={classes.pronounce}>
-                <Pronounce audio={words[count].audio} soundStatus={soundStatus} />
+                <Pronounce audio={currentWorlds[count].audio} soundStatus={soundStatus} />
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+import {combineReducers} from 'redux';
 import {
   CHANGE_THEME,
   SHOW_BUTTONS,
@@ -7,8 +7,9 @@ import {
   USER_INFO,
   GAME_INFO,
   CHANGE_TEXTBOOK_GROUP,
-  DELETE_GAME_INFO,
-} from "../types/types";
+  DELETE_GAME_INFO
+} from '../types/types';
+
 
 const initialState = {
   testData: {},
@@ -18,25 +19,29 @@ const initialThemeState = {
   value: "info",
 };
 
+const initialThemeState = {
+  value: 'info'
+};
+
 const initialSettingsState = {
   showButtons: true,
-  showTranslate: true,
+  showTranslate: true
 };
 
 const initialUserState = {
-  user: [],
+  user: []
 };
 
 const initialGameState = {};
 
 const initialTextbookGroupState = {
-  value: null,
+  value: null
 };
 
 const testReducer = (state = initialState, action) => {
   switch (action.type) {
     case TEST_METHOD:
-      return { ...state, testData: action.payload };
+      return {...state, testData: action.payload};
     default:
       return state;
   }
@@ -45,7 +50,7 @@ const testReducer = (state = initialState, action) => {
 const themeReducer = (state = initialThemeState, action) => {
   switch (action.type) {
     case CHANGE_THEME:
-      return { ...state, value: action.payload };
+      return {...state, value: action.payload};
     default:
       return state;
   }
@@ -54,9 +59,9 @@ const themeReducer = (state = initialThemeState, action) => {
 const settingsReducer = (state = initialSettingsState, action) => {
   switch (action.type) {
     case SHOW_BUTTONS:
-      return { ...state, showButtons: action.payload };
+      return {...state, showButtons: action.payload};
     case SHOW_TRANSLATE:
-      return { ...state, showTranslate: action.payload };
+      return {...state, showTranslate: action.payload};
     default:
       return state;
   }
@@ -65,7 +70,7 @@ const settingsReducer = (state = initialSettingsState, action) => {
 const userReducer = (state = initialUserState, action) => {
   switch (action.type) {
     case USER_INFO:
-      return { ...state, user: action.payload };
+      return {...state, user: action.payload};
     default:
       return state;
   }
@@ -78,7 +83,7 @@ const gameInfoReducer = (state = initialGameState, action) => {
         pageNum: action.pageNum,
         groupNum: action.groupNum,
         page: action.page,
-        filter: action.filter,
+        filter: action.filter
       });
     case DELETE_GAME_INFO:
       return {};
@@ -90,7 +95,7 @@ const gameInfoReducer = (state = initialGameState, action) => {
 const textbookGroupReducer = (state = initialTextbookGroupState, action) => {
   switch (action.type) {
     case CHANGE_TEXTBOOK_GROUP:
-      return { ...state, value: action.payload };
+      return {...state, value: action.payload};
     default:
       return state;
   }
@@ -102,7 +107,7 @@ const reducer = combineReducers({
   settings: settingsReducer,
   user: userReducer,
   gameInfo: gameInfoReducer,
-  textbookGroup: textbookGroupReducer,
+  textbookGroup: textbookGroupReducer
 });
 
 export default reducer;
