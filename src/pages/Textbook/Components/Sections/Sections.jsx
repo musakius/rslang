@@ -37,7 +37,7 @@ const Sections = ({
   };
 
   useEffect(() => {
-    if (mode !== "textbook") return;
+    //if (mode !== "textbook") return;
     setActive(+group);
     changeTheme(items.filter((item) => item.group === +group)[0].style)
   }, [group]);

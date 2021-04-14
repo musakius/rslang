@@ -7,6 +7,7 @@ import Error from '../../../../components/Error';
 import { updateWord } from '../../utils/queries';
 import { isAuth, setBtnDisabled } from '../../utils/functions';
 import DifficultyMarker from '../DifficultyMarker/DifficultyMarker';
+import Player from '../Audio/Player';
 
 const WordCard = ({
   wordObj,
@@ -53,7 +54,6 @@ const WordCard = ({
 
   useEffect(() => {
     setShowTranslate(settingTranslate);
-    return () => { };
   }, [settingTranslate]);
 
   useEffect(() => {
@@ -91,7 +91,7 @@ const WordCard = ({
       return;
     }
     setError(result.error);
-    console.log('WordCard error', result.error);
+    console.log('error', result.error);
   };
 
   return (
@@ -159,7 +159,7 @@ const WordCard = ({
         <div
           className={`card-footer d-flex justify-content-between bg-${currentTheme}`}
         >
-          <Audio
+          <Player
             flow={flow}
           />
         </div>

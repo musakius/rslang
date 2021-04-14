@@ -50,6 +50,7 @@ const Page = ({
               showThumbs={false}
               useKeyboardArrows
               infiniteLoop
+              onChange={() => {}}
               width="100%"
             >
               {wordsSet.map((word) => (
