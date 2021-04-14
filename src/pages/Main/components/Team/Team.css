@@ -8,7 +8,6 @@
 
     display: flex;
     flex-direction: row;
-
 }
 
 .wrapperTeam {
@@ -19,14 +18,14 @@
 }
 
 .cardTeam {
-    width: 12rem;
+    width: 17rem;
     background-color: #ebeef8;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     margin: 2rem 0;
-    margin-left: 15px;
+    margin-left: 5px;
     border-radius: 5px;
 }
 

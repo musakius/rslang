@@ -37,9 +37,17 @@ const Register = ({setUserInfo}) => {
                         api
                             .login("signin", user)
                             .then((response) => {
-                                data['token'] = response.token
+                                
+                                const userMain = {
+                                    "userId" : data.id,
+                                    "name" : data.name,
+                                    "email" : data.email,
+                                    "token" : response.token,
+                                }
+
                                 setUserInfo([response])
-                                localStorage.setItem('user', JSON.stringify(data))
+
+                                localStorage.setItem('user', JSON.stringify(userMain))
                                 setValidate(true)
                             })
                     }
