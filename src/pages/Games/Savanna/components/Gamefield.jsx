@@ -3,11 +3,13 @@ import Question from './Question';
 import Answers from './Answers';
 import EndGame from './EndGame';
 import ToggleSound from './ToggleSound';
+import { connect } from 'react-redux';
 
 import winSound from '../audio/true.mp3';
 import falseSound from '../audio/false.mp3';
 
-const Gamefield = (props) => {
+
+const Gamefield = (props, {gameInfo}) => {
 
   const [variants, setVariants] = useState();
   const [round, setRound] = useState(0);
@@ -17,14 +19,9 @@ const Gamefield = (props) => {
   const [falseMusic] = useState(new Audio(falseSound));
   const [goodAnswers, setGoodAnswers] = useState([]);
 
-  const mapStateToProps = function (state) {
-    
-    return {
-        
-    }
-  }
   
-  
+  console.log(gameInfo);
+
   let url = `https://apprslang.herokuapp.com/words?page=2&group=${props.complexity}`;
 
   async function getWords(url) {
@@ -139,4 +136,10 @@ const Gamefield = (props) => {
   )
 }
 
-export default Gamefield;
+const mapStateToProps = (state) => {
+  return {
+    gameInfo: state.gameInfo.gameInfo,
+  };
+};
+
+export default connect(mapStateToProps, null)(Gamefield);
