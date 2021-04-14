@@ -7,6 +7,7 @@ import {
   USER_INFO,
   GAME_INFO,
   CHANGE_TEXTBOOK_GROUP,
+  DELETE_GAME_INFO,
 } from "../types/types";
 
 const initialState = {
@@ -79,6 +80,8 @@ const gameInfoReducer = (state = initialGameState, action) => {
         page: action.page,
         filter: action.filter,
       });
+    case DELETE_GAME_INFO:
+      return {};
     default:
       return state;
   }

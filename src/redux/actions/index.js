@@ -6,6 +6,7 @@ import {
   USER_INFO,
   GAME_INFO,
   CHANGE_TEXTBOOK_GROUP,
+  DELETE_GAME_INFO,
 } from "../types/types";
 
 const testMethod = (value) => {
@@ -52,6 +53,12 @@ export const setGameInfo = (pageNum, groupNum, page, filter) => {
     filter,
   };
 };
+
+export const deleteGameInfo = () => {
+  return {
+    type: DELETE_GAME_INFO,
+  }
+}
 
 export const setTextbookGroup = (value) => {
   return {
