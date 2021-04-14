@@ -19,9 +19,13 @@ const Gamefield = (props) => {
   const [falseMusic] = useState(new Audio(falseSound));
   const [goodAnswers, setGoodAnswers] = useState([]);
 
-  console.log(props.gameInfo)
+  let url;
 
-  let url = `https://apprslang.herokuapp.com/words?page=${props.gameInfo.pageNum}&group=${props.gameInfo.groupNum}`;
+  if(Object.keys(props.gameInfo).length === 0) {
+    url = `https://apprslang.herokuapp.com/words?page=3&group=${props.complexity}`;
+  } else {   
+    url = `https://apprslang.herokuapp.com/words?page=${props.gameInfo.pageNum}&group=${props.gameInfo.groupNum}`;
+  }
 
   async function getWords(url) {
     let responce = await fetch(url);
@@ -31,6 +35,7 @@ const Gamefield = (props) => {
   
   useEffect(() => {
     getWords(url);
+    
   }, [url])
 
   function changeRound() {
