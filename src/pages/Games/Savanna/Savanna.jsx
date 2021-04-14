@@ -15,7 +15,7 @@ const Savanna = (props) => {
   const [points, setPoints] = useState(0);
   const [complexity, setComplexity] = useState(0);
 
-  console.log(props)
+
   let menu;
   if(Object.keys(props.gameInfo).length === 0) {
     menu = true;
