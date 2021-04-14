@@ -9,7 +9,7 @@ import winSound from '../audio/true.mp3';
 import falseSound from '../audio/false.mp3';
 
 
-const Gamefield = (props, {gameInfo}) => {
+const Gamefield = (props) => {
 
   const [variants, setVariants] = useState();
   const [round, setRound] = useState(0);
@@ -19,10 +19,9 @@ const Gamefield = (props, {gameInfo}) => {
   const [falseMusic] = useState(new Audio(falseSound));
   const [goodAnswers, setGoodAnswers] = useState([]);
 
-  
-  console.log(gameInfo);
+  console.log(props.gameInfo)
 
-  let url = `https://apprslang.herokuapp.com/words?page=2&group=${props.complexity}`;
+  let url = `https://apprslang.herokuapp.com/words?page=${props.gameInfo.pageNum}&group=${props.gameInfo.groupNum}`;
 
   async function getWords(url) {
     let responce = await fetch(url);
@@ -138,7 +137,7 @@ const Gamefield = (props, {gameInfo}) => {
 
 const mapStateToProps = (state) => {
   return {
-    gameInfo: state.gameInfo.gameInfo,
+    gameInfo: state.gameInfo,
   };
 };
 

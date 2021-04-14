@@ -1,7 +1,6 @@
 import React from 'react';
 
 const EndGame = (props) => {
-  console.log(props.goodAnswers);
 
   return (
     <div className="end-game">
