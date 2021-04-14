@@ -3,9 +3,12 @@ import Question from './Question';
 import Answers from './Answers';
 import EndGame from './EndGame';
 import ToggleSound from './ToggleSound';
+import { connect } from 'react-redux';
+import { deleteGameInfo } from '../../../../redux/actions/index';
 
 import winSound from '../audio/true.mp3';
 import falseSound from '../audio/false.mp3';
+
 
 const Gamefield = (props) => {
 
@@ -16,8 +19,14 @@ const Gamefield = (props) => {
   const [winMusic] = useState(new Audio(winSound));
   const [falseMusic] = useState(new Audio(falseSound));
   const [goodAnswers, setGoodAnswers] = useState([]);
-  
-  let url = `https://apprslang.herokuapp.com/words?page=2&group=${props.complexity}`;
+
+  let url;
+
+  if(Object.keys(props.gameInfo).length === 0) {
+    url = `https://apprslang.herokuapp.com/words?page=3&group=${props.complexity}`;
+  } else {  
+    url = `https://apprslang.herokuapp.com/words?page=${props.gameInfo.pageNum}&group=${props.gameInfo.groupNum}`;
+  }
 
   async function getWords(url) {
     let responce = await fetch(url);
@@ -27,6 +36,7 @@ const Gamefield = (props) => {
   
   useEffect(() => {
     getWords(url);
+    return () => props.deleteGameInfo();
   }, [url])
 
   function changeRound() {
@@ -34,7 +44,6 @@ const Gamefield = (props) => {
       setRound(round + 1);
     } else {
       setFinishRound(true);
-      console.log('Игра закончена');
     }    
   }
   
@@ -47,7 +56,6 @@ const Gamefield = (props) => {
     question.classList.remove('question--active');
 
     if(answerId === questionId) {
-      console.log('Правильно');
       event.target.classList.add('right');
       if(soundButton.classList.contains('sound-on')) {
         winMusic.play();
@@ -59,7 +67,6 @@ const Gamefield = (props) => {
         event.target.classList.remove('right');     
       }, 2000);
     } else if(props.lifes > 1) {
-      console.log('Неправильно');
       event.target.classList.add('error');
       if(soundButton.classList.contains('sound-on')) {
         falseMusic.play();
@@ -80,8 +87,7 @@ const Gamefield = (props) => {
         setErrors([...errors, variants[round]]);
         props.minusLife();
         event.target.classList.remove('error');
-        setFinishRound(true);
-        console.log('Игра закончена');  
+        setFinishRound(true);  
       }, 2000);      
     }
 
@@ -110,7 +116,6 @@ const Gamefield = (props) => {
     } else {
       setErrors([...errors, variants[round]]);
       setFinishRound(true);
-      console.log('Игра закончена');
     }  
   }
   
@@ -120,7 +125,6 @@ const Gamefield = (props) => {
     } else {
       event.target.className = "sound-on";
     }
-    console.log(event.target);
   }
 
   return (
@@ -137,4 +141,14 @@ const Gamefield = (props) => {
   )
 }
 
-export default Gamefield;
+const mapStateToProps = (state) => {
+  return {
+    gameInfo: state.gameInfo,
+  };
+};
+
+const mapDispatchToProps = {
+  deleteGameInfo,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Gamefield);
