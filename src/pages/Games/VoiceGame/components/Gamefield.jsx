@@ -144,6 +144,7 @@ const Gamefield = (props) => {
 
 const mapStateToProps = (state) => {
   return {
+    
     gameInfo: state.gameInfo,
   };
 };
