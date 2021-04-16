@@ -11,13 +11,14 @@ const Dictionary = ({ setGameInfo }) => {
   const savedGroup = localStorage.getItem('dictionaryGroup') || 0;
   const savedPage = localStorage.getItem('dictionaryPage') || 0;
   const savedQueryFilter = localStorage.getItem('queryFilter') || '';
+  const savedDictionarySection = localStorage.getItem('dictionarySection') || 0;
   const [group, setGroup] = useState(savedGroup);
   const [page, setPage] = useState(savedPage);
   const [countWords, setCountWords] = useState(0);
   const [queryFilter, setQueryFilter] = useState(savedQueryFilter);
 
   const textbookGroup = localStorage.getItem('textbookGroup') || 0;
-  const [dictionarySection, setDictionarySection] = useState();
+  const [dictionarySection, setDictionarySection] = useState(savedDictionarySection);
 
   useEffect(() => {
     localStorage.setItem('userPage', 'dictionary');
@@ -37,7 +38,7 @@ const Dictionary = ({ setGameInfo }) => {
     <div className="container mt-5">
       <div className="jumborton">
         <div className="row">
-          <Tabs setDictionarySection={setDictionarySection} />
+          <Tabs setDictionarySection={setDictionarySection} dictionarySection={dictionarySection} />
           <div className="col-md-3">
             <Sections mode="dictionary" group={group} setGroup={setGroup} />
           </div>

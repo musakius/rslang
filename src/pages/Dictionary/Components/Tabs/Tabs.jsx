@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { dictionaryItems } from '../../../Textbook/config';
 
-const Tabs = ({setDictionarySection}) => {
-  const savedSection = localStorage.getItem('dictionarySection') || 0;
-  const [active, setActive] = useState(+savedSection);
+const Tabs = ({setDictionarySection, dictionarySection}) => {
+  //const savedSection = localStorage.getItem('dictionarySection') || 0;
+  const [active, setActive] = useState(+dictionarySection);
 
   useEffect(() => {
     setDictionarySection(active);
