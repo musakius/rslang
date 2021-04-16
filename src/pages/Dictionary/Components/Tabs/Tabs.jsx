@@ -21,8 +21,8 @@ const Tabs = ({setDictionarySection, dictionarySection}) => {
           <li className="nav-item" key={item.id}>
             <a
               className={`nav-link ${item.id === active ? 'active text-primary font-weight-bold' : ''}`}
+              style={{cursor: 'pointer'}}
               data-toggle="tab"
-              href={`#${item.item.trim().replace(' ', '_')}`}
               key={item.id}
               onClick={() => openTab(item.id)}
             >
