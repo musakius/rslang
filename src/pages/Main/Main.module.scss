@@ -1,0 +1,19 @@
+.container-main {
+  display: flex;
+  justify-content: center;
+  flex-flow: row wrap;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container-main > div {
+  flex: 1 0 100%;
+}
+
+.line-break{
+  width: 100%;
+}
+
+.container-main > div:first-child {
+  flex: 0 1 100%;
+}

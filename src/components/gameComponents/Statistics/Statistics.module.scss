@@ -1,0 +1,160 @@
+.container-statistics {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  overflow-y: scroll;
+  height: 100%;
+  z-index: 10;
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+  }
+
+  .block-icons {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    height: 80px;
+    width: 100%;
+    box-shadow: 7px 0px 64px rgba(0, 0, 0, 0.15);
+
+    @media (max-width: 768px) {
+      padding-top: 47px;
+    }
+
+    i {
+      font-size: 28px;
+    }
+
+    .close {
+      position: absolute;
+
+      top: 20px;
+      right: 20px;
+      color: #fff;
+      i {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .left,
+  .right {
+    display: flex;
+    margin: 20px;
+    align-items: center;
+
+    @media (max-width: 520px) {
+      margin: 5px;
+    }
+  }
+
+  .results {
+    font-family: 'Exo', sans-serif;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 50px;
+    text-align: center;
+    padding-left: 10px;
+  }
+  .results-words {
+    width: 80%;
+    margin: 50px auto;
+
+    tr {
+      p {
+        font-weight: 700;
+        margin: 0;
+        font-size: 18px;
+      }
+      th {
+        width: 29%;
+        padding: 13px 35px;
+        text-align: center;
+        &:first-child {
+          width: 13%;
+        }
+      }
+      td {
+        padding: 13px 35px;
+        text-align: center;
+        i {
+          font-size: 24px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    @media (max-width: 768px) {
+      padding-left: 0;
+      width: 95%;
+    }
+  }
+
+  .block-close {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 80px;
+    padding: 10px 10px 10px 100px;
+    box-shadow: 7px 0px 64px rgba(0, 0, 0, 0.15);
+    margin: 0 auto;
+
+    @media (max-width: 768px) {
+      padding: 10px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 410px) {
+      justify-content: space-around;
+    }
+  }
+
+  .btn-close {
+    font-family: 'Exo', sans-serif;
+    border-radius: 6px;
+    font-size: 17px;
+    margin: 10px;
+    text-align: center;
+
+    @media (max-width: 410px) {
+      width: 100px;
+      margin: 5px;
+    }
+  }
+  ul {
+    list-style: none;
+  }
+
+  li {
+    border-radius: 12px;
+    color: white;
+    margin: 2px;
+
+    div {
+      i {
+        font-size: 26px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  div {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px;
+    padding: 0 10px;
+
+    @media (max-width: 520px) {
+      font-size: 12px;
+      overflow-x: scroll;
+    }
+  }
+
+  .results-audio-icon {
+    cursor: pointer;
+  }
+}

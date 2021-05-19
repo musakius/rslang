@@ -1,0 +1,84 @@
+.team{
+    text-align: center;
+}
+
+.containerTeam {
+    width: 100%;
+    height: auto;
+
+    display: flex;
+    flex-direction: row;
+}
+
+.wrapperTeam {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    margin-bottom: 50px;
+}
+
+.cardTeam {
+    width: 17rem;
+    background-color: #ebeef8;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem 0;
+    margin-left: 5px;
+    border-radius: 5px;
+}
+
+.cardTeam .cardImg {
+    width: 100%;
+    height: 10rem;
+    object-fit: cover;
+    -webkit-clip-path: polygon(0 0, 100% 0, 100% 78%, 8% 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 78%, 0% 100%);
+}
+
+.profile {
+    width: 8rem;
+    height: 8rem;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-top: -4rem;
+    z-index: 999;
+    border: 1rem solid #ebeef8;
+}
+
+.cardTeam h1 {
+    font-size: 1.2rem;
+    color: #333;
+    margin: 0.2rem 0;
+}
+
+.job {
+    color: #777;
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin-top: 0.5rem;
+}
+
+.about {
+    font-size: 1.2rem;
+    margin: 0.2rem 0;
+    font-style: italic;
+    text-align: center;
+    color: #333;
+}
+
+@media screen and (min-width: 700px){
+    .wrapperTeam{
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .cardTeam{
+        margin: 2rem;
+    }
+
+}
